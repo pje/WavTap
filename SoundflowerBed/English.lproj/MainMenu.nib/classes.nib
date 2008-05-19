@@ -1,0 +1,45 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                bufferSizeChanged = id; 
+                extraLatencyChanged = id; 
+                inputDeviceSelected = id; 
+                inputLoadChanged = id; 
+                inputSourceSelected = id; 
+                outputDeviceSelected = id; 
+                outputLoadChanged = id; 
+                outputSourceSelected = id; 
+                restart = id; 
+                toggleThru = id; 
+            }; 
+            CLASS = AppController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAboutController = HelpWindowController; 
+                mBufferSizeField = NSTextField; 
+                mErrorText = NSTextField; 
+                mInputDevices = NSPopUpButton; 
+                mInputLoadSlider = NSSlider; 
+                mInputLoadText = NSTextField; 
+                mInputSources = NSPopUpButton; 
+                mMeasuredLatencyText = NSTextField; 
+                mOutputDevices = NSPopUpButton; 
+                mOutputLoadSlider = NSSlider; 
+                mOutputLoadText = NSTextField; 
+                mOutputSources = NSPopUpButton; 
+                mThruButton = NSButton; 
+                mTotalLatencyText = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = HelpWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mTextView = NSTextView; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
