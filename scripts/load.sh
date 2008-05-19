@@ -1,0 +1,1 @@
+sudo kextload Soundflower.kext

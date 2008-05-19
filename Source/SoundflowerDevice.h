@@ -36,6 +36,7 @@
 
 #define SoundflowerDevice com_MyCompany_driver_SoundflowerDevice
 
+
 class SoundflowerDevice : public IOAudioDevice
 {
     friend class Soundflower_AudioEngine;
@@ -44,6 +45,7 @@ class SoundflowerDevice : public IOAudioDevice
     
     virtual bool initHardware(IOService *provider);
     virtual bool createAudioEngines();
+    virtual bool initControls(Soundflower_AudioEngine *audioEngine);
     
     static IOReturn volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
@@ -60,11 +62,14 @@ class SoundflowerDevice : public IOAudioDevice
    // static IOReturn passThruChangeHandler(IOService *target, IOAudioControl *passThruControl, SInt32 oldValue, SInt32 newValue);
    // virtual IOReturn passThruChanged(IOAudioControl *passThruControl, SInt32 oldValue, SInt32 newValue);
     
-    SInt32 mVolume[16];
-    SInt32 mMuteOut[16];
-    SInt32 mMuteIn[16];
-    SInt32 mGain[16];
+    SInt32 mVolume[17];
+    SInt32 mMuteOut[17];
+    SInt32 mMuteIn[17];
+    SInt32 mGain[17];
     //SInt32 mThru[16];
+    
+    static const SInt32 kVolumeMax;
+    static const SInt32 kGainMax;
 };
 
 #endif /* _SAMPLEAUDIODEVICE_H */
