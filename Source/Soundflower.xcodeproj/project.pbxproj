@@ -11,23 +11,44 @@
 		54D0AD970A5E329B006380BD /* SoundflowerEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407630601317E002E6A19 /* SoundflowerEngine.h */; };
 		54D0AD990A5E329B006380BD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		54D0AD9B0A5E329B006380BD /* SoundflowerEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407640601317E002E6A19 /* SoundflowerEngine.cpp */; };
-		54D0AD9C0A5E329B006380BD /* SoundflowerClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407650601317E002E6A19 /* SoundflowerClip.cpp */; };
 		54D0AD9D0A5E329B006380BD /* SoundflowerDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407660601317E002E6A19 /* SoundflowerDevice.cpp */; };
+		789FB35F0D62DE7E00C0F5C7 /* SoundflowerFPU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 789FB35D0D62DE7E00C0F5C7 /* SoundflowerFPU.cpp */; };
+		789FB3A10D62DF9000C0F5C7 /* libSoundflowerFPU.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 789FB3530D62DE4E00C0F5C7 /* libSoundflowerFPU.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		789FB39D0D62DF8A00C0F5C7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 789FB3520D62DE4E00C0F5C7;
+			remoteInfo = SoundflowerFPU;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		54D0ADA60A5E329B006380BD /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		789FB3530D62DE4E00C0F5C7 /* libSoundflowerFPU.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSoundflowerFPU.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		789FB3540D62DE4E00C0F5C7 /* Info-SoundflowerDriver.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Info-SoundflowerDriver.plist"; sourceTree = "<group>"; };
+		789FB35D0D62DE7E00C0F5C7 /* SoundflowerFPU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerFPU.cpp; sourceTree = "<group>"; };
 		C93407620601317E002E6A19 /* SoundflowerDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerDevice.h; sourceTree = "<group>"; };
 		C93407630601317E002E6A19 /* SoundflowerEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerEngine.h; sourceTree = "<group>"; };
 		C93407640601317E002E6A19 /* SoundflowerEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerEngine.cpp; sourceTree = "<group>"; };
-		C93407650601317E002E6A19 /* SoundflowerClip.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerClip.cpp; sourceTree = "<group>"; };
 		C93407660601317E002E6A19 /* SoundflowerDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = SoundflowerDevice.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		54D0AD9E0A5E329B006380BD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				789FB3A10D62DF9000C0F5C7 /* libSoundflowerFPU.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		789FB3510D62DE4E00C0F5C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,6 +65,7 @@
 				089C167CFE841241C02AAC07 /* Resources */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
 				00F55081007288EA11FF4F98 /* Kernel.framework */,
+				789FB3540D62DE4E00C0F5C7 /* Info-SoundflowerDriver.plist */,
 			);
 			name = SampleAudioDriver;
 			sourceTree = "<group>";
@@ -60,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				54D0ADA60A5E329B006380BD /* Soundflower.kext */,
+				789FB3530D62DE4E00C0F5C7 /* libSoundflowerFPU.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -68,10 +91,10 @@
 			isa = PBXGroup;
 			children = (
 				C93407620601317E002E6A19 /* SoundflowerDevice.h */,
+				C93407660601317E002E6A19 /* SoundflowerDevice.cpp */,
 				C93407630601317E002E6A19 /* SoundflowerEngine.h */,
 				C93407640601317E002E6A19 /* SoundflowerEngine.cpp */,
-				C93407650601317E002E6A19 /* SoundflowerClip.cpp */,
-				C93407660601317E002E6A19 /* SoundflowerDevice.cpp */,
+				789FB35D0D62DE7E00C0F5C7 /* SoundflowerFPU.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -85,6 +108,13 @@
 			files = (
 				54D0AD960A5E329B006380BD /* SoundflowerDevice.h in Headers */,
 				54D0AD970A5E329B006380BD /* SoundflowerEngine.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		789FB34F0D62DE4E00C0F5C7 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,12 +134,30 @@
 			buildRules = (
 			);
 			dependencies = (
+				789FB39E0D62DF8A00C0F5C7 /* PBXTargetDependency */,
 			);
 			name = SoundflowerDriver;
 			productInstallPath = "$(SYSTEM_LIBRARY_DIR)/Extensions";
 			productName = SampleAudioDriver;
 			productReference = 54D0ADA60A5E329B006380BD /* Soundflower.kext */;
 			productType = "com.apple.product-type.kernel-extension.iokit";
+		};
+		789FB3520D62DE4E00C0F5C7 /* SoundflowerFPU */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 789FB3550D62DE4E00C0F5C7 /* Build configuration list for PBXNativeTarget "SoundflowerFPU" */;
+			buildPhases = (
+				789FB34F0D62DE4E00C0F5C7 /* Headers */,
+				789FB3500D62DE4E00C0F5C7 /* Sources */,
+				789FB3510D62DE4E00C0F5C7 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SoundflowerFPU;
+			productName = SoundflowerFPU;
+			productReference = 789FB3530D62DE4E00C0F5C7 /* libSoundflowerFPU.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -124,6 +172,7 @@
 			projectRoot = "";
 			targets = (
 				54D0AD930A5E329B006380BD /* SoundflowerDriver */,
+				789FB3520D62DE4E00C0F5C7 /* SoundflowerFPU */,
 			);
 		};
 /* End PBXProject section */
@@ -155,12 +204,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				54D0AD9B0A5E329B006380BD /* SoundflowerEngine.cpp in Sources */,
-				54D0AD9C0A5E329B006380BD /* SoundflowerClip.cpp in Sources */,
 				54D0AD9D0A5E329B006380BD /* SoundflowerDevice.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		789FB3500D62DE4E00C0F5C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				789FB35F0D62DE7E00C0F5C7 /* SoundflowerFPU.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		789FB39E0D62DF8A00C0F5C7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 789FB3520D62DE4E00C0F5C7 /* SoundflowerFPU */;
+			targetProxy = 789FB39D0D62DF8A00C0F5C7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
@@ -220,7 +284,7 @@
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				MODULE_VERSION = 1.2;
+				MODULE_VERSION = 1.3;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -263,7 +327,7 @@
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.2;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				MODULE_VERSION = 1.2;
+				MODULE_VERSION = 1.3;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -278,6 +342,114 @@
 				);
 				WRAPPER_EXTENSION = kext;
 				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		789FB3560D62DE4E00C0F5C7 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"KERNEL_PRIVATE=1",
+					"KERNEL=1",
+				);
+				GCC_USE_GCC3_PFE_SUPPORT = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = "<Multiple values>";
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
+				KERNEL_MODULE = YES;
+				LIBRARY_STYLE = STATIC;
+				MODULE_IOKIT = YES;
+				MODULE_NAME = "com. Cycling74.driver.SoundflowerFPU";
+				MODULE_VERSION = 1.0;
+				OTHER_CFLAGS = (
+					"-fno-schedule-insns",
+					"-fno-schedule-insns2",
+					"-static",
+					"-findirect-virtual-calls",
+					"-mlong-branch",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SoundflowerFPU;
+			};
+			name = Development;
+		};
+		789FB3570D62DE4E00C0F5C7 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"KERNEL_PRIVATE=1",
+					"KERNEL=1",
+				);
+				GCC_USE_GCC3_PFE_SUPPORT = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_POINTER_SIGNEDNESS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = "<Multiple values>";
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
+				GCC_WARN_UNUSED_VALUE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
+				KERNEL_MODULE = YES;
+				LIBRARY_STYLE = STATIC;
+				MODULE_IOKIT = YES;
+				MODULE_NAME = "com. Cycling74.driver.SoundflowerFPU";
+				MODULE_VERSION = 1.0;
+				OTHER_CFLAGS = (
+					"-fno-schedule-insns",
+					"-fno-schedule-insns2",
+					"-static",
+					"-findirect-virtual-calls",
+					"-mlong-branch",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = SoundflowerFPU;
 			};
 			name = Deployment;
 		};
@@ -298,6 +470,15 @@
 			buildConfigurations = (
 				54D0ADA20A5E329B006380BD /* Development */,
 				54D0ADA30A5E329B006380BD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Development;
+		};
+		789FB3550D62DE4E00C0F5C7 /* Build configuration list for PBXNativeTarget "SoundflowerFPU" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				789FB3560D62DE4E00C0F5C7 /* Development */,
+				789FB3570D62DE4E00C0F5C7 /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
