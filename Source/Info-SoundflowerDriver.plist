@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Soundflower</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Version 1.3.1 copyright 2004-2008 Cycling '74</string>
+	<string>Version ${MODULE_VERSION} copyright 2004-2008 Cycling '74</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3.1</string>
+	<string>${MODULE_VERSION}</string>
 	<key>CFBundleSignature</key>
 	<string>sFlo</string>
 	<key>CFBundleVersion</key>
-	<string>1.3.1</string>
+	<string>${MODULE_VERSION}</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>PhantomAudioDriver</key>
@@ -112,7 +112,7 @@
 			<key>CFBundleIdentifier</key>
 			<string>com.Cycling74.driver.Soundflower</string>
 			<key>IOClass</key>
-			<string>com_MyCompany_driver_SoundflowerDevice</string>
+			<string>SoundflowerDriver</string>
 			<key>IOMatchCategory</key>
 			<string>SoundflowerDriver</string>
 			<key>IOProviderClass</key>
