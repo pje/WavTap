@@ -49,6 +49,12 @@ In the Soundflower 'Tools' folder there is a Ruby script called 'load.rb' which 
 
 
 
+VERSION NUMBER
+
+The master version number is updated in the Xcode project's target settings.  
+Specifically, you edit the MODULE_VERSION entry to set it.  All other places where the version number is needed (including in the installer), it is accessed from this master location.
+
+
 LICENSE
 
 Soundflower is licensed using the GNU GPL.  
