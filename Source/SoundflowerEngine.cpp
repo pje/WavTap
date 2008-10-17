@@ -41,9 +41,6 @@
 
 OSDefineMetaClassAndStructors(SoundflowerEngine, IOAudioEngine)
 
-/*
- * init()
- */
  
 bool SoundflowerEngine::init(OSDictionary *properties)
 {
@@ -84,9 +81,7 @@ Done:
     return result;
 }
 
-/*
- * initHardware()
- */
+
 bool SoundflowerEngine::initHardware(IOService *provider)
 {
     bool result = false;
@@ -144,9 +139,6 @@ Done:
     return result;
 }
 
-/*
- * createAudioStreams()
- */
  
 bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 {
@@ -511,9 +503,6 @@ Done:
     return result;
 }
 
-/*
- * free()
- */
  
 void SoundflowerEngine::free()
 {
@@ -542,9 +531,6 @@ void SoundflowerEngine::free()
     super::free();
 }
 
-/*
- * stop()
- */
  
 void SoundflowerEngine::stop(IOService *provider)
 {
@@ -556,9 +542,6 @@ void SoundflowerEngine::stop(IOService *provider)
     super::stop(provider);
 }
 
-/*
- * performAudioEngineStart()
- */
  
 IOReturn SoundflowerEngine::performAudioEngineStart()
 {
@@ -581,11 +564,7 @@ IOReturn SoundflowerEngine::performAudioEngineStart()
     
     timerEventSource->setTimeout(blockTimeoutNS);
     
-//#ifdef __ppc__
-//	AbsoluteTime time;
-//#else
     uint64_t time;
-//#endif
 	
     clock_get_uptime(&time);
     absolutetime_to_nanoseconds(time, &nextTime);
@@ -595,9 +574,6 @@ IOReturn SoundflowerEngine::performAudioEngineStart()
     return kIOReturnSuccess;
 }
 
-/*
- * performAudioEngineStop()
- */
  
 IOReturn SoundflowerEngine::performAudioEngineStop()
 {
@@ -608,9 +584,6 @@ IOReturn SoundflowerEngine::performAudioEngineStop()
     return kIOReturnSuccess;
 }
 
-/*
- * getCurrentSampleFrame()
- */
  
 UInt32 SoundflowerEngine::getCurrentSampleFrame()
 {
@@ -626,10 +599,7 @@ UInt32 SoundflowerEngine::getCurrentSampleFrame()
     return currentBlock * blockSize;
 }
 
-/*
- * performFormatChange()
- */
- 
+
 IOReturn SoundflowerEngine::performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate)
 {     
     if (!duringHardwareInit) {
@@ -656,10 +626,7 @@ IOReturn SoundflowerEngine::performFormatChange(IOAudioStream *audioStream, cons
     return kIOReturnSuccess;
 }
 
-/*
- * timerFired()
- */
- 
+
 void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *sender)
 {
     if (target) {
@@ -686,12 +653,7 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             // calculate next time to fire, by taking the time and comparing it to 
             // the time we requested.                                 
             UInt64 thisTimeNS;
-
-//#ifdef __ppc__
-//			AbsoluteTime time;
-//#else
             uint64_t time;
-//#endif
 
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);

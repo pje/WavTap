@@ -7,6 +7,26 @@ matt@sfsound.org
 
 
 
+QUICK START
+
+To build Soundflower, open a terminal window and cd to the Soundflower folder.  Then follow these steps:
+
+1.	Change directories into the Tools directory:
+	cd Tools
+	
+2.	Build Soundflower:
+	./build.rb
+
+	The build.rb will provide info about its required arg, which you will need to supply 
+	(Development or Deployment).
+	It will also prompt you for your password so that it can set permissions correctly 
+	and load the kext automatically when the build is complete.
+
+3.	If you wish, build an installer for Soundflower:
+	./installer.rb
+
+
+
 PROJECT CONFIGURATION
 
 Soundflower.xcodeproj is an Xcode 3.1 compatible project.

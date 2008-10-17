@@ -24,17 +24,17 @@
 
 #include <IOKit/audio/IOAudioDevice.h>
 
-#define AUDIO_ENGINES_KEY			"AudioEngines"
-#define DESCRIPTION_KEY				"Description"
-#define BLOCK_SIZE_KEY				"BlockSize"
-#define NUM_BLOCKS_KEY				"NumBlocks"
-#define NUM_STREAMS_KEY				"NumStreams"
-#define FORMATS_KEY				"Formats"
-#define SAMPLE_RATES_KEY			"SampleRates"
+#define AUDIO_ENGINES_KEY				"AudioEngines"
+#define DESCRIPTION_KEY					"Description"
+#define BLOCK_SIZE_KEY					"BlockSize"
+#define NUM_BLOCKS_KEY					"NumBlocks"
+#define NUM_STREAMS_KEY					"NumStreams"
+#define FORMATS_KEY						"Formats"
+#define SAMPLE_RATES_KEY				"SampleRates"
 #define SEPARATE_STREAM_BUFFERS_KEY		"SeparateStreamBuffers"
 #define SEPARATE_INPUT_BUFFERS_KEY		"SeparateInputBuffers"
 
-#define SoundflowerDevice com_MyCompany_driver_SoundflowerDevice
+#define SoundflowerDevice com_cycling74_driver_SoundflowerDevice
 
 
 class SoundflowerDevice : public IOAudioDevice
