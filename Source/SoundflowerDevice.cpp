@@ -50,12 +50,11 @@ const SInt32 SoundflowerDevice::kGainMax = 65535;
 /*
  * initHardware()
  */
-
 bool SoundflowerDevice::initHardware(IOService *provider)
 {
     bool result = false;
     
-  //  IOLog("SoundflowerDevice[%p]::initHardware(%p)\n", this, provider);
+	IOLog("SoundflowerDevice[%p]::initHardware(%p)\n", this, provider);
     
     if (!super::initHardware(provider)) {
         goto Done;
@@ -80,58 +79,64 @@ Done:
 /*
  * createAudioEngines()
  */
-
 bool SoundflowerDevice::createAudioEngines()
 {
-    OSArray *audioEngineArray = OSDynamicCast(OSArray, getProperty(AUDIO_ENGINES_KEY));
-    
-    if (!audioEngineArray) {
+    OSArray*				audioEngineArray = OSDynamicCast(OSArray, getProperty(AUDIO_ENGINES_KEY));
+    OSCollectionIterator*	audioEngineIterator;
+    OSDictionary*			audioEngineDict;
+	
+    if(!audioEngineArray){
         IOLog("SoundflowerDevice[%p]::createAudioEngine() - Error: no AudioEngine array in personality.\n", this);
         return false;
     }
     
-    OSCollectionIterator *audioEngineIterator = OSCollectionIterator::withCollection(audioEngineArray);
+	audioEngineIterator = OSCollectionIterator::withCollection(audioEngineArray);
+    if(!audioEngineIterator){
+		IOLog("SoundflowerDevice: no audio engines available.\n");
+		return true;
+	}
     
-    if (!audioEngineIterator)
-        return true;
-    
-    OSDictionary *audioEngineDict;
-    while (audioEngineDict = (OSDictionary *)audioEngineIterator->getNextObject()) {
-        if (OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
+    while(audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()){
+		SoundflowerEngine*	audioEngine = NULL;
+		
+        if(OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
             continue;
         
-        SoundflowerEngine *audioEngine = new SoundflowerEngine;
-        if (! audioEngine) continue;
+		audioEngine = new SoundflowerEngine;
+        if(!audioEngine)
+			continue;
         
-        if (! audioEngine->init(audioEngineDict)) continue;
-        
-        initControls(audioEngine);
-        activateAudioEngine(audioEngine);
+        if(!audioEngine->init(audioEngineDict))
+			continue;
 
-        audioEngine->release();
+// is it strange that we are passing the engine, and this is a method of the device?
+		IOLog("\n initControls \n\n");
+		initControls(audioEngine);
+        activateAudioEngine(audioEngine);	// increments refcount and manages the object
+        audioEngine->release();				// decrement refcount so object is released when the manager eventually releases it
     }
-    
+	
     audioEngineIterator->release();
-    
-    
-    
-    
     return true;
 }
 
+
 #define addControl(control, handler) \
-    if (!control) return false; \
+    if (!control) {\
+		IOLog("Soundflower failed to add control.\n");	\
+		return false; \
+	} \
     control->setValueChangeHandler(handler, this); \
     audioEngine->addDefaultAudioControl(control); \
     control->release();
 
-bool SoundflowerDevice::initControls(Soundflower_AudioEngine *audioEngine)
+bool SoundflowerDevice::initControls(Soundflower_AudioEngine* audioEngine)
 {
-    IOAudioControl *control = NULL;
+    IOAudioControl*	control = NULL;
 //    OSNumber *channelCountNum = OSDynamicCast(OSNumber, audioEngine->getProperty(NUM_STREAMS_KEY)); // maximum 15, I assume
 //    UInt32 channelCount = channelCountNum ? channelCountNum->unsigned32BitValue() + 1 : 2; // adding one for the 'all' channel
     
-    for(UInt32 channel = 0; channel <= 16; channel++) {
+    for(UInt32 channel=0; channel <= 16; channel++) {
         mVolume[channel] = mGain[channel] = 65535;
         mMuteOut[channel] = mMuteIn[channel] = false;
     }
@@ -143,64 +148,62 @@ bool SoundflowerDevice::initControls(Soundflower_AudioEngine *audioEngine)
                                 kIOAudioControlChannelNameLeftRear,
                                 kIOAudioControlChannelNameRightRear,
                                 kIOAudioControlChannelNameSub};
-    for(UInt32 channel = 7; channel <= 16; channel++)
+    for(UInt32 channel=7; channel <= 16; channel++)
         channelNameMap[channel] = "Unknown Channel";
     
-    for(unsigned channel = 0; channel <= 16; channel++) {
-        // Create a  output volume control for each channel with an int range from 0 to 65535
+    for(unsigned channel=0; channel <= 16; channel++) {
+		
+        // Create an output volume control for each channel with an int range from 0 to 65535
         // and a db range from -22.5 to 0.0
         // Once each control is added to the audio engine, they should be released
         // so that when the audio engine is done with them, they get freed properly
-        control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kVolumeMax,	// Initial value
-                                                           0,		// min value
-                                                           SoundflowerDevice::kVolumeMax,	// max value
-                                                           (-22 << 16) + (32768),	// -22.5 in IOFixed (16.16)
-                                                           0,		// max 0.0 in IOFixed
-                                                           channel, //kIOAudioControlChannelIDDefaultLeft,
-                                                           channelNameMap[channel], //kIOAudioControlChannelNameLeft,
-                                                           channel,		// control ID - driver-defined
+        control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kVolumeMax,		// Initial value
+                                                           0,									// min value
+                                                           SoundflowerDevice::kVolumeMax,		// max value
+                                                           (-22 << 16) + (32768),				// -22.5 in IOFixed (16.16)
+                                                           0,									// max 0.0 in IOFixed
+                                                           channel,								// kIOAudioControlChannelIDDefaultLeft,
+                                                           channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
+                                                           channel,								// control ID - driver-defined
                                                            kIOAudioControlUsageOutput);
         addControl(control, (IOAudioControl::IntValueChangeHandler)volumeChangeHandler);
         
         // Gain control for each channel
-        control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kGainMax,	// Initial value
-                                                           0,		// min value
-                                                           SoundflowerDevice::kGainMax,	// max value
-                                                           0,		// min 0.0 in IOFixed
-                                                           (22 << 16) + (32768),	// 22.5 in IOFixed (16.16)
-                                                           channel, //kIOAudioControlChannelIDDefaultLeft,
-                                                           channelNameMap[channel], //kIOAudioControlChannelNameLeft,
-                                                           channel,		// control ID - driver-defined
+        control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kGainMax,			// Initial value
+                                                           0,									// min value
+                                                           SoundflowerDevice::kGainMax,			// max value
+                                                           0,									// min 0.0 in IOFixed
+                                                           (22 << 16) + (32768),				// 22.5 in IOFixed (16.16)
+                                                           channel,								// kIOAudioControlChannelIDDefaultLeft,
+                                                           channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
+                                                           channel,								// control ID - driver-defined
                                                            kIOAudioControlUsageInput);
         addControl(control, (IOAudioControl::IntValueChangeHandler)gainChangeHandler);
     }
-    
-    
+	
     // Create an output mute control
-    control = IOAudioToggleControl::createMuteControl(false,	// initial state - unmuted
-                                                      kIOAudioControlChannelIDAll,	// Affects all channels
+    control = IOAudioToggleControl::createMuteControl(false,									// initial state - unmuted
+                                                      kIOAudioControlChannelIDAll,				// Affects all channels
                                                       kIOAudioControlChannelNameAll,
-                                                      0,		// control ID - driver-defined
+                                                      0,										// control ID - driver-defined
                                                       kIOAudioControlUsageOutput);
     addControl(control, (IOAudioControl::IntValueChangeHandler)outputMuteChangeHandler);
     
-    
     // Create an input mute control
-    control = IOAudioToggleControl::createMuteControl(false,	// initial state - unmuted
-                                                      kIOAudioControlChannelIDAll,	// Affects all channels
+    control = IOAudioToggleControl::createMuteControl(false,									// initial state - unmuted
+                                                      kIOAudioControlChannelIDAll,				// Affects all channels
                                                       kIOAudioControlChannelNameAll,
-                                                      0,		// control ID - driver-defined
+                                                      0,										// control ID - driver-defined
                                                       kIOAudioControlUsageInput);
     addControl(control, (IOAudioControl::IntValueChangeHandler)inputMuteChangeHandler);
-    
     
     return true;
 }
 
+
 /*
  * volumeChangeHandler()
  */
- 
 IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -216,8 +219,7 @@ IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioContro
 
 /*
  * volumeChanged()
- */
- 
+ */ 
 IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::volumeChanged(%p, %ld, %ld)\n", this, volumeControl, oldValue, newValue);
@@ -230,10 +232,10 @@ IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 
     return kIOReturnSuccess;
 }
 
+
 /*
  * outputMuteChangeHandler()
  */
- 
 IOReturn SoundflowerDevice::outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -249,8 +251,7 @@ IOReturn SoundflowerDevice::outputMuteChangeHandler(IOService *target, IOAudioCo
 
 /*
  * outputMuteChanged()
- */
- 
+ */ 
 IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::outputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);
@@ -263,10 +264,10 @@ IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt3
     return kIOReturnSuccess;
 }
 
+
 /*
  * gainChangeHandler()
  */
- 
 IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -282,8 +283,7 @@ IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl 
 
 /*
  * gainChanged()
- */
- 
+ */ 
 IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::gainChanged(%p, %ld, %ld)\n", this, gainControl, oldValue, newValue);
@@ -296,10 +296,10 @@ IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldV
     return kIOReturnSuccess;
 }
 
+
 /*
  * inputMuteChangeHandler()
  */
- 
 IOReturn SoundflowerDevice::inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -316,7 +316,6 @@ IOReturn SoundflowerDevice::inputMuteChangeHandler(IOService *target, IOAudioCon
 /*
  * inputMuteChanged()
  */
- 
 IOReturn SoundflowerDevice::inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::inputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);

@@ -47,7 +47,7 @@ bool SoundflowerEngine::init(OSDictionary *properties)
     bool result = false;
     OSNumber *number = NULL;
     
-    //IOLog("SoundflowerEngine[%p]::init()\n", this);
+    IOLog("SoundflowerEngine[%p]::init()\n", this);
 
     if (!super::init(properties)) {
         goto Done;
@@ -59,25 +59,24 @@ bool SoundflowerEngine::init(OSDictionary *properties)
     number = OSDynamicCast(OSNumber, getProperty(NUM_BLOCKS_KEY));
     if (number) {
         numBlocks = number->unsigned32BitValue();
-    } else {
+    } 
+	else {
         numBlocks = NUM_BLOCKS;
     }
     
     number = OSDynamicCast(OSNumber, getProperty(BLOCK_SIZE_KEY));
     if (number) {
         blockSize = number->unsigned32BitValue();
-    } else {
+    } 
+	else {
         blockSize = BLOCK_SIZE;
     }
     
     inputStream = outputStream = NULL;
-    
     duringHardwareInit = FALSE;
-    
     result = true;
     
 Done:
-
     return result;
 }
 
@@ -100,9 +99,18 @@ bool SoundflowerEngine::initHardware(IOService *provider)
     initialSampleRate.fraction = 0;
 
     if (!createAudioStreams(&initialSampleRate)) {
+		IOLog("SoundflowerEngine::initHardware() failed\n");
         goto Done;
     }
+
     
+	IOLog("***** SoundflowerEngine::initHardware() *****\n");
+	//IOLog("What is sampleRate? %lu.%lu ", initialSampleRate.whole, initialSampleRate.fraction);
+
+	//const IOAudioSampleRate* foo = getSampleRate();
+	//IOLog("No no, what is it really? %lu.%lu", foo->whole, foo->fraction);
+	
+	
     if (initialSampleRate.whole == 0) {
         goto Done;
     }
@@ -111,8 +119,8 @@ bool SoundflowerEngine::initHardware(IOService *provider)
     blockTimeoutNS = blockSize;
     blockTimeoutNS *= 1000000000;
     blockTimeoutNS /= initialSampleRate.whole;
-   
-    setSampleRate(&initialSampleRate);
+
+	setSampleRate(&initialSampleRate);
     
     // Set the number of sample frames in each buffer
     setNumSampleFramesPerBuffer(blockSize * numBlocks);
@@ -142,15 +150,17 @@ Done:
  
 bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 {
-    bool result = false;
-    OSNumber *number = NULL;
-    UInt32 numStreams, streamNum;
-    OSArray *formatArray = NULL, *sampleRateArray = NULL;
-    UInt32 startingChannelID = 1;
-    IOAudioControl *control;
-    OSString *desc;
-
-    bool separateStreamBuffers = FALSE, separateInputBuffers = FALSE;
+    bool			result = false;
+    OSNumber*		number = NULL;
+    UInt32			numStreams;
+	UInt32			streamNum;
+    OSArray*		formatArray = NULL;
+	OSArray*		sampleRateArray = NULL;
+    UInt32			startingChannelID = 1;
+    IOAudioControl*	control;
+    OSString*		desc;
+    bool			separateStreamBuffers = FALSE;
+	bool			separateInputBuffers = FALSE;
     
     desc = OSDynamicCast(OSString, getProperty(DESCRIPTION_KEY));
     if (desc) {
@@ -160,17 +170,21 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
     number = OSDynamicCast(OSNumber, getProperty(NUM_STREAMS_KEY));
     if (number) {
         numStreams = number->unsigned32BitValue();
-    } else {
+    } 
+	else {
         numStreams = NUM_STREAMS;
     }
+	IOLog("SF numStreams: %u\n", (unsigned int)numStreams);
     
     formatArray = OSDynamicCast(OSArray, getProperty(FORMATS_KEY));
     if (formatArray == NULL) {
+		IOLog("SF formatArray is NULL\n");
         goto Done;
     }
     
     sampleRateArray = OSDynamicCast(OSArray, getProperty(SAMPLE_RATES_KEY));
     if (sampleRateArray == NULL) {
+		IOLog("SF sampleRateArray is NULL\n");
         goto Done;
     }
     
@@ -191,48 +205,54 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 
    
     for (streamNum = 0; streamNum < numStreams; streamNum++) {
-        
-        UInt32 maxBitWidth = 0;
-        UInt32 maxNumChannels = 0;
-        OSCollectionIterator *formatIterator = NULL, *sampleRateIterator = NULL;
-        OSDictionary *formatDict;
-        IOAudioSampleRate sampleRate;
-        IOAudioStreamFormat initialFormat;
-        bool initialFormatSet;
-        UInt32 channelID;
-        char outputStreamName[20], inputStreamName[20];
-        UInt32 streamBufferSize;
+        UInt32					maxBitWidth = 0;
+        UInt32					maxNumChannels = 0;
+        OSCollectionIterator*	formatIterator = NULL;
+		OSCollectionIterator*	sampleRateIterator = NULL;
+        OSDictionary*			formatDict;
+        IOAudioSampleRate		sampleRate;
+        IOAudioStreamFormat		initialFormat;
+        bool					initialFormatSet;
+        UInt32					channelID;
+        char					outputStreamName[64];
+		char					inputStreamName[64];
+        UInt32					streamBufferSize;
         
         initialFormatSet = false;
         
         sampleRate.whole = 0;
         sampleRate.fraction = 0;
-                
+		
         inputStream = new IOAudioStream;
         if (inputStream == NULL) {
+			IOLog("SF could not create new input IOAudioStream\n");
             goto Error;
         }
         
         outputStream = new IOAudioStream;
         if (outputStream == NULL) {
-            goto Error;
+			IOLog("SF could not create new output IOAudioStream\n");
+			goto Error;
         }
         
-        sprintf(inputStreamName, "Soundflower Input Stream #%ld", streamNum + 1);
-        sprintf(outputStreamName, "Soundflower Output Stream #%ld", streamNum + 1);
+        snprintf(inputStreamName, 64, "Soundflower Input Stream #%ld", streamNum + 1);
+        snprintf(outputStreamName, 64, "Soundflower Output Stream #%ld", streamNum + 1);
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
+			IOLog("SF could not init one of the streams with audio engine. \n");
             goto Error;
         }
         
         formatIterator = OSCollectionIterator::withCollection(formatArray);
         if (!formatIterator) {
+			IOLog("SF NULL formatIterator\n");
             goto Error;
         }
         
         sampleRateIterator = OSCollectionIterator::withCollection(sampleRateArray);
         if (!sampleRateIterator) {
+			IOLog("SF NULL sampleRateIterator\n");
             goto Error;
         }
         
@@ -241,11 +261,13 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             IOAudioStreamFormat format;
             
             if (OSDynamicCast(OSDictionary, formatDict) == NULL) {
+				IOLog("SF error casting formatDict\n");
                 goto Error;
             }
             
             if (IOAudioStream::createFormatFromDictionary(formatDict, &format) == NULL) {
-                goto Error;
+				IOLog("SF error in createFormatFromDictionary()\n");
+				goto Error;
             }
             
             if (!initialFormatSet) {
@@ -255,34 +277,40 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             sampleRateIterator->reset();
             while (number = (OSNumber *)sampleRateIterator->getNextObject()) {
                 if (!OSDynamicCast(OSNumber, number)) {
+					IOLog("SF error iterating sample rates\n");
                     goto Error;
                 }
                 
                 sampleRate.whole = number->unsigned32BitValue();
                 
                 inputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
-                    outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
+				outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
                 
                 if (format.fNumChannels > maxNumChannels) {
                     maxNumChannels = format.fNumChannels;
+					IOLog("SF adjusting maxNumChannels\n");
                 }
                 
                 if (format.fBitWidth > maxBitWidth) {
                     maxBitWidth = format.fBitWidth;
-                }
+					IOLog("SF adjusting maxBitWidth\n");
+               }
                 
                 if (initialSampleRate->whole == 0) {
                     initialSampleRate->whole = sampleRate.whole;
+					IOLog("SF adjusting sampleRate\n");
                 }
             }
         }
         
         streamBufferSize = blockSize * numBlocks * maxNumChannels * maxBitWidth / 8;
-        
+        IOLog("Soundflower streamBufferSize: %ld\n", streamBufferSize);
+		
         if (outputBuffer == NULL) {
             if (separateStreamBuffers) {
                 outputBufferSize = streamBufferSize * numStreams;
-            } else {
+            } 
+			else {
                 outputBufferSize = streamBufferSize;
             }
 
@@ -324,7 +352,8 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         if (separateStreamBuffers) {
             inputStream->setSampleBuffer(&((UInt8 *)inputBuffer)[streamBufferSize * streamNum], streamBufferSize);
             outputStream->setSampleBuffer(&((UInt8 *)outputBuffer)[streamBufferSize * streamNum], streamBufferSize);
-        } else {
+        } 
+		else {
             inputStream->setSampleBuffer(inputBuffer, streamBufferSize);
             outputStream->setSampleBuffer(outputBuffer, streamBufferSize);
         }
@@ -341,6 +370,8 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             char channelName[20];
             
             sprintf(channelName, "Channel %lu", channelID);
+			
+			IOLog("SF doing channel: %s\n", channelName);
             
             /*  ### volume/gain/channel mute may be useful?? ###        
             control = IOAudioLevelControl::createVolumeControl(65535,
@@ -385,11 +416,14 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             if (!control) {
                 goto Error;
             }
-            
+  
+			 
+// if we define this here, then there seems to be a strange problem in Live (see the googlecode issue tracker)
+// not sure why...  maybe a conflict with the other place that controls are added?
+
             control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::gainChangeHandler, audioDevice);
             addDefaultAudioControl(control);
             control->release();
-     */       
             control = IOAudioToggleControl::createMuteControl(false,
                                                                 channelID,
                                                                 channelName,
@@ -402,6 +436,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::inputMuteChangeHandler, audioDevice);
             addDefaultAudioControl(control);
             control->release();
+     */       
         }
         
         startingChannelID += maxNumChannels;
@@ -485,6 +520,7 @@ Error:
                                                         0,
                                                         kIOAudioControlUsageInput);
     if (!control) {
+		IOLog("SF There is no control.\n");
         goto Done;
     }
     

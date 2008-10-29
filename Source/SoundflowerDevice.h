@@ -39,9 +39,9 @@
 
 class SoundflowerDevice : public IOAudioDevice
 {
-    friend class Soundflower_AudioEngine;
-    
     OSDeclareDefaultStructors(SoundflowerDevice)
+    
+    friend class Soundflower_AudioEngine;
     
     virtual bool initHardware(IOService *provider);
     virtual bool createAudioEngines();

@@ -37,8 +37,8 @@ class SoundflowerEngine : public IOAudioEngine
     UInt32							outputBufferSize;
     UInt32							inputBufferSize;    
     
-    IOAudioStream 						*inputStream;
-    IOAudioStream 						*outputStream;
+    IOAudioStream 					*inputStream;
+    IOAudioStream 					*outputStream;
     
     void							*outputBuffer;
     void							*inputBuffer;
@@ -46,7 +46,7 @@ class SoundflowerEngine : public IOAudioEngine
     UInt32							thruBufferSize;
     float							*thruBuffer;	// intermediate buffer to pass in-->out
       
-    IOTimerEventSource						*timerEventSource;
+    IOTimerEventSource				*timerEventSource;
     
     UInt32							blockSize;	// In sample frames
     UInt32							numBlocks;
