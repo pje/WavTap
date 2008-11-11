@@ -47,7 +47,7 @@ bool SoundflowerEngine::init(OSDictionary *properties)
     bool result = false;
     OSNumber *number = NULL;
     
-    IOLog("SoundflowerEngine[%p]::init()\n", this);
+    //IOLog("SoundflowerEngine[%p]::init()\n", this);
 
     if (!super::init(properties)) {
         goto Done;
@@ -102,14 +102,6 @@ bool SoundflowerEngine::initHardware(IOService *provider)
 		IOLog("SoundflowerEngine::initHardware() failed\n");
         goto Done;
     }
-
-    
-	IOLog("***** SoundflowerEngine::initHardware() *****\n");
-	//IOLog("What is sampleRate? %lu.%lu ", initialSampleRate.whole, initialSampleRate.fraction);
-
-	//const IOAudioSampleRate* foo = getSampleRate();
-	//IOLog("No no, what is it really? %lu.%lu", foo->whole, foo->fraction);
-	
 	
     if (initialSampleRate.whole == 0) {
         goto Done;
@@ -157,7 +149,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
     OSArray*		formatArray = NULL;
 	OSArray*		sampleRateArray = NULL;
     UInt32			startingChannelID = 1;
-    IOAudioControl*	control;
+    //IOAudioControl*	control;
     OSString*		desc;
     bool			separateStreamBuffers = FALSE;
 	bool			separateInputBuffers = FALSE;
@@ -174,7 +166,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 	else {
         numStreams = NUM_STREAMS;
     }
-	IOLog("SF numStreams: %u\n", (unsigned int)numStreams);
     
     formatArray = OSDynamicCast(OSArray, getProperty(FORMATS_KEY));
     if (formatArray == NULL) {
@@ -288,23 +279,20 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
                 
                 if (format.fNumChannels > maxNumChannels) {
                     maxNumChannels = format.fNumChannels;
-					IOLog("SF adjusting maxNumChannels\n");
                 }
                 
                 if (format.fBitWidth > maxBitWidth) {
                     maxBitWidth = format.fBitWidth;
-					IOLog("SF adjusting maxBitWidth\n");
                }
                 
                 if (initialSampleRate->whole == 0) {
                     initialSampleRate->whole = sampleRate.whole;
-					IOLog("SF adjusting sampleRate\n");
                 }
             }
         }
         
         streamBufferSize = blockSize * numBlocks * maxNumChannels * maxBitWidth / 8;
-        IOLog("Soundflower streamBufferSize: %ld\n", streamBufferSize);
+        //IOLog("Soundflower streamBufferSize: %ld\n", streamBufferSize);
 		
         if (outputBuffer == NULL) {
             if (separateStreamBuffers) {
@@ -370,9 +358,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             char channelName[20];
             
             sprintf(channelName, "Channel %lu", channelID);
-			
-			IOLog("SF doing channel: %s\n", channelName);
-            
+			            
             /*  ### volume/gain/channel mute may be useful?? ###        
             control = IOAudioLevelControl::createVolumeControl(65535,
                                                                 0,
@@ -513,7 +499,8 @@ Error:
     control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::gainChangeHandler, audioDevice);
     addDefaultAudioControl(control);
     control->release();
-*/    
+*/   
+/*
     control = IOAudioToggleControl::createMuteControl(false,
                                                         kIOAudioControlChannelIDAll,
                                                         kIOAudioControlChannelNameAll,
@@ -527,7 +514,7 @@ Error:
     control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::inputMuteChangeHandler, audioDevice);
     addDefaultAudioControl(control);
     control->release();
-    
+*/    
     result = true;
     
 Done:
@@ -652,7 +639,6 @@ IOReturn SoundflowerEngine::performFormatChange(IOAudioStream *audioStream, cons
     
     if (newSampleRate) {
         if (!duringHardwareInit) {
-            //IOLog("  -> %ld Hz.\n", newSampleRate->whole);
             UInt64 newblockTime = blockSize;
             newblockTime *= 1000000000;
             blockTimeoutNS = newblockTime / newSampleRate->whole;

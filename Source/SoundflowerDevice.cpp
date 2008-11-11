@@ -54,7 +54,7 @@ bool SoundflowerDevice::initHardware(IOService *provider)
 {
     bool result = false;
     
-	IOLog("SoundflowerDevice[%p]::initHardware(%p)\n", this, provider);
+	//IOLog("SoundflowerDevice[%p]::initHardware(%p)\n", this, provider);
     
     if (!super::initHardware(provider)) {
         goto Done;
@@ -109,8 +109,6 @@ bool SoundflowerDevice::createAudioEngines()
         if(!audioEngine->init(audioEngineDict))
 			continue;
 
-// is it strange that we are passing the engine, and this is a method of the device?
-		IOLog("\n initControls \n\n");
 		initControls(audioEngine);
         activateAudioEngine(audioEngine);	// increments refcount and manages the object
         audioEngine->release();				// decrement refcount so object is released when the manager eventually releases it
