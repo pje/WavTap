@@ -226,8 +226,8 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 			goto Error;
         }
         
-        snprintf(inputStreamName, 64, "Soundflower Input Stream #%ld", streamNum + 1);
-        snprintf(outputStreamName, 64, "Soundflower Output Stream #%ld", streamNum + 1);
+        sprintf(inputStreamName, "Soundflower Input Stream #%ld", streamNum + 1);
+        sprintf(outputStreamName, "Soundflower Output Stream #%ld", streamNum + 1);
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
@@ -587,8 +587,11 @@ IOReturn SoundflowerEngine::performAudioEngineStart()
     
     timerEventSource->setTimeout(blockTimeoutNS);
     
+#ifdef __i386__
     uint64_t time;
-	
+#else
+	AbsoluteTime time;
+#endif
     clock_get_uptime(&time);
     absolutetime_to_nanoseconds(time, &nextTime);
 
@@ -675,8 +678,11 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             // calculate next time to fire, by taking the time and comparing it to 
             // the time we requested.                                 
             UInt64 thisTimeNS;
-            uint64_t time;
-
+#ifdef __i386__
+			uint64_t time;
+#else
+			AbsoluteTime time;
+#endif			
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);
 

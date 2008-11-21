@@ -125,6 +125,12 @@
 	<dict>
 		<key>com.apple.iokit.IOAudioFamily</key>
 		<string>1.1fc6</string>
+		<key>com.apple.kpi.iokit</key>
+		<string>8.0</string>
+		<key>com.apple.kpi.libkern</key>
+		<string>8.0</string>
+		<key>com.apple.kpi.mach</key>
+		<string>8.0</string>		
 	</dict>
 </dict>
 </plist>

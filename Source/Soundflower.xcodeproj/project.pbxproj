@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2249EC860ED70D87003C8357 /* Soundflower.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */; };
 		54D0AD960A5E329B006380BD /* SoundflowerDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407620601317E002E6A19 /* SoundflowerDevice.h */; };
 		54D0AD970A5E329B006380BD /* SoundflowerEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407630601317E002E6A19 /* SoundflowerEngine.h */; };
 		54D0AD9B0A5E329B006380BD /* SoundflowerEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407640601317E002E6A19 /* SoundflowerEngine.cpp */; };
@@ -26,7 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = /System/Library/Frameworks/Kernel.framework; sourceTree = "<absolute>"; };
+		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
+		2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
 		54D0ADA60A5E329B006380BD /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3530D62DE4E00C0F5C7 /* libSoundflowerFPU.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSoundflowerFPU.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3540D62DE4E00C0F5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -59,6 +61,7 @@
 		089C166AFE841209C02AAC07 /* SampleAudioDriver */ = {
 			isa = PBXGroup;
 			children = (
+				2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */,
 				247142CAFF3F8F9811CA285C /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
@@ -162,7 +165,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 548AD6D309CE873500241D17 /* Build configuration list for PBXProject "Soundflower" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* SampleAudioDriver */;
 			projectDirPath = "";
@@ -179,6 +182,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2249EC860ED70D87003C8357 /* Soundflower.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +230,6 @@
 		548AD6D409CE873500241D17 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Development;
 		};
@@ -238,12 +241,12 @@
 					ppc,
 				);
 				INFOPLIST_FILE = "Info-SoundflowerDriver.plist";
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
 			name = Deployment;
 		};
 		54D0ADA20A5E329B006380BD /* Development */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
@@ -269,6 +272,7 @@
 		};
 		54D0ADA30A5E329B006380BD /* Deployment */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
@@ -327,7 +331,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
+				HEADER_SEARCH_PATHS = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers;
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
 				MODULE_IOKIT = YES;
@@ -381,7 +385,7 @@
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VALUE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
+				HEADER_SEARCH_PATHS = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/Kernel.framework/Versions/A/Headers;
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
 				MODULE_IOKIT = YES;

@@ -1,0 +1,7 @@
+//SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk
+//SDKROOT_ppc = /Developer/SDKs/MacOSX10.3.9.sdk
+SDKROOT[arch=i386] = /Developer/SDKs/MacOSX10.4u.sdk
+SDKROOT[arch=ppc] = /Developer/SDKs/MacOSX10.3.9.sdk
+GCC_VERSION[arch=i386] = 4.0
+GCC_VERSION[arch=ppc] = 3.3
+MACOSX_DEPLOYMENT_TARGET = 10.4
