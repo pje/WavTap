@@ -259,7 +259,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				MODULE_VERSION = 1.4.2;
+				MODULE_VERSION = 1.4.3;
 				PRODUCT_NAME = Soundflower;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -284,7 +284,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				MODULE_VERSION = 1.4.2;
+				MODULE_VERSION = 1.4.3;
 				PRODUCT_NAME = Soundflower;
 				WARNING_CFLAGS = (
 					"-Wmost",
