@@ -29,12 +29,14 @@
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
+		229B36700EDC1DB500623222 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 229B366F0EDC1DB500623222 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		222FE3510EBB6D9900FD13FC /* Soundflowerbed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundflowerbed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		229B366F0EDC1DB500623222 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -147,6 +149,7 @@
 				C9CCA5E706ED143E0076FAC2 /* sf2.tiff */,
 				C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+				229B366F0EDC1DB500623222 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -227,6 +230,7 @@
 				222FE33D0EBB6D9900FD13FC /* sf2.tiff in Resources */,
 				222FE33E0EBB6D9900FD13FC /* menuIcon.tiff in Resources */,
 				222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */,
+				229B36700EDC1DB500623222 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,6 +304,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Soundflowerbed;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -325,6 +330,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = Soundflowerbed;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
 					"-Wmost",
