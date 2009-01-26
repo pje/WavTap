@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Soundflower</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Version ${MODULE_VERSION} copyright 2004-2008 Cycling &apos;74</string>
+	<string>Version ${MODULE_VERSION} copyright © 2004-2009 Cycling &apos;74</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
@@ -130,7 +130,7 @@
 		<key>com.apple.kpi.libkern</key>
 		<string>8.0</string>
 		<key>com.apple.kpi.mach</key>
-		<string>8.0</string>		
+		<string>8.0</string>
 	</dict>
 </dict>
 </plist>
