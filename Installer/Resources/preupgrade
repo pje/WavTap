@@ -8,6 +8,5 @@ system("echo 'kext preupgrade script-----'");
 system("sudo kextunload /System/Library/Extensions/Soundflower.kext");
 system("sudo kextunload /System/Library/Extensions/Soundflower.kext");
 system("sudo rm -rf /System/Library/Extensions/Soundflower.kext");
-system("sudo touch /System/Library/Extensions");
 
 exit(0);
