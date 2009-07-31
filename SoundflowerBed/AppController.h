@@ -13,7 +13,8 @@
 	NSMenuItem		*m16chMenu;
 	NSMenu			*m2chBuffer;
 	NSMenu			*m16chBuffer;
-	
+    
+	BOOL			menuItemVisible;
 	int				m16StartIndex;
 	
 	NSMenuItem		*mCur2chDevice;
