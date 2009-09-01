@@ -36,16 +36,17 @@
 
 #define SoundflowerDevice com_cycling74_driver_SoundflowerDevice
 
+class SoundflowerEngine;
 
 class SoundflowerDevice : public IOAudioDevice
 {
     OSDeclareDefaultStructors(SoundflowerDevice)
     
-    friend class Soundflower_AudioEngine;
+    friend class SoundflowerEngine;
     
     virtual bool initHardware(IOService *provider);
     virtual bool createAudioEngines();
-    virtual bool initControls(Soundflower_AudioEngine *audioEngine);
+    virtual bool initControls(SoundflowerEngine *audioEngine);
     
     static IOReturn volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);

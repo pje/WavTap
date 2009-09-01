@@ -27,8 +27,6 @@
 
 #include "SoundflowerDevice.h"
 
-#define SoundflowerEngine Soundflower_AudioEngine
-
 
 class SoundflowerEngine : public IOAudioEngine
 {
