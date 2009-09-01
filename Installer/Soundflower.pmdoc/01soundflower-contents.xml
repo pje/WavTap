@@ -1,1 +1,1 @@
-<pkg-contents spec="1.12"/>
+<pkg-contents spec="1.12"><f n="Soundflower.kext" o="tim" g="admin" p="16877" pt="/Volumes/lime/code/Soundflower/Build/Soundflower.kext" m="false" t="file"><f n="Contents" o="tim" g="admin" p="16877"><f n="Info.plist" o="tim" g="admin" p="33188"/><f n="MacOS" o="tim" g="admin" p="16877"><f n="Soundflower" o="tim" g="admin" p="33188"/></f></f></f></pkg-contents>
