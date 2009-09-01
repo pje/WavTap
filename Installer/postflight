@@ -1,0 +1,7 @@
+#!/bin/sh
+# 
+# Apple's installer seems to apply the owner and group for files properly, but not folders
+# The folders need to be applied too or our kext will not load
+
+sudo chown -R root /System/Library/Extensions/Soundflower.kext
+sudo chgrp -R wheel /System/Library/Extensions/Soundflower.kext
