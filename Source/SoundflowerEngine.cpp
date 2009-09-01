@@ -225,9 +225,9 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 			IOLog("SF could not create new output IOAudioStream\n");
 			goto Error;
         }
-        
-        sprintf(inputStreamName, "Soundflower Input Stream #%ld", streamNum + 1);
-        sprintf(outputStreamName, "Soundflower Output Stream #%ld", streamNum + 1);
+
+        snprintf(inputStreamName, 64, "Soundflower Input Stream #%ld", streamNum + 1);
+        snprintf(outputStreamName, 64, "Soundflower Output Stream #%ld", streamNum + 1);
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
@@ -357,7 +357,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         for (channelID = startingChannelID; channelID < (startingChannelID + maxNumChannels); channelID++) {
             char channelName[20];
             
-            sprintf(channelName, "Channel %lu", channelID);
+            snprintf(channelName, 20, "Channel %lu", channelID);
 			            
             /*  ### volume/gain/channel mute may be useful?? ###        
             control = IOAudioLevelControl::createVolumeControl(65535,
