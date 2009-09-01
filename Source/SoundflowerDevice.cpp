@@ -128,7 +128,7 @@ bool SoundflowerDevice::createAudioEngines()
     audioEngine->addDefaultAudioControl(control); \
     control->release();
 
-bool SoundflowerDevice::initControls(Soundflower_AudioEngine* audioEngine)
+bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 {
     IOAudioControl*	control = NULL;
 //    OSNumber *channelCountNum = OSDynamicCast(OSNumber, audioEngine->getProperty(NUM_STREAMS_KEY)); // maximum 15, I assume
