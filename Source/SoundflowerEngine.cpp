@@ -587,11 +587,7 @@ IOReturn SoundflowerEngine::performAudioEngineStart()
     
     timerEventSource->setTimeout(blockTimeoutNS);
     
-#ifdef __i386__
     uint64_t time;
-#else
-	AbsoluteTime time;
-#endif
     clock_get_uptime(&time);
     absolutetime_to_nanoseconds(time, &nextTime);
 
@@ -678,11 +674,8 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             // calculate next time to fire, by taking the time and comparing it to 
             // the time we requested.                                 
             UInt64 thisTimeNS;
-#ifdef __i386__
 			uint64_t time;
-#else
-			AbsoluteTime time;
-#endif			
+
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);
 
