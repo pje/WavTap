@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2249EC860ED70D87003C8357 /* Soundflower.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */; };
 		54D0AD960A5E329B006380BD /* SoundflowerDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407620601317E002E6A19 /* SoundflowerDevice.h */; };
 		54D0AD970A5E329B006380BD /* SoundflowerEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407630601317E002E6A19 /* SoundflowerEngine.h */; };
 		54D0AD9B0A5E329B006380BD /* SoundflowerEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407640601317E002E6A19 /* SoundflowerEngine.cpp */; };
@@ -182,7 +181,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2249EC860ED70D87003C8357 /* Soundflower.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
