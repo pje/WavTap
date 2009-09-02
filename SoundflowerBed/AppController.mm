@@ -14,7 +14,7 @@ Boolean startOnAwake = false;
 void	CheckErr(OSStatus err)
 {
 	if (err) {
-		printf("error %-4.4s %ld\n", (char *)&err, err);
+		printf("error %-4.4s %i\n", (char *)&err, (int)err);
 		throw 1;
 	}
 }
