@@ -305,7 +305,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             outputBuffer = (void *)IOMalloc(outputBufferSize);
             
             if (!outputBuffer) {
-                IOLog("Soundflower: Error allocating output buffer - %lu bytes.\n", outputBufferSize);
+                IOLog("Soundflower: Error allocating output buffer - %lu bytes.\n", (unsigned long)outputBufferSize);
                 goto Error;
             }
 
@@ -314,7 +314,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             thruBufferSize = outputBufferSize;
             thruBuffer = (float *)IOMalloc(thruBufferSize);
             if (!thruBuffer) {
-                IOLog("Soundflower: Error allocating thru buffer - %lu bytes.\n", thruBufferSize);
+                IOLog("Soundflower: Error allocating thru buffer - %lu bytes.\n", (unsigned long)thruBufferSize);
                 goto Error;
             }
             memset ((UInt8 *)thruBuffer, 0, thruBufferSize);
@@ -325,7 +325,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             if (separateInputBuffers) {
                 inputBuffer = (void *)IOMalloc(inputBufferSize);
                 if (!inputBuffer) {
-                    IOLog("Soundflower: Error allocating input buffer - %lu bytes.\n", inputBufferSize);
+                    IOLog("Soundflower: Error allocating input buffer - %lu bytes.\n", (unsigned long )inputBufferSize);
                     goto Error;
                 }
             } else { 
