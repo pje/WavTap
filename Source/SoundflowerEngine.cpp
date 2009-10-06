@@ -502,35 +502,31 @@ IOReturn SoundflowerEngine::performFormatChange(IOAudioStream *audioStream, cons
 void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *sender)
 {
     if (target) {
-        SoundflowerEngine *audioEngine = OSDynamicCast(SoundflowerEngine, target);
+        SoundflowerEngine	*audioEngine = OSDynamicCast(SoundflowerEngine, target);
+		UInt64				thisTimeNS;
+		uint64_t			time;
+		SInt64				diff;
         
-        if (audioEngine) {         
-
-             // make sure we have a client, and thus new data so we don't keep on 
-             // just looping around the last client's last buffer!    
+        if (audioEngine) {
+			// make sure we have a client, and thus new data so we don't keep on 
+			// just looping around the last client's last buffer!    
             IOAudioStream *outStream = audioEngine->getAudioStream(kIOAudioStreamDirectionOutput, 1);
-            if (outStream->numClients == 0)
-            {
+            if (outStream->numClients == 0) {
                 // it has, so clean the buffer 
-                memset ((UInt8 *)audioEngine->thruBuffer, 0, audioEngine->thruBufferSize);
+                memset((UInt8 *)audioEngine->thruBuffer, 0, audioEngine->thruBufferSize);
             }
                     
-             audioEngine->currentBlock++;
+			audioEngine->currentBlock++;
             if (audioEngine->currentBlock >= audioEngine->numBlocks) {
                 audioEngine->currentBlock = 0;
                 audioEngine->takeTimeStamp();
             }
             
-            
-            // calculate next time to fire, by taking the time and comparing it to 
-            // the time we requested.                                 
-            UInt64 thisTimeNS;
-			uint64_t time;
-
+            // calculate next time to fire, by taking the time and comparing it to the time we requested.                                 
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);
 
-            SInt64 diff = ((SInt64)audioEngine->nextTime - (SInt64)thisTimeNS);
+			diff = ((SInt64)audioEngine->nextTime - (SInt64)thisTimeNS);
            
             sender->setTimeout(audioEngine->blockTimeoutNS + diff);
             audioEngine->nextTime += audioEngine->blockTimeoutNS;
