@@ -59,18 +59,14 @@ class SoundflowerDevice : public IOAudioDevice
     
     static IOReturn inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
-    
-   // static IOReturn passThruChangeHandler(IOService *target, IOAudioControl *passThruControl, SInt32 oldValue, SInt32 newValue);
-   // virtual IOReturn passThruChanged(IOAudioControl *passThruControl, SInt32 oldValue, SInt32 newValue);
-    
+        
     SInt32 mVolume[17];
     SInt32 mMuteOut[17];
     SInt32 mMuteIn[17];
     SInt32 mGain[17];
-    //SInt32 mThru[16];
     
     static const SInt32 kVolumeMax;
     static const SInt32 kGainMax;
 };
 
-#endif /* _SAMPLEAUDIODEVICE_H */
+#endif // _SAMPLEAUDIODEVICE_H
