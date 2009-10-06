@@ -525,9 +525,8 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             // calculate next time to fire, by taking the time and comparing it to the time we requested.                                 
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);
-
+			// this next calculation must be signed or we will introduce distortion after only a couple of vectors
 			diff = ((SInt64)audioEngine->nextTime - (SInt64)thisTimeNS);
-           
             sender->setTimeout(audioEngine->blockTimeoutNS + diff);
             audioEngine->nextTime += audioEngine->blockTimeoutNS;
         }
