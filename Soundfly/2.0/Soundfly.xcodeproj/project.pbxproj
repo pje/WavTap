@@ -1,0 +1,765 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		A792A21E0B8A7C05008D9384 /* Soundfly */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A792A22C0B8A7C1A008D9384 /* Build configuration list for PBXAggregateTarget "Soundfly" */;
+			buildPhases = (
+			);
+			dependencies = (
+				A7AE0A740D664209004AB560 /* PBXTargetDependency */,
+				A7AE0A720D664207004AB560 /* PBXTargetDependency */,
+			);
+			name = Soundfly;
+			productName = soundfly;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		A71F24970D6729970019836A /* SFCommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F24960D6729970019836A /* SFCommunicationManager.m */; };
+		A71F24980D6729970019836A /* SFCommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A71F24960D6729970019836A /* SFCommunicationManager.m */; };
+		A71F252C0D6733DD0019836A /* SFCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A747E9430B8A842900FB4413 /* SFCommon.m */; };
+		A78779B70D674CC600D82630 /* problem.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A78779B60D674CC600D82630 /* problem.tiff */; };
+		A78779CA0D6751D600D82630 /* menuitem-off.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A78779C80D6751D600D82630 /* menuitem-off.tiff */; };
+		A78779CB0D6751D600D82630 /* menuitem-on.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A78779C90D6751D600D82630 /* menuitem-on.tiff */; };
+		A78779CF0D6751F400D82630 /* SFStatusItemController.m in Sources */ = {isa = PBXBuildFile; fileRef = A78779CE0D6751F400D82630 /* SFStatusItemController.m */; };
+		A78779D30D67541700D82630 /* SFUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A78779D20D67541700D82630 /* SFUtils.m */; };
+		A7877B110D6767C700D82630 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7877B100D6767C700D82630 /* Localizable.strings */; };
+		A7877B120D6767C700D82630 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A7877B100D6767C700D82630 /* Localizable.strings */; };
+		A7AE0A5F0D6641AB004AB560 /* SFCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A747E9430B8A842900FB4413 /* SFCommon.m */; };
+		A7AE0A600D6641AC004AB560 /* SFSender.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F134810B7F96750067C120 /* SFSender.m */; };
+		A7AE0A610D6641AD004AB560 /* SFReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A792A1B10B8A7A73008D9384 /* SFReceiver.m */; };
+		A7AE0A6F0D6641E5004AB560 /* SFPreferencePane.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AE0A6E0D6641E5004AB560 /* SFPreferencePane.m */; };
+		A7AE0A870D6642F8004AB560 /* PrefPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AE0A860D6642F8004AB560 /* PrefPane.xib */; };
+		A7AE0A890D664350004AB560 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AE0A880D664350004AB560 /* PreferencePanes.framework */; };
+		A7AE0A8A0D664355004AB560 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A7AE0A8B0D66435D004AB560 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A7AE0A8C0D66435E004AB560 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F134950B7F98720067C120 /* CoreAudio.framework */; };
+		A7AE0A8D0D66435F004AB560 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E332F0B81105600DB5383 /* AudioUnit.framework */; };
+		A7AE0A8E0D664360004AB560 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E33900B81257B00DB5383 /* AudioToolbox.framework */; };
+		A7AE0A8F0D664361004AB560 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77FECB70B8A89B60034CFD6 /* Carbon.framework */; };
+		A7AE0A900D664379004AB560 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		A7AE0AB70D6643C2004AB560 /* SFDaemonController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7AE0AB60D6643C2004AB560 /* SFDaemonController.m */; };
+		A7AE0AEC0D664D09004AB560 /* Soundfly.icns in Resources */ = {isa = PBXBuildFile; fileRef = A72EC6AE0B9265D70054042B /* Soundfly.icns */; };
+		A7AE0B050D664DFE004AB560 /* Daemon.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7AE0B040D664DFE004AB560 /* Daemon.xib */; };
+		A7B78E4B0D6654FB003F6400 /* SFPrefPaneAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78E3C0D6654D4003F6400 /* SFPrefPaneAppController.m */; };
+		A7B78E5A0D66553B003F6400 /* MainMenuApp.xib in Resources */ = {isa = PBXBuildFile; fileRef = A7B78E590D66553B003F6400 /* MainMenuApp.xib */; };
+		A7B78E700D6655CF003F6400 /* PreferencePanes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7AE0A880D664350004AB560 /* PreferencePanes.framework */; };
+		A7B78E710D6655D0003F6400 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A7B78E740D66560E003F6400 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		A7B78E8C0D665645003F6400 /* SFVersionTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78E890D665645003F6400 /* SFVersionTextField.m */; };
+		A7B78E8D0D665645003F6400 /* SFLinkTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78E8B0D665645003F6400 /* SFLinkTextField.m */; };
+		A7B78EA80D6656BC003F6400 /* SFClosingWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78EA70D6656BC003F6400 /* SFClosingWindow.m */; };
+		A7B78EE20D665C56003F6400 /* SFPreferencesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78EE10D665C56003F6400 /* SFPreferencesManager.m */; };
+		A7B78EE30D665C56003F6400 /* SFPreferencesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78EE10D665C56003F6400 /* SFPreferencesManager.m */; };
+		A7B78F330D665ED2003F6400 /* SFDaemonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B78F320D665ED2003F6400 /* SFDaemonManager.m */; };
+		A7B78F5D0D666350003F6400 /* soundflyd.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = A7AE0A470D66416C004AB560 /* soundflyd.app */; };
+		A7B78FD60D666ACF003F6400 /* Speech.icns in Resources */ = {isa = PBXBuildFile; fileRef = A7B78FD40D666ACF003F6400 /* Speech.icns */; };
+		A7B78FD70D666ACF003F6400 /* SoundPref.icns in Resources */ = {isa = PBXBuildFile; fileRef = A7B78FD50D666ACF003F6400 /* SoundPref.icns */; };
+		A7B790D10D667B0F003F6400 /* SFAUModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A7B790D00D667B0F003F6400 /* SFAUModule.m */; };
+		A7B791AA0D668AC2003F6400 /* online.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A7B791A80D668AC2003F6400 /* online.tiff */; };
+		A7B791AB0D668AC2003F6400 /* offline.tiff in Resources */ = {isa = PBXBuildFile; fileRef = A7B791A90D668AC2003F6400 /* offline.tiff */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A7AE0A710D664207004AB560 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7AE0A3B0D664147004AB560;
+			remoteInfo = PrefPane;
+		};
+		A7AE0A730D664209004AB560 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A7AE0A460D66416C004AB560;
+			remoteInfo = Daemon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A7B78F660D666356003F6400 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				A7B78F5D0D666350003F6400 /* soundflyd.app in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* Soundfly_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soundfly_Prefix.pch; sourceTree = "<group>"; };
+		A71F24950D6729970019836A /* SFCommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFCommunicationManager.h; sourceTree = "<group>"; };
+		A71F24960D6729970019836A /* SFCommunicationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFCommunicationManager.m; sourceTree = "<group>"; };
+		A72EC6AE0B9265D70054042B /* Soundfly.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Soundfly.icns; sourceTree = "<group>"; };
+		A747E9420B8A842900FB4413 /* SFCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFCommon.h; sourceTree = "<group>"; };
+		A747E9430B8A842900FB4413 /* SFCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFCommon.m; sourceTree = "<group>"; };
+		A76E332F0B81105600DB5383 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
+		A76E33900B81257B00DB5383 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		A77FECB70B8A89B60034CFD6 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		A78779B60D674CC600D82630 /* problem.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = problem.tiff; sourceTree = "<group>"; };
+		A78779C80D6751D600D82630 /* menuitem-off.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "menuitem-off.tiff"; sourceTree = "<group>"; };
+		A78779C90D6751D600D82630 /* menuitem-on.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = "menuitem-on.tiff"; sourceTree = "<group>"; };
+		A78779CD0D6751F400D82630 /* SFStatusItemController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFStatusItemController.h; sourceTree = "<group>"; };
+		A78779CE0D6751F400D82630 /* SFStatusItemController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFStatusItemController.m; sourceTree = "<group>"; };
+		A78779D10D67541700D82630 /* SFUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFUtils.h; sourceTree = "<group>"; };
+		A78779D20D67541700D82630 /* SFUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFUtils.m; sourceTree = "<group>"; };
+		A7877B100D6767C700D82630 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		A792A1B00B8A7A73008D9384 /* SFReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFReceiver.h; sourceTree = "<group>"; };
+		A792A1B10B8A7A73008D9384 /* SFReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFReceiver.m; sourceTree = "<group>"; };
+		A7AE0A3C0D664147004AB560 /* Soundfly.prefPane */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundfly.prefPane; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7AE0A3D0D664147004AB560 /* PrefPane-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PrefPane-Info.plist"; sourceTree = "<group>"; };
+		A7AE0A470D66416C004AB560 /* soundflyd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = soundflyd.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7AE0A540D66416D004AB560 /* Daemon-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Daemon-Info.plist"; sourceTree = "<group>"; };
+		A7AE0A6D0D6641E5004AB560 /* SFPreferencePane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPreferencePane.h; sourceTree = "<group>"; };
+		A7AE0A6E0D6641E5004AB560 /* SFPreferencePane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPreferencePane.m; sourceTree = "<group>"; };
+		A7AE0A860D6642F8004AB560 /* PrefPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefPane.xib; sourceTree = "<group>"; };
+		A7AE0A880D664350004AB560 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = /System/Library/Frameworks/PreferencePanes.framework; sourceTree = "<absolute>"; };
+		A7AE0AB50D6643C2004AB560 /* SFDaemonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFDaemonController.h; sourceTree = "<group>"; };
+		A7AE0AB60D6643C2004AB560 /* SFDaemonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFDaemonController.m; sourceTree = "<group>"; };
+		A7AE0B040D664DFE004AB560 /* Daemon.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Daemon.xib; sourceTree = "<group>"; };
+		A7B78E3B0D6654D4003F6400 /* SFPrefPaneAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPrefPaneAppController.h; sourceTree = "<group>"; };
+		A7B78E3C0D6654D4003F6400 /* SFPrefPaneAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPrefPaneAppController.m; sourceTree = "<group>"; };
+		A7B78E440D6654E9003F6400 /* PrefPaneApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrefPaneApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7B78E460D6654E9003F6400 /* PrefPaneApp-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PrefPaneApp-Info.plist"; sourceTree = "<group>"; };
+		A7B78E590D66553B003F6400 /* MainMenuApp.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenuApp.xib; sourceTree = "<group>"; };
+		A7B78E880D665645003F6400 /* SFLinkTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFLinkTextField.h; sourceTree = "<group>"; };
+		A7B78E890D665645003F6400 /* SFVersionTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFVersionTextField.m; sourceTree = "<group>"; };
+		A7B78E8A0D665645003F6400 /* SFVersionTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFVersionTextField.h; sourceTree = "<group>"; };
+		A7B78E8B0D665645003F6400 /* SFLinkTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFLinkTextField.m; sourceTree = "<group>"; };
+		A7B78EA60D6656BC003F6400 /* SFClosingWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFClosingWindow.h; sourceTree = "<group>"; };
+		A7B78EA70D6656BC003F6400 /* SFClosingWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFClosingWindow.m; sourceTree = "<group>"; };
+		A7B78EE00D665C56003F6400 /* SFPreferencesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFPreferencesManager.h; sourceTree = "<group>"; };
+		A7B78EE10D665C56003F6400 /* SFPreferencesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFPreferencesManager.m; sourceTree = "<group>"; };
+		A7B78F310D665ED2003F6400 /* SFDaemonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFDaemonManager.h; sourceTree = "<group>"; };
+		A7B78F320D665ED2003F6400 /* SFDaemonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFDaemonManager.m; sourceTree = "<group>"; };
+		A7B78FD40D666ACF003F6400 /* Speech.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Speech.icns; sourceTree = "<group>"; };
+		A7B78FD50D666ACF003F6400 /* SoundPref.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = SoundPref.icns; sourceTree = "<group>"; };
+		A7B790CF0D667B0F003F6400 /* SFAUModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFAUModule.h; sourceTree = "<group>"; };
+		A7B790D00D667B0F003F6400 /* SFAUModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFAUModule.m; sourceTree = "<group>"; };
+		A7B791A80D668AC2003F6400 /* online.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = online.tiff; sourceTree = "<group>"; };
+		A7B791A90D668AC2003F6400 /* offline.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = offline.tiff; sourceTree = "<group>"; };
+		A7F134800B7F96750067C120 /* SFSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFSender.h; sourceTree = "<group>"; };
+		A7F134810B7F96750067C120 /* SFSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFSender.m; sourceTree = "<group>"; };
+		A7F134950B7F98720067C120 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
+		A7F136A20B7FB1C10067C120 /* KHT3005.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = KHT3005.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A7AE0A3A0D664147004AB560 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0A890D664350004AB560 /* PreferencePanes.framework in Frameworks */,
+				A7AE0A8A0D664355004AB560 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7AE0A450D66416C004AB560 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0A8B0D66435D004AB560 /* Cocoa.framework in Frameworks */,
+				A7AE0A8C0D66435E004AB560 /* CoreAudio.framework in Frameworks */,
+				A7AE0A8D0D66435F004AB560 /* AudioUnit.framework in Frameworks */,
+				A7AE0A8E0D664360004AB560 /* AudioToolbox.framework in Frameworks */,
+				A7AE0A8F0D664361004AB560 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7B78E420D6654E9003F6400 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7B78E700D6655CF003F6400 /* PreferencePanes.framework in Frameworks */,
+				A7B78E710D6655D0003F6400 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A747E9420B8A842900FB4413 /* SFCommon.h */,
+				A747E9430B8A842900FB4413 /* SFCommon.m */,
+				A71F24950D6729970019836A /* SFCommunicationManager.h */,
+				A71F24960D6729970019836A /* SFCommunicationManager.m */,
+				A7B78EE00D665C56003F6400 /* SFPreferencesManager.h */,
+				A7B78EE10D665C56003F6400 /* SFPreferencesManager.m */,
+				A78779D10D67541700D82630 /* SFUtils.h */,
+				A78779D20D67541700D82630 /* SFUtils.m */,
+				A7AE0A620D6641C3004AB560 /* Daemon */,
+				A7AE0A700D6641EA004AB560 /* PrefPane */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				A7F134950B7F98720067C120 /* CoreAudio.framework */,
+				A76E332F0B81105600DB5383 /* AudioUnit.framework */,
+				A76E33900B81257B00DB5383 /* AudioToolbox.framework */,
+				A77FECB70B8A89B60034CFD6 /* Carbon.framework */,
+				A7AE0A880D664350004AB560 /* PreferencePanes.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A7AE0A3C0D664147004AB560 /* Soundfly.prefPane */,
+				A7AE0A470D66416C004AB560 /* soundflyd.app */,
+				A7B78E440D6654E9003F6400 /* PrefPaneApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* AudioRouteur */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				A7B78E460D6654E9003F6400 /* PrefPaneApp-Info.plist */,
+			);
+			name = AudioRouteur;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* Soundfly_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				A7B78E3B0D6654D4003F6400 /* SFPrefPaneAppController.h */,
+				A7B78E3C0D6654D4003F6400 /* SFPrefPaneAppController.m */,
+				A7B78E590D66553B003F6400 /* MainMenuApp.xib */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A7AE0A860D6642F8004AB560 /* PrefPane.xib */,
+				A7AE0B040D664DFE004AB560 /* Daemon.xib */,
+				A7F136A20B7FB1C10067C120 /* KHT3005.icns */,
+				A72EC6AE0B9265D70054042B /* Soundfly.icns */,
+				A7B78FD40D666ACF003F6400 /* Speech.icns */,
+				A7B78FD50D666ACF003F6400 /* SoundPref.icns */,
+				A7B791A80D668AC2003F6400 /* online.tiff */,
+				A7B791A90D668AC2003F6400 /* offline.tiff */,
+				A78779B60D674CC600D82630 /* problem.tiff */,
+				A78779C80D6751D600D82630 /* menuitem-off.tiff */,
+				A78779C90D6751D600D82630 /* menuitem-on.tiff */,
+				A7877B100D6767C700D82630 /* Localizable.strings */,
+				A7AE0A3D0D664147004AB560 /* PrefPane-Info.plist */,
+				A7AE0A540D66416D004AB560 /* Daemon-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A7AE0A620D6641C3004AB560 /* Daemon */ = {
+			isa = PBXGroup;
+			children = (
+				A7AE0AB50D6643C2004AB560 /* SFDaemonController.h */,
+				A7AE0AB60D6643C2004AB560 /* SFDaemonController.m */,
+				A7B790CF0D667B0F003F6400 /* SFAUModule.h */,
+				A7B790D00D667B0F003F6400 /* SFAUModule.m */,
+				A7F134800B7F96750067C120 /* SFSender.h */,
+				A7F134810B7F96750067C120 /* SFSender.m */,
+				A792A1B00B8A7A73008D9384 /* SFReceiver.h */,
+				A792A1B10B8A7A73008D9384 /* SFReceiver.m */,
+				A78779CD0D6751F400D82630 /* SFStatusItemController.h */,
+				A78779CE0D6751F400D82630 /* SFStatusItemController.m */,
+			);
+			name = Daemon;
+			sourceTree = "<group>";
+		};
+		A7AE0A700D6641EA004AB560 /* PrefPane */ = {
+			isa = PBXGroup;
+			children = (
+				A7AE0A6D0D6641E5004AB560 /* SFPreferencePane.h */,
+				A7AE0A6E0D6641E5004AB560 /* SFPreferencePane.m */,
+				A7B78F310D665ED2003F6400 /* SFDaemonManager.h */,
+				A7B78F320D665ED2003F6400 /* SFDaemonManager.m */,
+				A7B78E880D665645003F6400 /* SFLinkTextField.h */,
+				A7B78E8B0D665645003F6400 /* SFLinkTextField.m */,
+				A7B78E8A0D665645003F6400 /* SFVersionTextField.h */,
+				A7B78E890D665645003F6400 /* SFVersionTextField.m */,
+				A7B78EA60D6656BC003F6400 /* SFClosingWindow.h */,
+				A7B78EA70D6656BC003F6400 /* SFClosingWindow.m */,
+			);
+			name = PrefPane;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A7AE0A3B0D664147004AB560 /* PrefPane */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7AE0A400D664148004AB560 /* Build configuration list for PBXNativeTarget "PrefPane" */;
+			buildPhases = (
+				A7AE0A380D664147004AB560 /* Resources */,
+				A7AE0A390D664147004AB560 /* Sources */,
+				A7AE0A3A0D664147004AB560 /* Frameworks */,
+				A7B78F660D666356003F6400 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PrefPane;
+			productName = PrefPane;
+			productReference = A7AE0A3C0D664147004AB560 /* Soundfly.prefPane */;
+			productType = "com.apple.product-type.bundle";
+		};
+		A7AE0A460D66416C004AB560 /* Daemon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7AE0A570D66416D004AB560 /* Build configuration list for PBXNativeTarget "Daemon" */;
+			buildPhases = (
+				A7AE0A430D66416C004AB560 /* Resources */,
+				A7AE0A440D66416C004AB560 /* Sources */,
+				A7AE0A450D66416C004AB560 /* Frameworks */,
+				A7B7905B0D667364003F6400 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Daemon;
+			productName = Daemon;
+			productReference = A7AE0A470D66416C004AB560 /* soundflyd.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A7B78E430D6654E9003F6400 /* PrefPaneApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7B78E490D6654EA003F6400 /* Build configuration list for PBXNativeTarget "PrefPaneApp" */;
+			buildPhases = (
+				A7B78E400D6654E9003F6400 /* Resources */,
+				A7B78E410D6654E9003F6400 /* Sources */,
+				A7B78E420D6654E9003F6400 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PrefPaneApp;
+			productName = PrefPaneApp;
+			productReference = A7B78E440D6654E9003F6400 /* PrefPaneApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Soundfly" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* AudioRouteur */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A792A21E0B8A7C05008D9384 /* Soundfly */,
+				A7AE0A3B0D664147004AB560 /* PrefPane */,
+				A7AE0A460D66416C004AB560 /* Daemon */,
+				A7B78E430D6654E9003F6400 /* PrefPaneApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A7AE0A380D664147004AB560 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0A870D6642F8004AB560 /* PrefPane.xib in Resources */,
+				A7AE0AEC0D664D09004AB560 /* Soundfly.icns in Resources */,
+				A7B78FD60D666ACF003F6400 /* Speech.icns in Resources */,
+				A7B78FD70D666ACF003F6400 /* SoundPref.icns in Resources */,
+				A7B791AA0D668AC2003F6400 /* online.tiff in Resources */,
+				A7B791AB0D668AC2003F6400 /* offline.tiff in Resources */,
+				A78779B70D674CC600D82630 /* problem.tiff in Resources */,
+				A7877B120D6767C700D82630 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7AE0A430D66416C004AB560 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0B050D664DFE004AB560 /* Daemon.xib in Resources */,
+				A78779CA0D6751D600D82630 /* menuitem-off.tiff in Resources */,
+				A78779CB0D6751D600D82630 /* menuitem-on.tiff in Resources */,
+				A7877B110D6767C700D82630 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7B78E400D6654E9003F6400 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7B78E5A0D66553B003F6400 /* MainMenuApp.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A7B7905B0D667364003F6400 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/perl -w";
+			shellScript = "# Xcode auto-versioning script for Subversion\n# by Axel Andersson, modified by Daniel Jalkut to add\n# \"--revision HEAD\" to the svn info line, which allows\n# the latest revision to always be used.\n\nuse strict;\n\ndie \"$0: Must be run from Xcode\" unless $ENV{\"BUILT_PRODUCTS_DIR\"};\n\n# Get the current subversion revision number and use it to set the CFBundleVersion value\nmy $REV = `/usr/bin/svnversion -n ./`;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{WRAPPER_NAME}/Contents/Info.plist\";\n\nmy $version = $REV;\n\n# (Match the last group of digits and optional letter M/S):\n\n# ugly yet functional (barely) regex by Daniel Jalkut:\n#$version =~ s/([\\d]*:)(\\d+[M|S]*).*/$2/;\n\n# better yet still functional regex via Kevin \"Regex Nerd\" Ballard\n($version =~ m/\\d+[MS]*$/) && ($version = $&);\n\ndie \"$0: No Subversion revision found\" unless $version;\n\nopen(FH, \"$INFO\") or die \"$0: $INFO: $!\";\nmy $info = join(\"\", <FH>);\nclose(FH);\n\n$info =~ s/([\\t ]+<key>CFBundleVersion<\\/key>\\n[\\t ]+<string>).*?(<\\/string>)/$1$version$2/;\n\nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A7AE0A390D664147004AB560 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0A6F0D6641E5004AB560 /* SFPreferencePane.m in Sources */,
+				A7B78E8C0D665645003F6400 /* SFVersionTextField.m in Sources */,
+				A7B78E8D0D665645003F6400 /* SFLinkTextField.m in Sources */,
+				A7B78EA80D6656BC003F6400 /* SFClosingWindow.m in Sources */,
+				A7B78EE20D665C56003F6400 /* SFPreferencesManager.m in Sources */,
+				A7B78F330D665ED2003F6400 /* SFDaemonManager.m in Sources */,
+				A71F24980D6729970019836A /* SFCommunicationManager.m in Sources */,
+				A71F252C0D6733DD0019836A /* SFCommon.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7AE0A440D66416C004AB560 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7AE0A5F0D6641AB004AB560 /* SFCommon.m in Sources */,
+				A7AE0A600D6641AC004AB560 /* SFSender.m in Sources */,
+				A7AE0A610D6641AD004AB560 /* SFReceiver.m in Sources */,
+				A7AE0A900D664379004AB560 /* main.m in Sources */,
+				A7AE0AB70D6643C2004AB560 /* SFDaemonController.m in Sources */,
+				A7B78EE30D665C56003F6400 /* SFPreferencesManager.m in Sources */,
+				A7B790D10D667B0F003F6400 /* SFAUModule.m in Sources */,
+				A71F24970D6729970019836A /* SFCommunicationManager.m in Sources */,
+				A78779CF0D6751F400D82630 /* SFStatusItemController.m in Sources */,
+				A78779D30D67541700D82630 /* SFUtils.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7B78E410D6654E9003F6400 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7B78E4B0D6654FB003F6400 /* SFPrefPaneAppController.m in Sources */,
+				A7B78E740D66560E003F6400 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A7AE0A720D664207004AB560 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7AE0A3B0D664147004AB560 /* PrefPane */;
+			targetProxy = A7AE0A710D664207004AB560 /* PBXContainerItemProxy */;
+		};
+		A7AE0A740D664209004AB560 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A7AE0A460D66416C004AB560 /* Daemon */;
+			targetProxy = A7AE0A730D664209004AB560 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A792A22D0B8A7C1A008D9384 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = soundfly;
+			};
+			name = Debug;
+		};
+		A792A22E0B8A7C1A008D9384 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = soundfly;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		A7AE0A3E0D664148004AB560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PrefPane-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Soundfly;
+				WRAPPER_EXTENSION = prefPane;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		A7AE0A3F0D664148004AB560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PrefPane-Info.plist";
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = Soundfly;
+				WRAPPER_EXTENSION = prefPane;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		A7AE0A550D66416D004AB560 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Daemon-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = soundflyd;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		A7AE0A560D66416D004AB560 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "Daemon-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = soundflyd;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		A7B78E470D6654EA003F6400 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PrefPaneApp-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = PrefPaneApp;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		A7B78E480D6654EA003F6400 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "PrefPaneApp-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = PrefPaneApp;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH_ACTUAL)";
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A792A22C0B8A7C1A008D9384 /* Build configuration list for PBXAggregateTarget "Soundfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A792A22D0B8A7C1A008D9384 /* Debug */,
+				A792A22E0B8A7C1A008D9384 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7AE0A400D664148004AB560 /* Build configuration list for PBXNativeTarget "PrefPane" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7AE0A3E0D664148004AB560 /* Debug */,
+				A7AE0A3F0D664148004AB560 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7AE0A570D66416D004AB560 /* Build configuration list for PBXNativeTarget "Daemon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7AE0A550D66416D004AB560 /* Debug */,
+				A7AE0A560D66416D004AB560 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7B78E490D6654EA003F6400 /* Build configuration list for PBXNativeTarget "PrefPaneApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7B78E470D6654EA003F6400 /* Debug */,
+				A7B78E480D6654EA003F6400 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Soundfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

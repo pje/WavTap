@@ -1,0 +1,512 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		A792A21E0B8A7C05008D9384 /* Soundfly */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A792A22C0B8A7C1A008D9384 /* Build configuration list for PBXAggregateTarget "Soundfly" */;
+			buildPhases = (
+			);
+			dependencies = (
+				A792A2200B8A7C08008D9384 /* PBXTargetDependency */,
+				A792A2220B8A7C0A008D9384 /* PBXTargetDependency */,
+			);
+			name = Soundfly;
+			productName = soundfly;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A72EC6AF0B9265D70054042B /* Soundfly.icns in Resources */ = {isa = PBXBuildFile; fileRef = A72EC6AE0B9265D70054042B /* Soundfly.icns */; };
+		A72EC6B00B9265D70054042B /* Soundfly.icns in Resources */ = {isa = PBXBuildFile; fileRef = A72EC6AE0B9265D70054042B /* Soundfly.icns */; };
+		A747E9440B8A842900FB4413 /* SFCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A747E9430B8A842900FB4413 /* SFCommon.m */; };
+		A747E9450B8A842900FB4413 /* SFCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = A747E9430B8A842900FB4413 /* SFCommon.m */; };
+		A747EA030B8A88EF00FB4413 /* KHT3005.icns in Resources */ = {isa = PBXBuildFile; fileRef = A7F136A20B7FB1C10067C120 /* KHT3005.icns */; };
+		A76E33300B81105600DB5383 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E332F0B81105600DB5383 /* AudioUnit.framework */; };
+		A76E33910B81257B00DB5383 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E33900B81257B00DB5383 /* AudioToolbox.framework */; };
+		A77FECB80B8A89B60034CFD6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77FECB70B8A89B60034CFD6 /* Carbon.framework */; };
+		A77FECB90B8A89B60034CFD6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A77FECB70B8A89B60034CFD6 /* Carbon.framework */; };
+		A792A1B20B8A7A73008D9384 /* SFReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = A792A1B10B8A7A73008D9384 /* SFReceiver.m */; };
+		A792A1B30B8A7A88008D9384 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		A792A1B60B8A7A89008D9384 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F134950B7F98720067C120 /* CoreAudio.framework */; };
+		A792A1C10B8A7A8A008D9384 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E332F0B81105600DB5383 /* AudioUnit.framework */; };
+		A792A1D50B8A7A8B008D9384 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A76E33900B81257B00DB5383 /* AudioToolbox.framework */; };
+		A792A2060B8A7B56008D9384 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		A792A2160B8A7BBF008D9384 /* MainMenu-receiver.nib in Resources */ = {isa = PBXBuildFile; fileRef = A792A2140B8A7BBF008D9384 /* MainMenu-receiver.nib */; };
+		A792A2190B8A7BC6008D9384 /* MainMenu-sender.nib in Resources */ = {isa = PBXBuildFile; fileRef = A792A2170B8A7BC6008D9384 /* MainMenu-sender.nib */; };
+		A7F134820B7F96750067C120 /* SFSender.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F134810B7F96750067C120 /* SFSender.m */; };
+		A7F134960B7F98720067C120 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F134950B7F98720067C120 /* CoreAudio.framework */; };
+		A7F136A30B7FB1C10067C120 /* KHT3005.icns in Resources */ = {isa = PBXBuildFile; fileRef = A7F136A20B7FB1C10067C120 /* KHT3005.icns */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A792A21F0B8A7C08008D9384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = "soundfly sender";
+		};
+		A792A2210B8A7C0A008D9384 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A792A1900B8A758A008D9384;
+			remoteInfo = "soundfly receiver";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* Soundfly_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Soundfly_Prefix.pch; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Soundfly.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundfly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A72EC6AE0B9265D70054042B /* Soundfly.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Soundfly.icns; sourceTree = "<group>"; };
+		A747E9420B8A842900FB4413 /* SFCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFCommon.h; sourceTree = "<group>"; };
+		A747E9430B8A842900FB4413 /* SFCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFCommon.m; sourceTree = "<group>"; };
+		A76E332F0B81105600DB5383 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = /System/Library/Frameworks/AudioUnit.framework; sourceTree = "<absolute>"; };
+		A76E33900B81257B00DB5383 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		A77FECB70B8A89B60034CFD6 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		A792A1910B8A758A008D9384 /* Soundfly receiver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Soundfly receiver.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A792A1930B8A758A008D9384 /* receiver-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "receiver-Info.plist"; sourceTree = "<group>"; };
+		A792A1B00B8A7A73008D9384 /* SFReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFReceiver.h; sourceTree = "<group>"; };
+		A792A1B10B8A7A73008D9384 /* SFReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFReceiver.m; sourceTree = "<group>"; };
+		A792A2120B8A7B9D008D9384 /* sender-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.xml; path = "sender-Info.plist"; sourceTree = "<group>"; };
+		A792A2150B8A7BBF008D9384 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = "English.lproj/MainMenu-receiver.nib"; sourceTree = "<group>"; };
+		A792A2180B8A7BC6008D9384 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = "English.lproj/MainMenu-sender.nib"; sourceTree = "<group>"; };
+		A7F134800B7F96750067C120 /* SFSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFSender.h; sourceTree = "<group>"; };
+		A7F134810B7F96750067C120 /* SFSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFSender.m; sourceTree = "<group>"; };
+		A7F134950B7F98720067C120 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
+		A7F136A20B7FB1C10067C120 /* KHT3005.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = KHT3005.icns; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				A7F134960B7F98720067C120 /* CoreAudio.framework in Frameworks */,
+				A76E33300B81105600DB5383 /* AudioUnit.framework in Frameworks */,
+				A76E33910B81257B00DB5383 /* AudioToolbox.framework in Frameworks */,
+				A77FECB80B8A89B60034CFD6 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A792A18F0B8A758A008D9384 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A792A1B30B8A7A88008D9384 /* Cocoa.framework in Frameworks */,
+				A792A1B60B8A7A89008D9384 /* CoreAudio.framework in Frameworks */,
+				A792A1C10B8A7A8A008D9384 /* AudioUnit.framework in Frameworks */,
+				A792A1D50B8A7A8B008D9384 /* AudioToolbox.framework in Frameworks */,
+				A77FECB90B8A89B60034CFD6 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A747E9420B8A842900FB4413 /* SFCommon.h */,
+				A747E9430B8A842900FB4413 /* SFCommon.m */,
+				A7F134800B7F96750067C120 /* SFSender.h */,
+				A7F134810B7F96750067C120 /* SFSender.m */,
+				A792A1B00B8A7A73008D9384 /* SFReceiver.h */,
+				A792A1B10B8A7A73008D9384 /* SFReceiver.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				A7F134950B7F98720067C120 /* CoreAudio.framework */,
+				A76E332F0B81105600DB5383 /* AudioUnit.framework */,
+				A76E33900B81257B00DB5383 /* AudioToolbox.framework */,
+				A77FECB70B8A89B60034CFD6 /* Carbon.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Soundfly.app */,
+				A792A1910B8A758A008D9384 /* Soundfly receiver.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* AudioRouteur */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = AudioRouteur;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* Soundfly_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A792A2170B8A7BC6008D9384 /* MainMenu-sender.nib */,
+				A792A2140B8A7BBF008D9384 /* MainMenu-receiver.nib */,
+				A792A2120B8A7B9D008D9384 /* sender-Info.plist */,
+				A792A1930B8A758A008D9384 /* receiver-Info.plist */,
+				A7F136A20B7FB1C10067C120 /* KHT3005.icns */,
+				A72EC6AE0B9265D70054042B /* Soundfly.icns */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Soundfly sender */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Soundfly sender" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Soundfly sender";
+			productInstallPath = "$(HOME)/Applications";
+			productName = AudioRouteur;
+			productReference = 8D1107320486CEB800E47090 /* Soundfly.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A792A1900B8A758A008D9384 /* Soundfly receiver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A792A1940B8A758A008D9384 /* Build configuration list for PBXNativeTarget "Soundfly receiver" */;
+			buildPhases = (
+				A792A18D0B8A758A008D9384 /* Resources */,
+				A792A18E0B8A758A008D9384 /* Sources */,
+				A792A18F0B8A758A008D9384 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Soundfly receiver";
+			productName = "soundfly receiver";
+			productReference = A792A1910B8A758A008D9384 /* Soundfly receiver.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Soundfly" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* AudioRouteur */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A792A21E0B8A7C05008D9384 /* Soundfly */,
+				8D1107260486CEB800E47090 /* Soundfly sender */,
+				A792A1900B8A758A008D9384 /* Soundfly receiver */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F136A30B7FB1C10067C120 /* KHT3005.icns in Resources */,
+				A792A2190B8A7BC6008D9384 /* MainMenu-sender.nib in Resources */,
+				A72EC6AF0B9265D70054042B /* Soundfly.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A792A18D0B8A758A008D9384 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A792A2160B8A7BBF008D9384 /* MainMenu-receiver.nib in Resources */,
+				A747EA030B8A88EF00FB4413 /* KHT3005.icns in Resources */,
+				A72EC6B00B9265D70054042B /* Soundfly.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				A7F134820B7F96750067C120 /* SFSender.m in Sources */,
+				A747E9440B8A842900FB4413 /* SFCommon.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A792A18E0B8A758A008D9384 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A792A1B20B8A7A73008D9384 /* SFReceiver.m in Sources */,
+				A792A2060B8A7B56008D9384 /* main.m in Sources */,
+				A747E9450B8A842900FB4413 /* SFCommon.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A792A2200B8A7C08008D9384 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* Soundfly sender */;
+			targetProxy = A792A21F0B8A7C08008D9384 /* PBXContainerItemProxy */;
+		};
+		A792A2220B8A7C0A008D9384 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A792A1900B8A758A008D9384 /* Soundfly receiver */;
+			targetProxy = A792A2210B8A7C0A008D9384 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A792A2140B8A7BBF008D9384 /* MainMenu-receiver.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A792A2150B8A7BBF008D9384 /* English */,
+			);
+			name = "MainMenu-receiver.nib";
+			sourceTree = "<group>";
+		};
+		A792A2170B8A7BC6008D9384 /* MainMenu-sender.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A792A2180B8A7BC6008D9384 /* English */,
+			);
+			name = "MainMenu-sender.nib";
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A792A1950B8A758A008D9384 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "receiver-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Soundfly receiver";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		A792A1960B8A758A008D9384 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
+				INFOPLIST_FILE = "receiver-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "Soundfly receiver";
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		A792A22D0B8A7C1A008D9384 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = soundfly;
+			};
+			name = Debug;
+		};
+		A792A22E0B8A7C1A008D9384 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = soundfly;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "sender-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Soundfly;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = "sender-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Soundfly;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ONLY_ACTIVE_ARCH_PRE_XCODE_3_1)";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH_PRE_XCODE_3_1 = "$(NATIVE_ARCH_ACTUAL)";
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
+				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A792A1940B8A758A008D9384 /* Build configuration list for PBXNativeTarget "Soundfly receiver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A792A1950B8A758A008D9384 /* Debug */,
+				A792A1960B8A758A008D9384 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A792A22C0B8A7C1A008D9384 /* Build configuration list for PBXAggregateTarget "Soundfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A792A22D0B8A7C1A008D9384 /* Debug */,
+				A792A22E0B8A7C1A008D9384 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Soundfly sender" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Soundfly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

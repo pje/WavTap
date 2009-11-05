@@ -1,0 +1,305 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf410
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fswiss\fcharset77 Helvetica-Oblique;
+}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww12160\viewh13980\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural
+
+\f0\b\fs64 \cf0 Soundflower and\
+Soundflowerbed
+\f1\b0\fs48 \
+
+\fs24 \
+
+\f0\b Soundflower
+\f1\b0  is a virtual audio device that provides an\
+easy and simple way for 
+\f0\b Max/MSP
+\f1\b0  and other applications\
+to send and receive audio to and from any other application.  \
+Running with very low latency and cpu usage, 
+\f0\b Soundflower
+\f1\b0 \
+allows each client application to use its usual buffer size.\
+\
+
+\f0\b Soundflowerbed
+\f1\b0  is an application that resides in the\
+menu bar allowing you to tap into 
+\f0\b Soundflower
+\f1\b0  channels and \
+route them to an audio device. For more information, refer to the\
+Soundflowerbed section below.\
+\
+\
+
+\f0\b To Install Soundflower\
+
+\f1\b0 Run the 
+\f0\b Soundflower Installer.pkg
+\f1\b0 .  You will be asked for\
+an administrator account password.  One file, 
+\f0\b Soundflower.kext
+\f1\b0 ,\
+will be installed in the Extensions Folder.  At the end of the \
+installation process, you will be required to restart the computer.\
+\
+To install 
+\f0\b Soundflowerbed
+\f1\b0 , just drag it into your Applications \
+folder.\
+\
+\
+
+\f0\b To Use Soundflower
+\f1\b0 \
+
+\f0\b Soundflower
+\f1\b0  presents itself as one of two coreaudio devices. \
+In most cases, you will want to use the 2-channel device.\
+\
+To send the output of one application to another, simply select\
+
+\f0\b Soundflower
+\f1\b0  as the output device within the first application\
+and 
+\f0\b Soundflower
+\f1\b0  as the input device within the second\
+application.\
+\
+If an application does not allow you to specify audio devices,\
+you can make 
+\f0\b Soundflower
+\f1\b0  the default input or output device\
+inside the 
+\f0\b Sound
+\f1\b0  panel in the 
+\f0\b System Preferences
+\f1\b0 , or with\
+the 
+\f0\b Audio MIDI Setup
+\f1\b0  utility application.\
+\
+The 
+\f0\b 16-channel device
+\f1\b0  is provided for more complex routing\
+situations, and can be used with more than two applications\
+simultaneously if the applications support audio routing to any\
+channel, as 
+\f0\b Max/MSP
+\f1\b0  does.\
+\
+Note that 
+\f0\b Soundflower's
+\f1\b0  audio channels represent a global audio\
+space.  If more than one application is sending its output to the\
+same channel, the audio will be mixed.  If you want an application\
+to send and receive audio through 
+\f0\b Soundflower
+\f1\b0 , (for instance using\
+
+\f0\b Max/MSP
+\f1\b0  to manipulate and return another application's audio)\
+you must send and receive the audio on different audio channels\
+or a feedback loop will be created.\
+\
+\
+\
+\
+
+\f0\b Example:\
+
+\f1\b0 To send audio from 
+\f0\b iTunes
+\f1\b0  to 
+\f0\b Max/MSP
+\f1\b0 , open the 
+\f0\b System \
+Preferences
+\f1\b0  and select 
+\f0\b Soundflower (2ch) 
+\f1\b0 as the device for\
+sound output inside the 
+\f0\b Sound
+\f1\b0  panel.  Then, inside 
+\f0\b Max/MSP's \
+DSP Status Window
+\f1\b0 , select 
+\f0\b Core Soundflower (2ch) 
+\f1\b0 as the input \
+device.   All output of 
+\f0\b iTunes
+\f1\b0  should now be sent to 
+\f0\b Max/MSP's
+\f1\b0  \
+
+\f0\b adc~
+\f1\b0  object.\
+\
+\
+\
+\
+
+\f0\b Troubleshooting\
+
+\f1\b0 If you are hearing clicks or breakups, try increasing the buffer size of\
+both applications (set within each application).\
+\
+\
+\
+\
+
+\f0\b To Uninstall Soundflower\
+
+\f1\b0 From an account with administrator privileges, double-click on\
+the 
+\f0\b Uninstall_Soundflower.command
+\f1\b0  file.  This will run a\
+shell script in the 
+\f0\b Terminal 
+\f1\b0 application, in which you will be\
+asked for your password.\
+\
+
+\f0\b\fs64 Soundflowerbed
+\f1\b0\fs48 \
+
+\fs24 \
+
+\f0\b Soundflowerbed
+\f1\b0  is an application that resides in the Finder's\
+Menubar allowing you to tap into 
+\f0\b Soundflower
+\f1\b0  channels and \
+route them to an audio device.\
+\
+\
+
+\f0\b To Install Soundflowerbed\
+
+\f1\b0 First make sure you have 
+\f0\b Soundflower
+\f1\b0  installed!!\
+(visit 
+\f2\i http:soundflower.com
+\f1\i0  for more information about 
+\f0\b Soundflower
+\f1\b0 )\
+\
+
+\f0\b Soundflowerbed
+\f1\b0  can be planted anywhere, but usually it is put\
+in the Applications Folder. If you want 
+\f0\b Soundflowerbed 
+\f1\b0 to be running\
+in the Finder's Menubar automatically at all times, add 
+\f0\b Soundflowerbed
+\f1\b0  \
+to your 
+\f0\b Startup Items
+\f1\b0  in the 
+\f0\b Accounts
+\f1\b0  section of 
+\f0\b System Preferences
+\f1\b0 .\
+\
+\
+
+\f0\b Using Soundflowerbed\
+
+\f1\b0 Launch 
+\f0\b Soundflowerbed
+\f1\b0 , a menu with a flower icon should appear \
+in right hand portion of the Finder Menu bar.  You access all \
+
+\f0\b Soundflowerbed 
+\f1\b0 settings from that menu.\
+\
+\
+
+\f0\b Output Devices\
+
+\f1\b0 Before selecting an 
+\f0\b Output Device
+\f1\b0 , first make sure that its settings\
+such as sample rate and stream format are set to match the settings\
+for the 
+\f0\b Soundflower
+\f1\b0  device.  You can use the 
+\f0\b AudioMIDISetup
+\f1\b0   \
+utility in the Applications/Utilities folder to adjust these settings.\
+\
+Determine which 
+\f0\b Soundflower
+\f1\b0  device you would like to monitor and\
+select an 
+\f0\b Output Device 
+\f1\b0 below the Soundflower device in the \
+menu.  Choose 
+\f0\b None(OFF)
+\f1\b0  when not using the 
+\f0\b Soundflower
+\f1\b0  device.\
+\
+Note you may need to relaunch 
+\f0\b Soundflowerbed
+\f1\b0  after you plug in new\
+audio devices or remove devices from your system.\
+\
+\
+
+\f0\b Channel Routing\
+
+\f1\b0 You can route any 
+\f0\b Soundflower
+\f1\b0  channel to any channel on your\
+
+\f0\b Output Device
+\f1\b0  by selecting the appropriate channel in the submenu\
+of the 
+\f0\b Soundflower
+\f1\b0  device.  Multiple 
+\f0\b Soundflower 
+\f1\b0 channels sent to\
+the same output channel will be mixed.  Select 
+\f0\b None
+\f1\b0  to mute a \
+
+\f0\b Soundflower
+\f1\b0  channel.\
+\
+\
+
+\f0\b Bufffersize
+\f1\b0 \
+Reducing the buffersize can decrease any latency, however
+\f0\b  
+\f1\b0 you may\
+experience clicks or breakups with smaller settings.\
+\
+
+\f0\b New to Version 1.2\
+
+\f1\b0 Native Mac Intel Support\
+\
+
+\f0\b New to Version 1.1\
+
+\f1\b0 Fixed multiple stream support [ including aggregate devices ]\
+Added 'Audio Setup' Menu\
+Added better handling when device property changes [ sr, # streams, etc ]\
+Added smarter matching of sample rates\
+Now attempts to deal with system sleeps.\
+\
+\
+\
+\
+
+\f0\b Matt Ingalls\
+Cycling '74\
+September 23, 2004\
+revised August 9, 2006\
+
+\f1\b0 \
+}

@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+
+# -- Unload our kext, if it exists, then delete it
+# -- for some reason kextunload fails sometimes on the first try
+# -- so am calling it twice to make sure
+
+system("echo 'kext preupgrade script-----'");
+system("sudo kextunload /System/Library/Extensions/Soundflower.kext");
+system("sudo kextunload /System/Library/Extensions/Soundflower.kext");
+system("sudo rm -rf /System/Library/Extensions/Soundflower.kext");
+
+exit(0);
