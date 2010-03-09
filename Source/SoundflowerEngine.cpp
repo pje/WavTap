@@ -531,8 +531,6 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
 }
 
 
-// The following two routines were imported from the formerly separate SoundflowerFPU.cpp/.a
-
 IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream)
 {
     UInt32 channelCount = streamFormat->fNumChannels;
@@ -540,36 +538,31 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
     UInt32 byteOffset = offset * sizeof(float);
     UInt32 numBytes = numSampleFrames * channelCount * sizeof(float);
     	
-//IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
+	//IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
  	
-	if (((SoundflowerDevice *)audioDevice)->mMuteIn[0])
-	{
+	if (((SoundflowerDevice *)audioDevice)->mMuteIn[0]) {
 		memset((UInt8 *)thruBuffer + byteOffset, 0, numBytes);
 	}
-	else
-	{
+	else {
 		memcpy((UInt8 *)thruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
 		
 		float masterGain =   ((SoundflowerDevice *)audioDevice)->mGain[0]/((float)SoundflowerDevice::kGainMax);
 		float masterVolume = ((SoundflowerDevice *)audioDevice)->mVolume[0]/((float)SoundflowerDevice::kVolumeMax);
 		
-		for(UInt32 channel = 0; channel < channelCount; channel++)
-		{
-			SInt32 channelMute =  ((SoundflowerDevice *)audioDevice)->mMuteIn[channel+1];
-			float channelGain =   ((SoundflowerDevice *)audioDevice)->mGain[channel+1]/((float)SoundflowerDevice::kGainMax);
-			float channelVolume = ((SoundflowerDevice *)audioDevice)->mVolume[channel+1]/((float)SoundflowerDevice::kVolumeMax);
-			float adjustment = masterVolume * channelVolume * masterGain * channelGain;
+		for (UInt32 channel = 0; channel < channelCount; channel++) {
+			SInt32	channelMute = ((SoundflowerDevice *)audioDevice)->mMuteIn[channel+1];
+			float	channelGain = ((SoundflowerDevice *)audioDevice)->mGain[channel+1]/((float)SoundflowerDevice::kGainMax);
+			float	channelVolume = ((SoundflowerDevice *)audioDevice)->mVolume[channel+1]/((float)SoundflowerDevice::kVolumeMax);
+			float	adjustment = masterVolume * channelVolume * masterGain * channelGain;
 			
-			for(UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++)
-			{
-				if( channelMute )
+			for (UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++) {
+				if (channelMute)
 					thruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
 				else
 					thruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
 			}
 		}
 	}
-	
 	return kIOReturnSuccess;
 }
 
@@ -578,11 +571,10 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
 
 IOReturn SoundflowerEngine::convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream)
 {
-    UInt32 offset;
     UInt32 frameSize = streamFormat->fNumChannels * sizeof(float);
-    offset = firstSampleFrame * frameSize;
+    UInt32 offset = firstSampleFrame * frameSize;
 
-//IOLog("SoundflowerEngine[%p]::convertInputSamples() -- channelCount:%u \n", this, (uint)streamFormat->fNumChannels);
+	//IOLog("SoundflowerEngine[%p]::convertInputSamples() -- channelCount:%u \n", this, (uint)streamFormat->fNumChannels);
 	
     if (((SoundflowerDevice *)audioDevice)->mMuteOut[0])
         memset((UInt8 *)destBuf, 0, numSampleFrames * frameSize);
@@ -591,4 +583,3 @@ IOReturn SoundflowerEngine::convertInputSamples(const void *sampleBuf, void *des
 	
     return kIOReturnSuccess;
 }
-

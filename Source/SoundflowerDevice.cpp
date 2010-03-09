@@ -79,18 +79,18 @@ bool SoundflowerDevice::createAudioEngines()
     OSCollectionIterator*	audioEngineIterator;
     OSDictionary*			audioEngineDict;
 	
-    if(!audioEngineArray){
+    if (!audioEngineArray) {
         IOLog("SoundflowerDevice[%p]::createAudioEngine() - Error: no AudioEngine array in personality.\n", this);
         return false;
     }
     
 	audioEngineIterator = OSCollectionIterator::withCollection(audioEngineArray);
-    if(!audioEngineIterator){
+    if (!audioEngineIterator) {
 		IOLog("SoundflowerDevice: no audio engines available.\n");
 		return true;
 	}
     
-    while(audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()){
+    while (audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()) {
 		SoundflowerEngine*	audioEngine = NULL;
 		
         if(OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
@@ -125,10 +125,8 @@ bool SoundflowerDevice::createAudioEngines()
 bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 {
     IOAudioControl*	control = NULL;
-//    OSNumber *channelCountNum = OSDynamicCast(OSNumber, audioEngine->getProperty(NUM_STREAMS_KEY)); // maximum 15, I assume
-//    UInt32 channelCount = channelCountNum ? channelCountNum->unsigned32BitValue() + 1 : 2; // adding one for the 'all' channel
     
-    for(UInt32 channel=0; channel <= 16; channel++) {
+    for (UInt32 channel=0; channel <= 16; channel++) {
         mVolume[channel] = mGain[channel] = 65535;
         mMuteOut[channel] = mMuteIn[channel] = false;
     }
@@ -140,10 +138,10 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
                                 kIOAudioControlChannelNameLeftRear,
                                 kIOAudioControlChannelNameRightRear,
                                 kIOAudioControlChannelNameSub};
-    for(UInt32 channel=7; channel <= 16; channel++)
+    for (UInt32 channel=7; channel <= 16; channel++)
         channelNameMap[channel] = "Unknown Channel";
     
-    for(unsigned channel=0; channel <= 16; channel++) {
+    for (unsigned channel=0; channel <= 16; channel++) {
 		
         // Create an output volume control for each channel with an int range from 0 to 65535
         // and a db range from -72 to 0
