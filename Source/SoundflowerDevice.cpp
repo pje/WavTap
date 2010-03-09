@@ -146,13 +146,13 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
     for(unsigned channel=0; channel <= 16; channel++) {
 		
         // Create an output volume control for each channel with an int range from 0 to 65535
-        // and a db range from -22.5 to 0.0
+        // and a db range from -72 to 0
         // Once each control is added to the audio engine, they should be released
         // so that when the audio engine is done with them, they get freed properly
         control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kVolumeMax,		// Initial value
                                                            0,									// min value
                                                            SoundflowerDevice::kVolumeMax,		// max value
-                                                           (-22 << 16) + (32768),				// -22.5 in IOFixed (16.16)
+                                                           (-72 << 16) + (32768),				// -72 in IOFixed (16.16)
                                                            0,									// max 0.0 in IOFixed
                                                            channel,								// kIOAudioControlChannelIDDefaultLeft,
                                                            channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
@@ -165,7 +165,7 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
                                                            0,									// min value
                                                            SoundflowerDevice::kGainMax,			// max value
                                                            0,									// min 0.0 in IOFixed
-                                                           (22 << 16) + (32768),				// 22.5 in IOFixed (16.16)
+                                                           (72 << 16) + (32768),				// 72 in IOFixed (16.16)
                                                            channel,								// kIOAudioControlChannelIDDefaultLeft,
                                                            channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
                                                            channel,								// control ID - driver-defined
@@ -195,21 +195,18 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 
 IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
-    IOReturn result = kIOReturnBadArgument;
-    SoundflowerDevice *audioDevice;
-    
-    audioDevice = (SoundflowerDevice *)target;
-    if (audioDevice) {
+    IOReturn			result = kIOReturnBadArgument;
+    SoundflowerDevice*	audioDevice = (SoundflowerDevice *)target;
+	
+    if (audioDevice)
         result = audioDevice->volumeChanged(volumeControl, oldValue, newValue);
-    }
-    
     return result;
 }
 
 
 IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
-    //IOLog("SoundflowerDevice[%p]::volumeChanged(%p, %ld, %ld)\n", this, volumeControl, oldValue, newValue);
+	//IOLog("SoundflowerDevice[%p]::volumeChanged(%p, %d, %d)\n", this, volumeControl, (int)oldValue, (int)newValue);
     
     if (volumeControl) {
         //IOLog("\t-> Channel %ld\n", volumeControl->getChannelID());
@@ -249,21 +246,18 @@ IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt3
 
 IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
-    IOReturn result = kIOReturnBadArgument;
-    SoundflowerDevice *audioDevice;
-    
-    audioDevice = (SoundflowerDevice *)target;
-    if (audioDevice) {
+    IOReturn			result = kIOReturnBadArgument;
+    SoundflowerDevice*	audioDevice = (SoundflowerDevice *)target;
+	
+    if (audioDevice)
         result = audioDevice->gainChanged(gainControl, oldValue, newValue);
-    }
-    
     return result;
 }
 
 
 IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
-    //IOLog("SoundflowerDevice[%p]::gainChanged(%p, %ld, %ld)\n", this, gainControl, oldValue, newValue);
+	//IOLog("SoundflowerDevice[%p]::gainChanged(%p, %d, %d)\n", this, gainControl, (int)oldValue, (int)newValue);
     
     if (gainControl) {
         //IOLog("\t-> Channel %ld\n", gainControl->getChannelID());
