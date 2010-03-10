@@ -39,6 +39,7 @@ class SoundflowerEngine : public IOAudioEngine
     
     void*				outputBuffer;
     void*				inputBuffer;
+	UInt32				mLastValidSampleFrame;
     
     UInt32				thruBufferSize;
     float*				thruBuffer;			// intermediate buffer to pass in-->out
