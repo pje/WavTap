@@ -31,27 +31,23 @@ class SoundflowerEngine : public IOAudioEngine
 {
     OSDeclareDefaultStructors(SoundflowerEngine)
     
-    UInt32				outputBufferSize;
-    UInt32				inputBufferSize;    
-
+	UInt32				mBufferSize;
+	void*				mBuffer;				// input/output buffer
+    float*				mThruBuffer;			// intermediate buffer to pass in-->out
+	
 	IOAudioStream*		outputStream;
 	IOAudioStream*		inputStream;
-    
-    void*				outputBuffer;
-    void*				inputBuffer;
+    	
 	UInt32				mLastValidSampleFrame;
     
-    UInt32				thruBufferSize;
-    float*				thruBuffer;			// intermediate buffer to pass in-->out
-      
     IOTimerEventSource*	timerEventSource;
     
-    UInt32				blockSize;			// In sample frames
+    UInt32				blockSize;				// In sample frames
     UInt32				numBlocks;
     UInt32				currentBlock;
     
     UInt64				blockTimeoutNS;
-    UInt64				nextTime;			// the estimated time the timer will fire next
+    UInt64				nextTime;				// the estimated time the timer will fire next
 
     bool				duringHardwareInit;
     

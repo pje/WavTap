@@ -26,7 +26,7 @@
     timer's inconsistencies.  
     
     Soundflower basically copies the mixbuffer and presents it to clients
-    as an input buffer, allowing a applications to send audio one another.
+    as an input buffer, allowing applications to send audio one another.
 */
 
 #include "SoundflowerDevice.h"
@@ -52,18 +52,15 @@ bool SoundflowerDevice::initHardware(IOService *provider)
     
 	//IOLog("SoundflowerDevice[%p]::initHardware(%p)\n", this, provider);
     
-    if (!super::initHardware(provider)) {
+    if (!super::initHardware(provider))
         goto Done;
-    }
-    
     
     setDeviceName("Soundflower");
     setDeviceShortName("Soundflower");
     setManufacturerName("ma++ ingalls for Cycling '74");
     
-    if (!createAudioEngines()) {
+    if (!createAudioEngines())
         goto Done;
-    }
     
     result = true;
     
@@ -93,14 +90,14 @@ bool SoundflowerDevice::createAudioEngines()
     while (audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()) {
 		SoundflowerEngine*	audioEngine = NULL;
 		
-        if(OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
+        if (OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
             continue;
         
 		audioEngine = new SoundflowerEngine;
-        if(!audioEngine)
+        if (!audioEngine)
 			continue;
         
-        if(!audioEngine->init(audioEngineDict))
+        if (!audioEngine->init(audioEngineDict))
 			continue;
 
 		initControls(audioEngine);
@@ -131,13 +128,14 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
         mMuteOut[channel] = mMuteIn[channel] = false;
     }
     
-    char *channelNameMap[17] = {kIOAudioControlChannelNameAll,
-                                kIOAudioControlChannelNameLeft,
-                                kIOAudioControlChannelNameRight,
-                                kIOAudioControlChannelNameCenter,
-                                kIOAudioControlChannelNameLeftRear,
-                                kIOAudioControlChannelNameRightRear,
-                                kIOAudioControlChannelNameSub};
+    const char *channelNameMap[17] = {	kIOAudioControlChannelNameAll,
+										kIOAudioControlChannelNameLeft,
+										kIOAudioControlChannelNameRight,
+										kIOAudioControlChannelNameCenter,
+										kIOAudioControlChannelNameLeftRear,
+										kIOAudioControlChannelNameRightRear,
+										kIOAudioControlChannelNameSub };
+	
     for (UInt32 channel=7; channel <= 16; channel++)
         channelNameMap[channel] = "Unknown Channel";
     
@@ -204,40 +202,27 @@ IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioContro
 
 IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
-	//IOLog("SoundflowerDevice[%p]::volumeChanged(%p, %d, %d)\n", this, volumeControl, (int)oldValue, (int)newValue);
-    
-    if (volumeControl) {
-        //IOLog("\t-> Channel %ld\n", volumeControl->getChannelID());
+    if (volumeControl)
          mVolume[volumeControl->getChannelID()] = newValue;
-    }
-
     return kIOReturnSuccess;
 }
 
 
 IOReturn SoundflowerDevice::outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
-    IOReturn result = kIOReturnBadArgument;
-    SoundflowerDevice *audioDevice;
-    
-    audioDevice = (SoundflowerDevice *)target;
-    if (audioDevice) {
+    IOReturn			result = kIOReturnBadArgument;
+    SoundflowerDevice*	audioDevice = (SoundflowerDevice*)target;
+	
+    if (audioDevice)
         result = audioDevice->outputMuteChanged(muteControl, oldValue, newValue);
-    }
-    
     return result;
 }
 
 
 IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
-    //IOLog("SoundflowerDevice[%p]::outputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);
-    
-    if (muteControl) {
-        //IOLog("\t-> Channel %ld\n", muteControl->getChannelID());
+    if (muteControl)
          mMuteOut[muteControl->getChannelID()] = newValue;
-    }
-        
     return kIOReturnSuccess;
 }
 
@@ -255,39 +240,26 @@ IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl 
 
 IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
-	//IOLog("SoundflowerDevice[%p]::gainChanged(%p, %d, %d)\n", this, gainControl, (int)oldValue, (int)newValue);
-    
-    if (gainControl) {
-        //IOLog("\t-> Channel %ld\n", gainControl->getChannelID());
-         mGain[gainControl->getChannelID()] = newValue;
-    }
-    
+    if (gainControl)
+		mGain[gainControl->getChannelID()] = newValue;
     return kIOReturnSuccess;
 }
 
 
 IOReturn SoundflowerDevice::inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
-    IOReturn result = kIOReturnBadArgument;
-    SoundflowerDevice *audioDevice;
-    
-    audioDevice = (SoundflowerDevice *)target;
-    if (audioDevice) {
+    IOReturn			result = kIOReturnBadArgument;
+    SoundflowerDevice*	audioDevice = (SoundflowerDevice*)target;
+
+    if (audioDevice)
         result = audioDevice->inputMuteChanged(muteControl, oldValue, newValue);
-    }
-    
     return result;
 }
 
 
 IOReturn SoundflowerDevice::inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
-    //IOLog("SoundflowerDevice[%p]::inputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);
-    
-    if (muteControl) {
-        //IOLog("\t-> Channel %ld\n", muteControl->getChannelID());
+    if (muteControl)
          mMuteIn[muteControl->getChannelID()] = newValue;
-    }
-        
     return kIOReturnSuccess;
 }
