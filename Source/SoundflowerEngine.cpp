@@ -342,17 +342,6 @@ void SoundflowerEngine::free()
     super::free();
 }
 
-
-void SoundflowerEngine::stop(IOService *provider)
-{
-    //IOLog("SoundflowerEngine[%p]::stop(%p)\n", this, provider);
-    
-    // Add code to shut down hardware (beyond what is needed to simply stop the audio engine)
-    // If nothing more needs to be done, this function can be removed
-
-    super::stop(provider);
-}
-
  
 IOReturn SoundflowerEngine::performAudioEngineStart()
 {
