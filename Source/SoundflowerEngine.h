@@ -42,7 +42,7 @@ class SoundflowerEngine : public IOAudioEngine
     
     IOTimerEventSource*	timerEventSource;
     
-    UInt32				blockSize;				// In sample frames
+    UInt32				blockSize;				// In sample frames -- fixed, as defined in the Info.plist (e.g. 8192)
     UInt32				numBlocks;
     UInt32				currentBlock;
     
