@@ -133,9 +133,7 @@ bool SoundflowerEngine::initHardware(IOService *provider)
     result = true;
     
 Done:
-
-    duringHardwareInit = FALSE;
-    
+    duringHardwareInit = FALSE;    
     return result;
 }
 
@@ -149,7 +147,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
     OSArray*		formatArray = NULL;
 	OSArray*		sampleRateArray = NULL;
     UInt32			startingChannelID = 1;
-    //IOAudioControl*	control;
     OSString*		desc;
     bool			separateStreamBuffers = FALSE;
 	bool			separateInputBuffers = FALSE;
@@ -179,22 +176,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         goto Done;
     }
     
-/*    
-    We are ignoring the plist for these properties and always using non-separated
-    
-    OSBoolean *boolean = NULL;
-    boolean = OSDynamicCast(OSBoolean, getProperty(SEPARATE_STREAM_BUFFERS_KEY));
-    if (boolean != NULL) {
-        separateStreamBuffers = boolean->getValue();
-    }
-    
-    boolean = OSDynamicCast(OSBoolean, getProperty(SEPARATE_INPUT_BUFFERS_KEY));
-    if (boolean != NULL) {
-        separateInputBuffers = boolean->getValue();
-    }
-*/ 
-
-   
     for (streamNum = 0; streamNum < numStreams; streamNum++) {
         UInt32					maxBitWidth = 0;
         UInt32					maxNumChannels = 0;
@@ -309,7 +290,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
                 goto Error;
             }
 
-
             // create our thru buffer
             thruBufferSize = outputBufferSize;
             thruBuffer = (float *)IOMalloc(thruBufferSize);
@@ -358,71 +338,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             char channelName[20];
             
             snprintf(channelName, 20, "Channel %u", channelID);
-			            
-            /*  ### volume/gain/channel mute may be useful?? ###        
-            control = IOAudioLevelControl::createVolumeControl(65535,
-                                                                0,
-                                                                65535,
-                                                                (-22 << 16) + (32768),
-                                                                0,
-                                                                channelID,
-                                                                channelName,
-                                                                0,
-                                                                kIOAudioControlUsageOutput);
-            if (!control) {
-                goto Error;
-            }
-            
-            control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::volumeChangeHandler, audioDevice);
-            addDefaultAudioControl(control);
-            control->release();
-            
-            control = IOAudioToggleControl::createMuteControl(false,
-                                                                channelID,
-                                                                channelName,
-                                                                0,
-                                                                kIOAudioControlUsageOutput);
-            if (!control) {
-                goto Error;
-            }
-            
-            control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::outputMuteChangeHandler, audioDevice);
-            addDefaultAudioControl(control);
-            control->release();
-                                                                
-            control = IOAudioLevelControl::createVolumeControl(65535,
-                                                                0,
-                                                                65535,
-                                                                (-22 << 16) + (32768),
-                                                                0,
-                                                                channelID,
-                                                                channelName,
-                                                                0,
-                                                                kIOAudioControlUsageInput);
-            if (!control) {
-                goto Error;
-            }
-  
-			 
-// if we define this here, then there seems to be a strange problem in Live (see the googlecode issue tracker)
-// not sure why...  maybe a conflict with the other place that controls are added?
-
-            control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::gainChangeHandler, audioDevice);
-            addDefaultAudioControl(control);
-            control->release();
-            control = IOAudioToggleControl::createMuteControl(false,
-                                                                channelID,
-                                                                channelName,
-                                                                0,
-                                                                kIOAudioControlUsageInput);
-            if (!control) {
-                goto Error;
-            }
-            
-            control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::inputMuteChangeHandler, audioDevice);
-            addDefaultAudioControl(control);
-            control->release();
-     */       
         }
         
         startingChannelID += maxNumChannels;
@@ -451,71 +366,7 @@ Error:
         
         goto Done;
     }
-    
-    /*  ### volume/gain/channel mute may be useful?? ### 
-    control = IOAudioLevelControl::createVolumeControl(65535,
-                                                        0,
-                                                        65535,
-                                                        (-22 << 16) + (32768),
-                                                        0,
-                                                        kIOAudioControlChannelIDAll,
-                                                        kIOAudioControlChannelNameAll,
-                                                        0,
-                                                        kIOAudioControlUsageOutput);
-    if (!control) {
-        goto Done;
-    }
-    
-    control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::volumeChangeHandler, audioDevice);
-    addDefaultAudioControl(control);
-    control->release();
-    
-    control = IOAudioToggleControl::createMuteControl(false,
-                                                        kIOAudioControlChannelIDAll,
-                                                        kIOAudioControlChannelNameAll,
-                                                        0,
-                                                        kIOAudioControlUsageOutput);
-    if (!control) {
-        goto Done;
-    }
-    
-    control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::outputMuteChangeHandler, audioDevice);
-    addDefaultAudioControl(control);
-    control->release();
-                                                        
-    control = IOAudioLevelControl::createVolumeControl(65535,
-                                                        0,
-                                                        65535,
-                                                        (-22 << 16) + (32768),
-                                                        0,
-                                                        kIOAudioControlChannelIDAll,
-                                                        kIOAudioControlChannelNameAll,
-                                                        0,
-                                                        kIOAudioControlUsageInput);
-    if (!control) {
-        goto Done;
-    }
-    
-    control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::gainChangeHandler, audioDevice);
-    addDefaultAudioControl(control);
-    control->release();
-*/   
-/*
-    control = IOAudioToggleControl::createMuteControl(false,
-                                                        kIOAudioControlChannelIDAll,
-                                                        kIOAudioControlChannelNameAll,
-                                                        0,
-                                                        kIOAudioControlUsageInput);
-    if (!control) {
-		IOLog("SF There is no control.\n");
-        goto Done;
-    }
-    
-    control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)SoundflowerDevice::inputMuteChangeHandler, audioDevice);
-    addDefaultAudioControl(control);
-    control->release();
-*/    
-    result = true;
+      result = true;
     
 Done:
 
