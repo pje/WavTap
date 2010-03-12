@@ -19,7 +19,7 @@ To build Soundflower, open a terminal window and cd to the Soundflower folder.  
 	./build.rb
 
 	The build.rb will provide info about its required arg, which you will need to supply 
-	(Development or Deployment).
+	(Development or Deployment -- or the shorthand for them: dev or dep).
 	It will also prompt you for your password so that it can set permissions correctly 
 	and load the kext automatically when the build is complete.
 
@@ -58,6 +58,6 @@ Specifically, you edit the MODULE_VERSION entry to set it.  All other places whe
 LICENSE
 
 Soundflower is licensed using the GNU GPL.  
-For details please refer to the accompanying 'COPYING.txt' file distributed with Soundflower.
+For details please refer to the accompanying 'License.txt' file distributed with Soundflower.
 
 
