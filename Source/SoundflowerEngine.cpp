@@ -44,7 +44,7 @@ bool SoundflowerEngine::init(OSDictionary *properties)
     bool result = false;
     OSNumber *number = NULL;
     
-    //IOLog("SoundflowerEngine[%p]::init()\n", this);
+	//IOLog("SoundflowerEngine[%p]::init()\n", this);
 
     if (!super::init(properties)) {
         goto Done;
@@ -204,8 +204,8 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 			goto Error;
         }
 
-        snprintf(inputStreamName, 64, "Soundflower Input Stream #%ul", streamNum + 1);
-        snprintf(outputStreamName, 64, "Soundflower Output Stream #%ul", streamNum + 1);
+        snprintf(inputStreamName, 64, "Soundflower Input Stream #%u", streamNum + 1);
+        snprintf(outputStreamName, 64, "Soundflower Output Stream #%u", streamNum + 1);
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
@@ -377,7 +377,7 @@ Done:
  
 void SoundflowerEngine::free()
 {
-    //IOLog("SoundflowerEngine[%p]::free()\n", this);
+	//IOLog("SoundflowerEngine[%p]::free()\n", this);
     
     // We need to free our resources when we're going away
     
@@ -539,7 +539,9 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
     UInt32 offset = firstSampleFrame * channelCount;
     UInt32 byteOffset = offset * sizeof(float);
     UInt32 numBytes = numSampleFrames * channelCount * sizeof(float);
-    
+    	
+//IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
+ 	
 	if (((SoundflowerDevice *)audioDevice)->mMuteIn[0])
 	{
 		memset((UInt8 *)thruBuffer + byteOffset, 0, numBytes);
@@ -579,6 +581,8 @@ IOReturn SoundflowerEngine::convertInputSamples(const void *sampleBuf, void *des
     UInt32 offset;
     UInt32 frameSize = streamFormat->fNumChannels * sizeof(float);
     offset = firstSampleFrame * frameSize;
+
+//IOLog("SoundflowerEngine[%p]::convertInputSamples() -- channelCount:%u \n", this, (uint)streamFormat->fNumChannels);
 	
     if (((SoundflowerDevice *)audioDevice)->mMuteOut[0])
         memset((UInt8 *)destBuf, 0, numSampleFrames * frameSize);
