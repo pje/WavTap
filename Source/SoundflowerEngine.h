@@ -58,7 +58,6 @@ public:
     virtual void free();
     
     virtual bool initHardware(IOService *provider);
-    virtual void stop(IOService *provider);
     
     virtual bool createAudioStreams(IOAudioSampleRate *initialSampleRate);
 
