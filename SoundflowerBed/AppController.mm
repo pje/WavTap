@@ -23,7 +23,7 @@ OSStatus	HardwareListenerProc (	AudioHardwarePropertyID	inPropertyID,
                                     void*					inClientData)
 {
 	AppController *app = (AppController *)inClientData;
-	
+printf("HardwareListenerProc\n");	
     switch(inPropertyID)
     { 
         case kAudioHardwarePropertyDevices:
@@ -97,6 +97,14 @@ OSStatus	DeviceListenerProc (	AudioDeviceID           inDevice,
 //			printf("kAudioDevicePropertyDeviceHasChanged\n");	
 			break;
 				
+		case kAudioDevicePropertyDataSource:
+			// printf("DeviceListenerProc : HEADPHONES! \n");	
+			if (gThruEngine2->IsRunning() && gThruEngine2->GetOutputDevice() == inDevice)
+				[NSThread detachNewThreadSelector:@selector(srChanged2chOutput) toTarget:app withObject:nil];
+			else if (gThruEngine16->IsRunning() && gThruEngine16->GetOutputDevice() == inDevice)
+				[NSThread detachNewThreadSelector:@selector(srChanged16chOutput) toTarget:app withObject:nil];
+			break;
+			
 		case kAudioDevicePropertyDeviceIsRunning:
 //			printf("kAudioDevicePropertyDeviceIsRunning\n");	
 			break;
@@ -392,6 +400,10 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 			verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreamConfiguration, DeviceListenerProc, self));
 			verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreams, DeviceListenerProc, self));
 			//verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyAvailableNominalSampleRates, DeviceListenerProc, self));
+
+			// this provides us, for example, with notification when the headphones are plugged/unplugged during playback
+			verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyDataSource, DeviceListenerProc, self));
+
 		}
 	}
 		
@@ -423,6 +435,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 			verify_noerr (AudioDeviceRemovePropertyListener((*i).mID, 0, false, kAudioDevicePropertyNominalSampleRate, DeviceListenerProc));
 			verify_noerr (AudioDeviceRemovePropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreamConfiguration, DeviceListenerProc));
 			verify_noerr (AudioDeviceRemovePropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreams, DeviceListenerProc));
+			verify_noerr (AudioDeviceRemovePropertyListener((*i).mID, 0, false, kAudioDevicePropertyDataSource, DeviceListenerProc));
 		}
 	}
 
