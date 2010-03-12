@@ -146,21 +146,16 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 	OSArray*		sampleRateArray = NULL;
     UInt32			startingChannelID = 1;
     OSString*		desc;
-    bool			separateStreamBuffers = FALSE;
-	bool			separateInputBuffers = FALSE;
     
     desc = OSDynamicCast(OSString, getProperty(DESCRIPTION_KEY));
-    if (desc) {
+    if (desc)
         setDescription(desc->getCStringNoCopy());
-    }
     
     number = OSDynamicCast(OSNumber, getProperty(NUM_STREAMS_KEY));
-    if (number) {
+    if (number)
         numStreams = number->unsigned32BitValue();
-    } 
-	else {
+	else
         numStreams = NUM_STREAMS;
-    }
     
     formatArray = OSDynamicCast(OSArray, getProperty(FORMATS_KEY));
     if (formatArray == NULL) {
@@ -186,7 +181,6 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         UInt32					channelID;
         char					outputStreamName[64];
 		char					inputStreamName[64];
-        UInt32					streamBufferSize;
         
         initialFormatSet = false;
         
@@ -270,62 +264,31 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             }
         }
         
-        streamBufferSize = blockSize * numBlocks * maxNumChannels * maxBitWidth / 8;
-        //IOLog("Soundflower streamBufferSize: %ld\n", streamBufferSize);
+        mBufferSize = blockSize * numBlocks * maxNumChannels * maxBitWidth / 8;
+        //IOLog("Soundflower streamBufferSize: %ld\n", mBufferSize);
 		
-        if (outputBuffer == NULL) {
-            if (separateStreamBuffers) {
-                outputBufferSize = streamBufferSize * numStreams;
-            } 
-			else {
-                outputBufferSize = streamBufferSize;
-            }
-
-            outputBuffer = (void *)IOMalloc(outputBufferSize);
-            
-            if (!outputBuffer) {
-                IOLog("Soundflower: Error allocating output buffer - %lu bytes.\n", (unsigned long)outputBufferSize);
+        if (mBuffer == NULL) {
+            mBuffer = (void *)IOMalloc(mBufferSize);
+            if (!mBuffer) {
+                IOLog("Soundflower: Error allocating output buffer - %lu bytes.\n", (unsigned long)mBufferSize);
                 goto Error;
             }
-
-            // create our thru buffer
-            thruBufferSize = outputBufferSize;
-            thruBuffer = (float *)IOMalloc(thruBufferSize);
-            if (!thruBuffer) {
-                IOLog("Soundflower: Error allocating thru buffer - %lu bytes.\n", (unsigned long)thruBufferSize);
+			
+            mThruBuffer = (float*)IOMalloc(mBufferSize);
+            if (!mThruBuffer) {
+                IOLog("Soundflower: Error allocating thru buffer - %lu bytes.\n", (unsigned long)mBufferSize);
                 goto Error;
             }
-            memset ((UInt8 *)thruBuffer, 0, thruBufferSize);
-
-
-            inputBufferSize = outputBufferSize;
-            
-            if (separateInputBuffers) {
-                inputBuffer = (void *)IOMalloc(inputBufferSize);
-                if (!inputBuffer) {
-                    IOLog("Soundflower: Error allocating input buffer - %lu bytes.\n", (unsigned long )inputBufferSize);
-                    goto Error;
-                }
-            } else { 
-                inputBuffer = outputBuffer;
-            }
-
+            memset((UInt8*)mThruBuffer, 0, mBufferSize);
         }
         
         inputStream->setFormat(&initialFormat);
-        outputStream->setFormat(&initialFormat);
-        
-        if (separateStreamBuffers) {
-            inputStream->setSampleBuffer(&((UInt8 *)inputBuffer)[streamBufferSize * streamNum], streamBufferSize);
-            outputStream->setSampleBuffer(&((UInt8 *)outputBuffer)[streamBufferSize * streamNum], streamBufferSize);
-        } 
-		else {
-            inputStream->setSampleBuffer(inputBuffer, streamBufferSize);
-            outputStream->setSampleBuffer(outputBuffer, streamBufferSize);
-        }
+		inputStream->setSampleBuffer(mBuffer, mBufferSize);
         addAudioStream(inputStream);
         inputStream->release();
-        
+
+        outputStream->setFormat(&initialFormat);
+		outputStream->setSampleBuffer(mBuffer, mBufferSize);       
         addAudioStream(outputStream);
         outputStream->release();
         
@@ -343,35 +306,23 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         continue;
 
 Error:
-
         IOLog("SoundflowerEngine[%p]::createAudioStreams() - ERROR\n", this);
     
-        if (inputStream) {
+        if (inputStream)
             inputStream->release();
-        }
-        
-        if (outputStream) {
+        if (outputStream)
             outputStream->release();
-        }
-        
-        if (formatIterator) {
+        if (formatIterator)
             formatIterator->release();
-        }
-        
-        if (sampleRateIterator) {
+        if (sampleRateIterator)
             sampleRateIterator->release();
-        }
-        
         goto Done;
     }
-      result = true;
+	result = true;
     
 Done:
-
-    if (!result) {
+    if (!result)
         IOLog("SoundflowerEngine[%p]::createAudioStreams() - failed!\n", this);
-    }
-
     return result;
 }
 
@@ -380,30 +331,18 @@ void SoundflowerEngine::free()
 {
 	//IOLog("SoundflowerEngine[%p]::free()\n", this);
     
-    // We need to free our resources when we're going away
-    
-    if (inputBuffer != NULL) {
-        // We only need to free the input buffer if it was allocated independently of the output buffer
-        if (inputBuffer != outputBuffer) {
-            IOFree(inputBuffer, inputBufferSize);
-        }
-        
-        inputBuffer = NULL;
+    if (mBuffer) {
+        IOFree(mBuffer, mBufferSize);
+        mBuffer = NULL;
     }
-
-    if (outputBuffer != NULL) {
-        IOFree(outputBuffer, outputBufferSize);
-        outputBuffer = NULL;
+    if (mThruBuffer) {
+        IOFree(mThruBuffer, mBufferSize);
+        mThruBuffer = NULL;
     }
-    
-    if (thruBuffer != NULL) {
-        IOFree(thruBuffer, thruBufferSize);
-        thruBuffer = NULL;
-    }    
     super::free();
 }
 
- 
+
 void SoundflowerEngine::stop(IOService *provider)
 {
     //IOLog("SoundflowerEngine[%p]::stop(%p)\n", this, provider);
@@ -511,7 +450,7 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             IOAudioStream *outStream = audioEngine->getAudioStream(kIOAudioStreamDirectionOutput, 1);
             if (outStream->numClients == 0) {
                 // it has, so clean the buffer 
-                memset((UInt8 *)audioEngine->thruBuffer, 0, audioEngine->thruBufferSize);
+                memset((UInt8*)audioEngine->mThruBuffer, 0, audioEngine->mBufferSize);
             }
                     
 			audioEngine->currentBlock++;
@@ -562,10 +501,10 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
 // TODO: why is the reading always trailing by at least 512 frames? (when 512 is the input framesize)?
 	
 	if (device->mMuteIn[0]) {
-		memset((UInt8 *)thruBuffer + byteOffset, 0, numBytes);
+		memset((UInt8*)mThruBuffer + byteOffset, 0, numBytes);
 	}
 	else {
-		memcpy((UInt8 *)thruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
+		memcpy((UInt8*)mThruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
 		
 		float masterGain = device->mGain[0] / ((float)SoundflowerDevice::kGainMax);
 		float masterVolume = device->mVolume[0] / ((float)SoundflowerDevice::kVolumeMax);
@@ -578,9 +517,9 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
 			
 			for (UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++) {
 				if (channelMute)
-					thruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
+					mThruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
 				else
-					thruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
+					mThruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
 			}
 		}
 	}
@@ -603,9 +542,9 @@ IOReturn SoundflowerEngine::convertInputSamples(const void *sampleBuf, void *des
 #endif 
 	
     if (device->mMuteOut[0])
-        memset((UInt8 *)destBuf, 0, numSampleFrames * frameSize);
+        memset((UInt8*)destBuf, 0, numSampleFrames * frameSize);
     else
-        memcpy((UInt8 *)destBuf, (UInt8 *)thruBuffer + offset, numSampleFrames * frameSize);
+        memcpy((UInt8*)destBuf, (UInt8*)mThruBuffer + offset, numSampleFrames * frameSize);
 	
     return kIOReturnSuccess;
 }
