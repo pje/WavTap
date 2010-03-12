@@ -17,9 +17,10 @@ libdir = "."
 Dir.chdir libdir        # change to libdir so that requires work
 
 @svn_root = ".."
-@temp = "#{@svn_root}/Installer/root"
-
 @version = "9.9.9"
+
+Dir.chdir @svn_root
+@svn_root = Dir.pwd
 
 
 ###################################################################
@@ -92,29 +93,25 @@ end
 create_logs()
 @version = getversion()
 
+@build_folder = "#{@svn_root}/Build/Soundflower-#{@version}"
+
 puts "  Creating installer directory structure..."
-cmd("rm -rfv \"#{@svn_root}/Installer/Soundflower\"")               # remove an old temp dir if it exists
-cmd("mkdir -pv \"#{@svn_root}/Installer/Soundflower\"")             # now make a clean one, and build dir structure in it
-cmd("rm -rfv \"#{@temp}\"")                                         # remove an old temp dir if it exists
-cmd("mkdir -pv \"#{@temp}\"")                                       # now make a clean one, and build dir structure in it
-cmd("mkdir -pv \"#{@temp}/System/Library/Extensions\"")
-
-puts "  Copying the installed kext..."
-cmd("cp -rpv \"/System/Library/Extensions/Soundflower.kext\" \"#{@temp}/System/Library/Extensions\"")
-
-puts "  Copying readme, license, etc...."
-cmd("cp \"#{@svn_root}/COPYING.txt\" \"#{@svn_root}/Installer/Resources/License.txt\"")
-cmd("cp \"#{@svn_root}/COPYING.txt\" \"#{@svn_root}/Installer/Soundflower/License.txt\"")
-cmd("cp \"#{@svn_root}/Installer/Resources/ReadMe.rtf\" \"#{@svn_root}/Installer/Soundflower/ReadMe.rtf\"")
+cmd("rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
+cmd("mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
 
 puts "  Building Package -- this could take a while..."
 cmd("rm -rfv \"#{@svn_root}/Installers/Soundflower.pkg\"")
-cmd("/Developer/usr/bin/packagemaker --verbose --root \"#{@svn_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@svn_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@svn_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
+#cmd("/Developer/usr/bin/packagemaker --verbose --root \"#{@svn_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@svn_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@svn_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
+cmd("/Developer/usr/bin/packagemaker --verbose --doc \"#{@svn_root}/Installer/Soundflower.pmdoc\" --out \"#{@build_folder}/Soundflower.pkg\" ")
 
+puts "  Copying readme, license, etc...."
+cmd("cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
+cmd("cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
 
 puts "  Creating Disk Image..."
 cmd("rm -rfv \"#{@svn_root}/Installer/Soundflower-#{@version}.dmg\"")
-cmd("hdiutil create -srcfolder \"#{@svn_root}/Installer/Soundflower\" \"#{@svn_root}/Installer/Soundflower-#{@version}.dmg\"")
+cmd("hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
 
 puts "  All done!"
 
