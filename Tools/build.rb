@@ -44,7 +44,7 @@ end
 
 if /BUILD SUCCEEDED/.match(out)
   puts "    BUILD SUCCEEDED"
-  `ruby #{@svn_root}/Tools/load.rb`
+  puts `ruby #{@svn_root}/Tools/load.rb`
 else
   puts "    BUILD FAILED"
 end
