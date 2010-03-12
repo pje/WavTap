@@ -30,6 +30,8 @@ err = nil
 @svn_root = ".."
 @source = "#{@svn_root}/Source"
 
+configuration = "Development" if configuration == "dev"
+configuration = "Deployment" if configuration == "dep"
 
 puts "  Building the new Soundflower.kext with Xcode"
 
