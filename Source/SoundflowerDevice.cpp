@@ -30,14 +30,11 @@
 */
 
 #include "SoundflowerDevice.h"
-
 #include "SoundflowerEngine.h"
-
 #include <IOKit/audio/IOAudioControl.h>
 #include <IOKit/audio/IOAudioLevelControl.h>
 #include <IOKit/audio/IOAudioToggleControl.h>
 #include <IOKit/audio/IOAudioDefines.h>
-
 #include <IOKit/IOLib.h>
 
 #define super IOAudioDevice
@@ -47,9 +44,8 @@ OSDefineMetaClassAndStructors(SoundflowerDevice, IOAudioDevice)
 const SInt32 SoundflowerDevice::kVolumeMax = 65535;
 const SInt32 SoundflowerDevice::kGainMax = 65535;
 
-/*
- * initHardware()
- */
+
+
 bool SoundflowerDevice::initHardware(IOService *provider)
 {
     bool result = false;
@@ -76,9 +72,7 @@ Done:
     return result;
 }
 
-/*
- * createAudioEngines()
- */
+
 bool SoundflowerDevice::createAudioEngines()
 {
     OSArray*				audioEngineArray = OSDynamicCast(OSArray, getProperty(AUDIO_ENGINES_KEY));
@@ -199,9 +193,6 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 }
 
 
-/*
- * volumeChangeHandler()
- */
 IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -215,9 +206,7 @@ IOReturn SoundflowerDevice::volumeChangeHandler(IOService *target, IOAudioContro
     return result;
 }
 
-/*
- * volumeChanged()
- */ 
+
 IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::volumeChanged(%p, %ld, %ld)\n", this, volumeControl, oldValue, newValue);
@@ -231,9 +220,6 @@ IOReturn SoundflowerDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 
 }
 
 
-/*
- * outputMuteChangeHandler()
- */
 IOReturn SoundflowerDevice::outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -247,9 +233,7 @@ IOReturn SoundflowerDevice::outputMuteChangeHandler(IOService *target, IOAudioCo
     return result;
 }
 
-/*
- * outputMuteChanged()
- */ 
+
 IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::outputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);
@@ -263,9 +247,6 @@ IOReturn SoundflowerDevice::outputMuteChanged(IOAudioControl *muteControl, SInt3
 }
 
 
-/*
- * gainChangeHandler()
- */
 IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -279,9 +260,7 @@ IOReturn SoundflowerDevice::gainChangeHandler(IOService *target, IOAudioControl 
     return result;
 }
 
-/*
- * gainChanged()
- */ 
+
 IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::gainChanged(%p, %ld, %ld)\n", this, gainControl, oldValue, newValue);
@@ -295,9 +274,6 @@ IOReturn SoundflowerDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldV
 }
 
 
-/*
- * inputMuteChangeHandler()
- */
 IOReturn SoundflowerDevice::inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     IOReturn result = kIOReturnBadArgument;
@@ -311,9 +287,7 @@ IOReturn SoundflowerDevice::inputMuteChangeHandler(IOService *target, IOAudioCon
     return result;
 }
 
-/*
- * inputMuteChanged()
- */
+
 IOReturn SoundflowerDevice::inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     //IOLog("SoundflowerDevice[%p]::inputMuteChanged(%p, %ld, %ld)\n", this, muteControl, oldValue, newValue);

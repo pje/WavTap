@@ -20,12 +20,10 @@
 */
 
 #include "SoundflowerEngine.h"
-
 #include <IOKit/audio/IOAudioControl.h>
 #include <IOKit/audio/IOAudioLevelControl.h>
 #include <IOKit/audio/IOAudioToggleControl.h>
 #include <IOKit/audio/IOAudioDefines.h>
-
 #include <IOKit/IOLib.h>
 #include <IOKit/IOWorkLoop.h>
 #include <IOKit/IOTimerEventSource.h>
@@ -37,9 +35,8 @@
 
 #define super IOAudioEngine
 
-            
-
 OSDefineMetaClassAndStructors(SoundflowerEngine, IOAudioEngine)
+
 
  
 bool SoundflowerEngine::init(OSDictionary *properties)

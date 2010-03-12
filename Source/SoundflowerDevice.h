@@ -33,40 +33,48 @@
 #define SAMPLE_RATES_KEY				"SampleRates"
 #define SEPARATE_STREAM_BUFFERS_KEY		"SeparateStreamBuffers"
 #define SEPARATE_INPUT_BUFFERS_KEY		"SeparateInputBuffers"
+#define SoundflowerDevice				com_cycling74_driver_SoundflowerDevice
 
-#define SoundflowerDevice com_cycling74_driver_SoundflowerDevice
 
 class SoundflowerEngine;
 
 class SoundflowerDevice : public IOAudioDevice
 {
     OSDeclareDefaultStructors(SoundflowerDevice)
-    
     friend class SoundflowerEngine;
     
+	// class members
+	
+    static const SInt32 kVolumeMax;
+    static const SInt32 kGainMax;
+
+	
+	// instance members
+
+	SInt32 mVolume[17];
+    SInt32 mMuteOut[17];
+    SInt32 mMuteIn[17];
+    SInt32 mGain[17];
+
+	
+	// methods
+	
     virtual bool initHardware(IOService *provider);
     virtual bool createAudioEngines();
     virtual bool initControls(SoundflowerEngine *audioEngine);
     
-    static IOReturn volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
+    static  IOReturn volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
     
-    static IOReturn outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    static  IOReturn outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
 
-    static IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
+    static  IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     
-    static IOReturn inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    static  IOReturn inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
-        
-    SInt32 mVolume[17];
-    SInt32 mMuteOut[17];
-    SInt32 mMuteIn[17];
-    SInt32 mGain[17];
     
-    static const SInt32 kVolumeMax;
-    static const SInt32 kGainMax;
 };
 
 #endif // _SAMPLEAUDIODEVICE_H
