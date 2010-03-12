@@ -71,6 +71,7 @@ bool SoundflowerEngine::init(OSDictionary *properties)
     
     inputStream = outputStream = NULL;
     duringHardwareInit = FALSE;
+	mLastValidSampleFrame = 0;
     result = true;
     
 Done:
@@ -538,9 +539,28 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
     UInt32				byteOffset = offset * sizeof(float);
     UInt32				numBytes = numSampleFrames * channelCount * sizeof(float);
 	SoundflowerDevice*	device = (SoundflowerDevice*)audioDevice;
-    	
-	//IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
- 	
+	
+#if 0
+	IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
+	IOLog("    input -- numChannels: %u", (uint)inputStream->format.fNumChannels);
+	IOLog("    bitDepth: %u", (uint)inputStream->format.fBitDepth);
+	IOLog("    bitWidth: %u", (uint)inputStream->format.fBitWidth);
+	IOLog("    \n");
+	IOLog("    output -- numChannels: %u", (uint)inputStream->format.fNumChannels);
+	IOLog("    bitDepth: %u", (uint)inputStream->format.fBitDepth);
+	IOLog("    bitWidth: %u", (uint)inputStream->format.fBitWidth);
+	IOLog("    \n");
+#endif
+	
+#if 0
+	IOLog("INPUT: firstSampleFrame: %u   numSampleFrames: %u \n", (uint)firstSampleFrame, (uint)numSampleFrames);
+#endif
+	mLastValidSampleFrame = firstSampleFrame+numSampleFrames;
+
+// TODO: where is the sampleFrame wrapped?
+// TODO: try to put a mutex around reading and writing
+// TODO: why is the reading always trailing by at least 512 frames? (when 512 is the input framesize)?
+	
 	if (device->mMuteIn[0]) {
 		memset((UInt8 *)thruBuffer + byteOffset, 0, numBytes);
 	}
@@ -576,7 +596,11 @@ IOReturn SoundflowerEngine::convertInputSamples(const void *sampleBuf, void *des
     UInt32				offset = firstSampleFrame * frameSize;
 	SoundflowerDevice*	device = (SoundflowerDevice*)audioDevice;
 
+#if 0
 	//IOLog("SoundflowerEngine[%p]::convertInputSamples() -- channelCount:%u \n", this, (uint)streamFormat->fNumChannels);
+	IOLog("OUTPUT: firstSampleFrame: %u   numSampleFrames: %u \n", (uint)firstSampleFrame, (uint)numSampleFrames);
+	IOLog("    mLastValidSampleFrame: %u  (diff: %ld)   \n", (uint)mLastValidSampleFrame, long(mLastValidSampleFrame) - long(firstSampleFrame+numSampleFrames));
+#endif 
 	
     if (device->mMuteOut[0])
         memset((UInt8 *)destBuf, 0, numSampleFrames * frameSize);
