@@ -184,7 +184,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
         case kIOMessageSystemHasPoweredOn:
 			//printf("kIOMessageSystemHasPoweredOn\n");
 	
-//crashing?			[NSThread detachNewThreadSelector:@selector(resume) toTarget:app withObject:nil];
+			[NSTimer scheduledTimerWithTimeInterval:0.0 target:app selector:@selector(resume) userInfo:nil repeats:NO];
 		
 			break;
 			
@@ -209,18 +209,19 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (IBAction)resume
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
+	//NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	if (mSuspended2chDevice) {
 		[self outputDeviceSelected:mSuspended2chDevice];
+		mCur2chDevice = mSuspended2chDevice;
 		mSuspended2chDevice = NULL;
 	}
 	if (mSuspended16chDevice) {
 		[self outputDeviceSelected:mSuspended16chDevice];
+		mCur16chDevice = mSuspended16chDevice;
 		mSuspended16chDevice = NULL;
 	}
-		
-	[pool release];
+	
+	//[pool release];
 }
 
 
@@ -331,9 +332,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	
 	[self buildDeviceList];		
 	
-	if (menuItemVisible) {
-		[mSbItem setMenu:nil];
-	}
+	[mSbItem setMenu:nil];
 	[mMenu dealloc];
 	
 	[self buildMenu];
@@ -652,15 +651,13 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	item = [mMenu addItemWithTitle:@"About Soundflowerbed..." action:@selector(doAbout) keyEquivalent:@""];
 	[item setTarget:self];
     
-	item = [mMenu addItemWithTitle:@"Hide Soundflowerbed" action:@selector(hideMenuItem) keyEquivalent:@""];
-	[item setTarget:self];
+	// item = [mMenu addItemWithTitle:@"Hide Soundflowerbed" action:@selector(hideMenuItem) keyEquivalent:@""];
+	// [item setTarget:self];
 	
 	item = [mMenu addItemWithTitle:@"Quit Soundflowerbed" action:@selector(doQuit) keyEquivalent:@""];
 	[item setTarget:self];
 
-	if (menuItemVisible) {
-		[mSbItem setMenu:mMenu];
-	}
+	[mSbItem setMenu:mMenu];
 }
 
 - (void)buildDeviceList
@@ -692,35 +689,18 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	}
 }
 
-- (void)showMenuItem
-{
-	if (!menuItemVisible) {
-		mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		[mSbItem retain];
-		[mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
-		[mSbItem setHighlightMode:YES];
-		[mSbItem setMenu:mMenu];
-		menuItemVisible = YES;
-	}
-}
-
-- (void)hideMenuItem
-{
-	[[mSbItem statusBar] removeStatusItem:mSbItem];
-	[mSbItem release];
-	menuItemVisible = NO;
-}
-
-- (void)applicationWillBecomeActive: (NSNotification*)aNotification
-{
-	[self showMenuItem];
-}
-
 - (void)awakeFromNib
 {
 	[[NSApplication sharedApplication] setDelegate:self];
 	
 	[self buildDeviceList];
+	
+	mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+	[mSbItem retain];
+	
+	//[sbItem setTitle:@"ее"];
+	[mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+	[mSbItem setHighlightMode:YES];
 	
 	[self buildMenu];
 	
@@ -741,8 +721,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 		// now read prefs
 		[self readGlobalPrefs];
 	}
-    
-	[self showMenuItem];
 	
 	// ask to be notified on system sleep to avoid a crash
 	IONotificationPortRef  notify;
