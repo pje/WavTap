@@ -66,7 +66,10 @@
 					<array>
 						<integer>44100</integer>
 						<integer>48000</integer>
+						<integer>88200</integer>
 						<integer>96000</integer>
+						<integer>176400</integer>
+						<integer>192000</integer>
 					</array>
 				</dict>
 				<dict>
@@ -105,7 +108,10 @@
 					<array>
 						<integer>44100</integer>
 						<integer>48000</integer>
+						<integer>88200</integer>
 						<integer>96000</integer>
+						<integer>176400</integer>
+						<integer>192000</integer>
 					</array>
 				</dict>
 			</array>
