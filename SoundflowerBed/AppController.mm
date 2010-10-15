@@ -545,7 +545,16 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 			item = [submenu addItemWithTitle:@"Channel 1" action:@selector(doNothing) keyEquivalent:@""];
 			[item setTarget:self];	
 			item = [submenu addItemWithTitle:@"Channel 2" action:@selector(doNothing) keyEquivalent:@""];
-			[item setTarget:self];		
+			[item setTarget:self];	
+		
+			// iSchemy's edit
+			//
+			[submenu addItem:[NSMenuItem separatorItem]];
+		
+			[[submenu addItemWithTitle:@"Clone to all channels" action:@selector(cloningChanged:) keyEquivalent:@""] setTarget:self];
+			//
+			// end
+		
 		[m2chMenu setSubmenu:submenu];
 	
 	
@@ -783,6 +792,26 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	[sender setState:NSOnState];
 	mCur16chBufferSize = sender;
 }
+
+// iSchemy's edit
+//
+// action for item was clicked
+- (IBAction)cloningChanged:(id)sender 
+{
+	// change item's state
+	[sender setState:([sender state]==NSOnState) ? NSOffState : NSOnState];
+	gThruEngine2->SetCloneChannels([sender state]==NSOnState);
+	[self writeDevicePrefs:YES];
+}
+
+// preferences read
+- (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone
+{
+	gThruEngine2->SetCloneChannels(clone);
+	[sender setState:(clone ? NSOnState : NSOffState)];
+}
+//
+// end
 
 - (IBAction)routingChanged2ch:(id)outDevChanItem
 {
@@ -1022,6 +1051,26 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	}
 	
 	//CFRelease(arrayName);
+	
+	// iSchemy's edit
+	//
+	// cloning is enabled only for 2ch mode
+	// sorta makes sense, huh?
+	if (is2ch) {
+		CFBooleanRef clone = (CFBooleanRef)CFPreferencesCopyAppValue(CFSTR("Clone channels"), kCFPreferencesCurrentApplication);
+		// if cloning is enabled in preferences, it will affect also the menu item's state
+		NSMenuItem* item = [[m2chMenu submenu] itemWithTitle:@"Clone to all channels"];
+			if (clone && item) {
+				[self cloningChanged:item cloneChannels:CFBooleanGetValue(clone)];
+				CFRelease(clone);
+			}
+			// but if it is disabled, no state changing is needed
+			else {
+				thruEng->SetCloneChannels(false);
+			}
+	}
+	//
+	// end
 }
 
 - (void)writeDevicePrefs:(BOOL)is2ch
@@ -1046,6 +1095,20 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	//	CFRelease(map[i]);
 	
 	//CFRelease(arrayName);
+	
+	// iSchemy's edit
+	//
+	// I think that this needs no commentary
+	if(is2ch){
+		char cloneValue = thruEng->CloneChannels();
+		CFNumberRef clone = (CFNumberRef)CFNumberCreate(kCFAllocatorSystemDefault, kCFNumberCharType, &cloneValue);
+		CFPreferencesSetAppValue(CFSTR("Clone channels"),
+								 clone,
+								 kCFPreferencesCurrentApplication);
+		CFRelease(clone);
+	}
+	//
+	// end
 	
 	CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }

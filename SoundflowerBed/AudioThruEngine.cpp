@@ -333,17 +333,30 @@ OSStatus AudioThruEngine::OutputIOProc (	AudioDeviceID			inDevice,
 		// not the most efficient, but this should handle devices with multiple streams [i think]
 		// with identitical formats [we know soundflower input channels are always one stream]
 		UInt32 innchnls = This->mInputDevice.mFormat.mChannelsPerFrame;
-		for (UInt32 chan = 0; chan < innchnls; chan++)
+		
+		// iSchemy's edit
+		//
+		// this solution will probably be a little bit less efficient
+		// but I wanted to retain the functionality of previous solution
+		// and only add new function
+		// Activity Monitor says it's not bad. 14.8MB and 3% CPU for me
+		// is IMHO insignificant
+		UInt32* chanstart = new UInt32[16];
+			
+		for (UInt32 buf = 0; buf < outOutputData->mNumberBuffers; buf++)
 		{
-			UInt32 chanstart = 0;
-					
-			for (UInt32 buf = 0; buf < outOutputData->mNumberBuffers; buf++)
+			for (int i = 0; i < 16; i++)
+				chanstart[i] = 0;
+			UInt32 outnchnls = outOutputData->mBuffers[buf].mNumberChannels;
+			for (UInt32 chan = 0; chan < 
+					((This->CloneChannels() && innchnls==2) ? outnchnls : innchnls);
+					chan++)
 			{
-				UInt32 outChan = This->GetChannelMap(chan) - chanstart;		
-				UInt32 outnchnls = outOutputData->mBuffers[buf].mNumberChannels;			
+				UInt32 outChan = This->GetChannelMap(chan) - chanstart[chan];		
 				if (outChan >= 0 && outChan < outnchnls)
 				{
-					float *in = (float *)This->mWorkBuf + chan;
+					// odd-even
+					float *in = (float *)This->mWorkBuf + (chan % innchnls); 
 					float *out = (float *)outOutputData->mBuffers[buf].mData + outChan;		
 					long framesize = outnchnls * sizeof(float);
 
@@ -354,11 +367,15 @@ OSStatus AudioThruEngine::OutputIOProc (	AudioDeviceID			inDevice,
 						out += outnchnls;
 					}
 				}
-				
-				chanstart += outnchnls;
+				chanstart[chan] += outnchnls;
 			}
 		}
 		
+		delete [] chanstart;
+		
+		//
+		// end
+					
 		This->mThruTime = delta;
 		
 		//This->ApplyLoad(This->mOutputLoad);
