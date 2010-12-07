@@ -41,8 +41,11 @@
 
 OSDefineMetaClassAndStructors(SoundflowerDevice, IOAudioDevice)
 
-const SInt32 SoundflowerDevice::kVolumeMax = 65535;
-const SInt32 SoundflowerDevice::kGainMax = 65535;
+// There should probably only be one of these? This needs to be 
+// set to the last valid position of the log lookup table. 
+const SInt32 SoundflowerDevice::kVolumeMax = 99;
+const SInt32 SoundflowerDevice::kGainMax = 99;
+
 
 
 
@@ -124,7 +127,7 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
     IOAudioControl*	control = NULL;
     
     for (UInt32 channel=0; channel <= 16; channel++) {
-        mVolume[channel] = mGain[channel] = 65535;
+        mVolume[channel] = mGain[channel] = kVolumeMax;
         mMuteOut[channel] = mMuteIn[channel] = false;
     }
     
@@ -145,10 +148,17 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
         // and a db range from -72 to 0
         // Once each control is added to the audio engine, they should be released
         // so that when the audio engine is done with them, they get freed properly
+		 
+		 // Volume level notes.
+		 //
+		 // Previously, the minimum volume was actually 10*log10(1/65535) = -48.2 dB. In the new
+		 // scheme, we use a size 100 lookup table to compute the correct log scaling. And set
+		 // the minimum to -40 dB. Perhaps -50 dB would have been better, but this seems ok.
+		 
         control = IOAudioLevelControl::createVolumeControl(SoundflowerDevice::kVolumeMax,		// Initial value
                                                            0,									// min value
                                                            SoundflowerDevice::kVolumeMax,		// max value
-                                                           (-72 << 16) + (32768),				// -72 in IOFixed (16.16)
+                                                           (-40 << 16) + (32768),				// -72 in IOFixed (16.16)
                                                            0,									// max 0.0 in IOFixed
                                                            channel,								// kIOAudioControlChannelIDDefaultLeft,
                                                            channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
@@ -161,7 +171,7 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
                                                            0,									// min value
                                                            SoundflowerDevice::kGainMax,			// max value
                                                            0,									// min 0.0 in IOFixed
-                                                           (72 << 16) + (32768),				// 72 in IOFixed (16.16)
+                                                           (40 << 16) + (32768),				// 72 in IOFixed (16.16)
                                                            channel,								// kIOAudioControlChannelIDDefaultLeft,
                                                            channelNameMap[channel],				// kIOAudioControlChannelNameLeft,
                                                            channel,								// control ID - driver-defined
