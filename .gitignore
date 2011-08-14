@@ -10,4 +10,5 @@ todo.txt
 *.log  # Will exclude all .log files
 *.mode1v3
 *.pbxuser
+*.perspective*
 build
