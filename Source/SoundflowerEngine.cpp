@@ -317,8 +317,8 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 			goto Error;
         }
 
-        snprintf(inputStreamName, 64, "Soundflower Input Stream #%u", streamNum + 1);
-        snprintf(outputStreamName, 64, "Soundflower Output Stream #%u", streamNum + 1);
+        snprintf(inputStreamName, 64, "Soundflower Input Stream #%u", (unsigned int)streamNum + 1);
+        snprintf(outputStreamName, 64, "Soundflower Output Stream #%u", (unsigned int)streamNum + 1);
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
@@ -416,7 +416,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         for (channelID = startingChannelID; channelID < (startingChannelID + maxNumChannels); channelID++) {
             char channelName[20];
             
-            snprintf(channelName, 20, "Channel %u", channelID);
+            snprintf(channelName, 20, "Channel %u", (unsigned int)channelID);
         }
         
         startingChannelID += maxNumChannels;
