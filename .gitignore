@@ -12,3 +12,4 @@ todo.txt
 *.pbxuser
 *.perspective*
 build
+.DS_Store
