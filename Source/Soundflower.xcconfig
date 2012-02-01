@@ -2,12 +2,10 @@
 // Also assumes that you have done a 'custom' install of Xcode 3.2 and manually chosen to install the OS 10.4 SDK
 
 //SDKROOT[arch=ppc] = /Developer/SDKs/MacOSX10.4u.sdk
-SDKROOT[arch=i386] = /Developer/SDKs/MacOSX10.6.sdk
-SDKROOT[arch=x86_64] = /Developer/SDKs/MacOSX10.6.sdk
+SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
 
 //GCC_VERSION[arch=ppc] = 4.0
-GCC_VERSION[arch=i386] = com.apple.compilers.llvmgcc42
-GCC_VERSION[arch=x86_64] = com.apple.compilers.llvmgcc42
+GCC_VERSION = com.apple.compilers.llvmgcc42
 
 MACOSX_DEPLOYMENT_TARGET = 10.6
 MODULE_VERSION = 1.6.0

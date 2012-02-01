@@ -289,7 +289,6 @@
 		222FE2FA0EBB5DD500FD13FC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 			};
 			name = Deployment;
 		};
@@ -299,15 +298,17 @@
 			buildSettings = {
 				ARCHS = (
 					x86_64,
-					ppc,
 					i386,
 				);
 				COPY_PHASE_STRIP = NO;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(PROJECT_DIR)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /build;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = Soundflowerbed;
 				SECTORDER_FLAGS = "";
@@ -325,12 +326,14 @@
 			buildSettings = {
 				ARCHS = (
 					x86_64,
-					ppc,
 					i386,
 				);
 				COPY_PHASE_STRIP = YES;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = "$(PROJECT_DIR)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /build;
 				PRODUCT_NAME = Soundflowerbed;
 				SECTORDER_FLAGS = "";
 				WARNING_CFLAGS = (
