@@ -29,9 +29,14 @@ err = nil
 
 @svn_root = ".."
 @source = "#{@svn_root}/Source"
+@source_sfb = "#{@svn_root}/SoundflowerBed"
+
 
 configuration = "Development" if configuration == "dev"
 configuration = "Deployment" if configuration == "dep"
+
+
+###################################################################
 
 puts "  Building the new Soundflower.kext with Xcode"
 
@@ -49,6 +54,26 @@ else
   puts "    BUILD FAILED"
 end
 
+
+###################################################################
+
+puts "  Building the new Soundflowerbed.app with Xcode"
+
+Dir.chdir("#{@source_sfb}")
+Open3.popen3("xcodebuild -project Soundflowerbed.xcodeproj -target Soundflowerbed -configuration #{configuration} clean build") do |stdin, stdout, stderr|
+  out = stdout.read
+  err = stderr.read
+end
+
+
+if /BUILD SUCCEEDED/.match(out)
+  puts "    BUILD SUCCEEDED"
+else
+  puts "    BUILD FAILED"
+end
+
+
+###################################################################
 
 puts "  Done."
 puts ""
