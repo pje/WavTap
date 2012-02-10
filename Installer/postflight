@@ -12,6 +12,6 @@ sudo chgrp -R wheel /System/Library/Extensions/Soundflower.kext
 
 echo "fixing accessibility of installed files for all admin users"
 
-sudo chmod -R g+r /System/Library/Extensions/Soundflower.kext
-sudo chmod -R g+w /System/Library/Extensions/Soundflower.kext
 sudo chmod -R a+r /Applications/Soundflower
+sudo chmod -R g+w /Applications/Soundflower
+sudo chmod a+x /Applications/Soundflower
