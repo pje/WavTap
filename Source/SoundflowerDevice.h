@@ -35,7 +35,6 @@
 #define SEPARATE_INPUT_BUFFERS_KEY		"SeparateInputBuffers"
 #define SoundflowerDevice				com_cycling74_driver_SoundflowerDevice
 
-
 class SoundflowerEngine;
 
 class SoundflowerDevice : public IOAudioDevice
@@ -51,10 +50,10 @@ class SoundflowerDevice : public IOAudioDevice
 	
 	// instance members
 
-	SInt32 mVolume[17];
-    SInt32 mMuteOut[17];
-    SInt32 mMuteIn[17];
-    SInt32 mGain[17];
+    SInt32 mVolume[NUM_CHANS+1];
+    SInt32 mMuteOut[NUM_CHANS+1];
+    SInt32 mMuteIn[NUM_CHANS+1];
+    SInt32 mGain[NUM_CHANS+1];
 
 	
 	// methods

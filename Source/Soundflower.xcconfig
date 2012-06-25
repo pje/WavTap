@@ -9,3 +9,5 @@ GCC_VERSION = com.apple.compilers.llvmgcc42
 
 MACOSX_DEPLOYMENT_TARGET = 10.6
 MODULE_VERSION = 1.6.2
+
+NUM_CHANS = 64

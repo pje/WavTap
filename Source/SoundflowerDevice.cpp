@@ -126,12 +126,12 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 {
     IOAudioControl*	control = NULL;
     
-    for (UInt32 channel=0; channel <= 16; channel++) {
+    for (UInt32 channel=0; channel <= NUM_CHANS; channel++) {
         mVolume[channel] = mGain[channel] = kVolumeMax;
         mMuteOut[channel] = mMuteIn[channel] = false;
     }
     
-    const char *channelNameMap[17] = {	kIOAudioControlChannelNameAll,
+    const char *channelNameMap[NUM_CHANS+1] = {	kIOAudioControlChannelNameAll,
 										kIOAudioControlChannelNameLeft,
 										kIOAudioControlChannelNameRight,
 										kIOAudioControlChannelNameCenter,
@@ -139,10 +139,10 @@ bool SoundflowerDevice::initControls(SoundflowerEngine* audioEngine)
 										kIOAudioControlChannelNameRightRear,
 										kIOAudioControlChannelNameSub };
 	
-    for (UInt32 channel=7; channel <= 16; channel++)
+    for (UInt32 channel=7; channel <= NUM_CHANS; channel++)
         channelNameMap[channel] = "Unknown Channel";
     
-    for (unsigned channel=0; channel <= 16; channel++) {
+    for (unsigned channel=0; channel <= NUM_CHANS; channel++) {
 		
         // Create an output volume control for each channel with an int range from 0 to 65535
         // and a db range from -72 to 0

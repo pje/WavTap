@@ -76,7 +76,7 @@
 					<key>BlockSize</key>
 					<integer>8192</integer>
 					<key>Description</key>
-					<string>Soundflower (16ch)</string>
+					<string>Soundflower (${NUM_CHANS}ch)</string>
 					<key>Formats</key>
 					<array>
 						<dict>
@@ -93,7 +93,7 @@
 							<key>IOAudioStreamIsMixable</key>
 							<integer>1</integer>
 							<key>IOAudioStreamNumChannels</key>
-							<integer>16</integer>
+							<integer>64</integer>
 							<key>IOAudioStreamNumericRepresentation</key>
 							<integer>1936289396</integer>
 							<key>IOAudioStreamSampleFormat</key>
