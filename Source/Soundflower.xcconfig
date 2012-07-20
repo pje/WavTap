@@ -8,6 +8,6 @@ SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
 GCC_VERSION = com.apple.compilers.llvmgcc42
 
 MACOSX_DEPLOYMENT_TARGET = 10.6
-MODULE_VERSION = 1.6.2
+MODULE_VERSION = 1.6.3
 
 NUM_CHANS = 64
