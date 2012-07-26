@@ -140,7 +140,7 @@ protected:
 	double			mInputLoad, mOutputLoad;
 	double			mThruTime;
 	
-	int				mChannelMap[16];
+	int				mChannelMap[64];
 	AudioDeviceIOProc mOutputIOProc;
 	//char			mErrorMessage[128];
 	

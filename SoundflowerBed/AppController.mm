@@ -586,7 +586,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 	
 	if (mSoundflower16Device) {
 	
-		m16chMenu = [mMenu addItemWithTitle:@"Soundflower (16ch)" action:@selector(doNothing) keyEquivalent:@""];
+		m16chMenu = [mMenu addItemWithTitle:@"Soundflower (64ch)" action:@selector(doNothing) keyEquivalent:@""];
 		[m16chMenu setImage:[NSImage imageNamed:@"sf16"]];
 		[m16chMenu setTarget:self];
 		m16StartIndex = [mMenu indexOfItem:m16chMenu];
@@ -702,7 +702,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 			i--;
 			thelist.erase(toerase);
 		}
-		else if (0 == strcmp("Soundflower (16ch)", (*i).mName)) {
+		else if (0 == strcmp("Soundflower (64ch)", (*i).mName)) {
 			mSoundflower16Device = (*i).mID;
 			AudioDeviceList::DeviceList::iterator toerase = i;
 			i--;
@@ -1029,7 +1029,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 - (void)readDevicePrefs:(BOOL)is2ch
 {
 	AudioThruEngine	*thruEng = (is2ch ? gThruEngine2 : gThruEngine16);
-	int numChans = (is2ch ? 2 : 16);
+	int numChans = (is2ch ? 2 : 64);
 	CFStringRef arrayName = [self formDevicePrefName:is2ch];
 	CFArrayRef mapArray = (CFArrayRef) CFPreferencesCopyAppValue(arrayName, kCFPreferencesCurrentApplication);
 	
@@ -1076,8 +1076,8 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 - (void)writeDevicePrefs:(BOOL)is2ch
 {
 	AudioThruEngine	*thruEng = (is2ch ? gThruEngine2 : gThruEngine16);
-	int numChans = (is2ch ? 2 : 16);
-	CFNumberRef map[16];
+	int numChans = (is2ch ? 2 : 64);
+	CFNumberRef map[64];
 	
 	CFStringRef arrayName = [self formDevicePrefName:is2ch];
 	

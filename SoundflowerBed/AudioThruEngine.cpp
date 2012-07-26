@@ -65,7 +65,7 @@ AudioThruEngine::AudioThruEngine() :
 	mInputBuffer = new AudioRingBuffer(4, 88200);
 	
 	// init routing map to default chan->chan
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 64; i++)
 		mChannelMap[i] = i;		
 }
 
@@ -192,10 +192,10 @@ void	AudioThruEngine::Start()
 	verify_noerr (AudioDeviceAddIOProc(mInputDevice.mID, InputIOProc, this));
 	verify_noerr (AudioDeviceStart(mInputDevice.mID, InputIOProc));
 	
-	if (mInputDevice.CountChannels() == 16)
-		mOutputIOProc = OutputIOProc16;
-	else
+	if (mInputDevice.CountChannels() == 2)
 		mOutputIOProc = OutputIOProc;
+	else
+		mOutputIOProc = OutputIOProc16;
 		
 
 	verify_noerr (AudioDeviceAddIOProc(mOutputDevice.mID, mOutputIOProc, this));
@@ -341,11 +341,11 @@ OSStatus AudioThruEngine::OutputIOProc (	AudioDeviceID			inDevice,
 		// and only add new function
 		// Activity Monitor says it's not bad. 14.8MB and 3% CPU for me
 		// is IMHO insignificant
-		UInt32* chanstart = new UInt32[16];
+		UInt32* chanstart = new UInt32[64];
 			
 		for (UInt32 buf = 0; buf < outOutputData->mNumberBuffers; buf++)
 		{
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 64; i++)
 				chanstart[i] = 0;
 			UInt32 outnchnls = outOutputData->mBuffers[buf].mNumberChannels;
 			for (UInt32 chan = 0; chan < 
