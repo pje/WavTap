@@ -1,13 +1,12 @@
-// Note: currently assumes that you are compiling with Xcode 3.2 on OS 10.6
-// Also assumes that you have done a 'custom' install of Xcode 3.2 and manually chosen to install the OS 10.4 SDK
 
 //SDKROOT[arch=ppc] = /Developer/SDKs/MacOSX10.4u.sdk
-SDKROOT = macosx10.7
+SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
+//SDKROOT = macosx10.7
 
 //GCC_VERSION[arch=ppc] = 4.0
 GCC_VERSION = com.apple.compilers.llvmgcc42
 
-MACOSX_DEPLOYMENT_TARGET = 10.7
-MODULE_VERSION = 1.7.0
+MACOSX_DEPLOYMENT_TARGET = 10.6
+MODULE_VERSION = 1.6.4
 
 NUM_CHANS = 64
