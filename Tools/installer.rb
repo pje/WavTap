@@ -104,6 +104,7 @@ cmd("rm -rfv \"#{@svn_root}/Installers/Soundflower.pkg\"")
 #cmd("packagemaker --verbose --root \"#{@svn_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@svn_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@svn_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
 cmd("packagemaker --verbose --doc \"#{@svn_root}/Installer/Soundflower.pmdoc\" --out \"#{@build_folder}/Soundflower-unsigned.pkg\" --certificate \"3rd Party Mac Developer Application: Cycling '74\"")
 cmd("productsign --sign \"3rd Party Mac Developer Installer: Cycling '74\" \"#{@build_folder}/Soundflower-unsigned.pkg\" \"#{@build_folder}/Soundflower.pkg\"")
+cmd("rm -rf \"#{@build_folder}/Soundflower-unsigned.pkg\"")
 
 puts "  Copying readme, license, etc...."
 cmd("cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
