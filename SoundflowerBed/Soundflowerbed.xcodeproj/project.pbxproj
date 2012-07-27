@@ -307,6 +307,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/Soundflower;
 				PRODUCT_NAME = Soundflowerbed;
+				SDKROOT = macosx10.7;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (
@@ -329,6 +330,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/Soundflower;
 				PRODUCT_NAME = Soundflowerbed;
+				SDKROOT = macosx10.7;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (
