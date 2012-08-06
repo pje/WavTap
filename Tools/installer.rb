@@ -76,7 +76,7 @@ end
 def getversion()
   theVersion = "0.0.0"
 
-  f = File.open("../Build/Soundflower.kext/Contents/Info.plist", "r")
+  f = File.open("#{@svn_root}/Build/Soundflower.kext/Contents/Info.plist", "r")
   str = f.read
   theVersion = str.match(/<key>CFBundleShortVersionString<\/key>\n.*<string>(.*)<\/string>/).captures[0]
   f.close
