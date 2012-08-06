@@ -47,12 +47,12 @@ Open3.popen3("xcodebuild -project Soundflower.xcodeproj -target SoundflowerDrive
 end
 
 
-if /BUILD SUCCEEDED/.match(out)
-  puts "    BUILD SUCCEEDED"
-  puts `ruby #{@svn_root}/Tools/load.rb`
-else
-  puts "    BUILD FAILED"
-end
+#if /BUILD SUCCEEDED/.match(out)
+#  puts "    BUILD SUCCEEDED"
+#  puts `ruby #{@svn_root}/Tools/load.rb`
+#else
+#  puts "    BUILD FAILED"
+#end
 
 
 ###################################################################
