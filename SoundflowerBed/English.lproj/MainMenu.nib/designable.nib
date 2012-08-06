@@ -94,7 +94,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="979784372">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">138412032</int>
-								<string key="NSContents">Soundflowerbed v1.6.5</string>
+								<string key="NSContents">Soundflowerbed v1.6.6</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande-Bold</string>
 									<double key="NSSize">13</double>
