@@ -2,8 +2,7 @@
 
 ###################################################################
 # make an installer for Soundflower
-# requires: you must have already performed a Deployment build and
-# thus have the kext installed to /System/Library/Extensions
+# requires: you must have already performed a Deployment build
 ###################################################################
 
 require 'open3'
@@ -77,7 +76,7 @@ end
 def getversion()
   theVersion = "0.0.0"
 
-  f = File.open("/System/Library/Extensions/Soundflower.kext/Contents/Info.plist", "r")
+  f = File.open("../Build/Soundflower.kext/Contents/Info.plist", "r")
   str = f.read
   theVersion = str.match(/<key>CFBundleShortVersionString<\/key>\n.*<string>(.*)<\/string>/).captures[0]
   f.close
