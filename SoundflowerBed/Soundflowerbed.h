@@ -6,9 +6,9 @@
 
 @interface Soundflowerbed : NSObject
 {
-	
-//	AudioDeviceList *			mInputDeviceList;
-//	AudioDeviceList *			mOutputDeviceList;
+
+//  AudioDeviceList *      mInputDeviceList;
+//  AudioDeviceList *      mOutputDeviceList;
 }
 
 - (void)doNothing;

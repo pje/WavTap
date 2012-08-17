@@ -24,24 +24,24 @@ static SFStatusItemController * _defaultController = nil;
 
 + (SFStatusItemController*)defaultController
 {
-	if(_defaultController == nil)
-		_defaultController = [[SFStatusItemController alloc] init];
-	return _defaultController;
+  if(_defaultController == nil)
+    _defaultController = [[SFStatusItemController alloc] init];
+  return _defaultController;
 }
 
 - init
 {
-	self = [super init];
-	
-	_statusItem = nil;
-    
-	return self;
+  self = [super init];
+
+  _statusItem = nil;
+
+  return self;
 }
 
 - (void)dealloc
 {
-	[_statusItem release];
-	[super dealloc];
+  [_statusItem release];
+  [super dealloc];
 }
 
 - (void)setDelegate:(id)delegate
@@ -61,46 +61,46 @@ static SFStatusItemController * _defaultController = nil;
 
 - (void)setShowStatusItem:(BOOL)showStatusItem
 {
-	if(showStatusItem && _statusItem == nil) {
-		_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-		[_statusItem retain];
-		[_statusItem setHighlightMode:YES];
-        
-		[self setStreaming:NO];
-		
-		[[[_statusItem _button] cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSize]]];
-		
-		NSMenu * menu = [[NSMenu alloc] init];
-		
+  if(showStatusItem && _statusItem == nil) {
+    _statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    [_statusItem retain];
+    [_statusItem setHighlightMode:YES];
+
+    [self setStreaming:NO];
+
+    [[[_statusItem _button] cell] setFont:[NSFont systemFontOfSize:[NSFont systemFontSize]]];
+
+    NSMenu * menu = [[NSMenu alloc] init];
+
         [self _addMenuItemForPref:SENDER_ACTIVE title:NSLocalizedString(@"Send audio", nil) toMenu:menu];
-        
+
         NSMenuItem * resetLagMenuItem = [menu addItemWithTitle:NSLocalizedString(@"Reset lag", nil) action:@selector(resetLag) keyEquivalent:@""];
         [resetLagMenuItem bind:@"enabled" toObject:[SFPreferencesManager sharedPreferencesManager] withKeyPath:SENDER_ACTIVE options:nil];
-		[resetLagMenuItem setTarget:_delegate];
-        
+    [resetLagMenuItem setTarget:_delegate];
+
         [menu addItem:[NSMenuItem separatorItem]];
-        
-        
+
+
         [self _addMenuItemForPref:RECEIVER_ACTIVE title:NSLocalizedString(@"Receive audio", nil) toMenu:menu];
 
-		[menu addItem:[NSMenuItem separatorItem]];
-		
-		NSMenuItem * openPrefPanelMenuItem = [menu addItemWithTitle:NSLocalizedString(@"Configure\\U2026", nil) action:@selector(openSoundflyPanel) keyEquivalent:@""];
-		[openPrefPanelMenuItem setTarget:self];
-		
-		[_statusItem setMenu:menu];
-		[menu release];
-	}
-	else if(!showStatusItem && _statusItem != nil) {
-		[[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
-		[_statusItem release];
-		_statusItem = nil;
-	}
+    [menu addItem:[NSMenuItem separatorItem]];
+
+    NSMenuItem * openPrefPanelMenuItem = [menu addItemWithTitle:NSLocalizedString(@"Configure\\U2026", nil) action:@selector(openSoundflyPanel) keyEquivalent:@""];
+    [openPrefPanelMenuItem setTarget:self];
+
+    [_statusItem setMenu:menu];
+    [menu release];
+  }
+  else if(!showStatusItem && _statusItem != nil) {
+    [[NSStatusBar systemStatusBar] removeStatusItem:_statusItem];
+    [_statusItem release];
+    _statusItem = nil;
+  }
 }
 
 - (BOOL)showStatusItem
 {
-	return (_statusItem != nil);
+  return (_statusItem != nil);
 }
 
 - (void)setStreaming:(BOOL)streaming
@@ -115,12 +115,12 @@ static SFStatusItemController * _defaultController = nil;
 
 - (void)switchMenuItem:(id)sender
 {
-	[[SFPreferencesManager sharedPreferencesManager] setValue:[NSNumber numberWithBool:![sender state]] forKey:[sender representedObject]];
+  [[SFPreferencesManager sharedPreferencesManager] setValue:[NSNumber numberWithBool:![sender state]] forKey:[sender representedObject]];
 }
 
 - (void)openSoundflyPanel
 {
-	[[NSWorkspace sharedWorkspace] showPreferencesPaneWithID:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"] async:YES];
+  [[NSWorkspace sharedWorkspace] showPreferencesPaneWithID:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"] async:YES];
 }
 
 @end

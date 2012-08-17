@@ -13,12 +13,12 @@
 @interface SFPreferencePane : NSPreferencePane
 {
     BOOL _active;
-    
+
     int _senderStatus;
     int _receiverStatus;
-    
+
     IBOutlet NSWindow * _aboutWindow;
-	IBOutlet SFVersionTextField * _versionTextField;
+  IBOutlet SFVersionTextField * _versionTextField;
 }
 
 - (BOOL)isLeopardOrBetter;

@@ -31,10 +31,10 @@ static NSImage * kSFProblemImage = nil;
     if(self == [SFPreferencePane class]) {
         [self setKeys:[NSArray arrayWithObject:@"senderStatus"] triggerChangeNotificationsForDependentKey:@"senderConnectionImage"];
         [self setKeys:[NSArray arrayWithObject:@"senderStatus"] triggerChangeNotificationsForDependentKey:@"senderConnectionTooltip"];
-        
+
         [self setKeys:[NSArray arrayWithObject:@"receiverStatus"] triggerChangeNotificationsForDependentKey:@"receiverConnectionImage"];
         [self setKeys:[NSArray arrayWithObject:@"receiverStatus"] triggerChangeNotificationsForDependentKey:@"receiverConnectionTooltip"];
-        
+
         NSBundle * prefPaneBundle = [NSBundle bundleForClass:[self class]];
         NSString * offlineImagePath = [prefPaneBundle pathForResource:@"offline" ofType:@"tiff"];
         kSFOfflineImage = [[NSImage alloc] initWithContentsOfFile:offlineImagePath];
@@ -48,21 +48,21 @@ static NSImage * kSFProblemImage = nil;
 - (BOOL)isLeopardOrBetter
 {
     SInt32 MacVersion;
-	if(Gestalt(gestaltSystemVersion, &MacVersion) == noErr)
-		return (MacVersion >= 0x1050);
-	else
-		return NO;
+  if(Gestalt(gestaltSystemVersion, &MacVersion) == noErr)
+    return (MacVersion >= 0x1050);
+  else
+    return NO;
 }
 
 - (void)mainViewDidLoad
 {
     if([self isLeopardOrBetter]) {
-		NSView * mainView = [self mainView];
-		NSRect frame = [mainView frame];
-		frame.size.width = 668.0;
-		[mainView setFrame:frame];
-	}
-    
+    NSView * mainView = [self mainView];
+    NSRect frame = [mainView frame];
+    frame.size.width = 668.0;
+    [mainView setFrame:frame];
+  }
+
     [[SFDaemonManager manager] setDelegate:self];
     [[SFCommunicationManager sharedManager] setDelegate:self];
     [_aboutWindow setDelegate:self];
@@ -70,7 +70,7 @@ static NSImage * kSFProblemImage = nil;
 
 - (void)willSelect
 {
-	[self _checkDaemon];
+  [self _checkDaemon];
     [[SFCommunicationManager sharedManager] startListeners];
     [[SFCommunicationManager sharedManager] requestStatusUpdate];
 }
@@ -82,52 +82,52 @@ static NSImage * kSFProblemImage = nil;
 
 - (BOOL)active
 {
-	return _active;
+  return _active;
 }
 
 - (void)setActive:(BOOL)active
 {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_checkDaemon) object:nil];
-	[self performSelector:@selector(_checkDaemon) withObject:nil afterDelay:1.0];
-	
-	_active = active;
-	
-	if(active) {
-		[[SFDaemonManager manager] launchDaemonIfNeeded];
-		[[SFDaemonManager manager] registerDaemonIfNeeded];
-	}
-	else {
-		[[SFDaemonManager manager] terminateDaemon];
-		[[SFDaemonManager manager] unregisterDaemon];
-	}
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_checkDaemon) object:nil];
+  [self performSelector:@selector(_checkDaemon) withObject:nil afterDelay:1.0];
+
+  _active = active;
+
+  if(active) {
+    [[SFDaemonManager manager] launchDaemonIfNeeded];
+    [[SFDaemonManager manager] registerDaemonIfNeeded];
+  }
+  else {
+    [[SFDaemonManager manager] terminateDaemon];
+    [[SFDaemonManager manager] unregisterDaemon];
+  }
 }
 
 - (void)_checkDaemon
 {
-	if(_active != [[SFDaemonManager manager] isDaemonRunning]) {
-		[self willChangeValueForKey:@"active"];
-		_active = !_active;
-		[self didChangeValueForKey:@"active"];
-	}
+  if(_active != [[SFDaemonManager manager] isDaemonRunning]) {
+    [self willChangeValueForKey:@"active"];
+    _active = !_active;
+    [self didChangeValueForKey:@"active"];
+  }
 }
 
 - (void)deactivate
 {
-	[self setActive:NO];
+  [self setActive:NO];
 }
 
 - (void)daemonDidDie
 {
-	if(_active) {
-		[self willChangeValueForKey:@"active"];
-		_active = NO;
-		[self didChangeValueForKey:@"active"];
-	}
+  if(_active) {
+    [self willChangeValueForKey:@"active"];
+    _active = NO;
+    [self didChangeValueForKey:@"active"];
+  }
 }
 
 - (SFPreferencesManager*)prefs
 {
-	return [SFPreferencesManager sharedPreferencesManager];
+  return [SFPreferencesManager sharedPreferencesManager];
 }
 
 
@@ -138,7 +138,7 @@ static NSImage * kSFProblemImage = nil;
 {
     if(parameterID == kAUNetReceiveParam_Status) {
         int status = (int)value;
-        
+
         if([moduleID isEqualToString:kSFModuleSenderID]) {
             [self willChangeValueForKey:@"senderStatus"];
             _senderStatus = status;
@@ -148,7 +148,7 @@ static NSImage * kSFProblemImage = nil;
             [self willChangeValueForKey:@"receiverStatus"];
             _receiverStatus = status;
             [self didChangeValueForKey:@"receiverStatus"];
-            
+
         }
         NSLog(@"%@ change status to %d", moduleID, (int)value);
     }
@@ -157,7 +157,7 @@ static NSImage * kSFProblemImage = nil;
 - (NSImage*)_imageForStatus:(int)status
 {
     NSImage * image = nil;
-    
+
     switch(status) {
         case kAUNetStatus_NotConnected:
             image = kSFOfflineImage;
@@ -181,8 +181,8 @@ static NSImage * kSFProblemImage = nil;
             image = kSFOfflineImage;
             break;
     }
-    
-    return image;    
+
+    return image;
 }
 
 - (NSImage*)receiverConnectionImage
@@ -248,22 +248,22 @@ static NSImage * kSFProblemImage = nil;
         NSString * daemonPath = [mainBundle pathForResource:SOUNDFLY_DAEMON ofType:@"app"];
         NSBundle * daemonBundle = [NSBundle bundleWithPath:daemonPath];
         NSDictionary * daemonInfoDict = [daemonBundle infoDictionary];
-        
+
         NSString * publicVersion = [infoDict objectForKey:@"CFBundleGetInfoString"];
         NSString * buildVersion = [daemonInfoDict objectForKey:@"CFBundleVersion"];
         //NSString * translationInfo = [infoDict objectForKey:@"TPTranslationInfoString"];
         [_versionTextField setVersions:[NSArray arrayWithObjects:publicVersion, [NSString stringWithFormat:NSLocalizedStringFromTableInBundle(@"Build %@", nil, [NSBundle bundleForClass:[self class]], nil), buildVersion], nil]];
-        
+
     }
 
-	[NSApp beginSheet:_aboutWindow modalForWindow:[[self mainView] window] modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
+  [NSApp beginSheet:_aboutWindow modalForWindow:[[self mainView] window] modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
 }
 
 - (void)closeAboutSheet
 {
-	//DebugLog(@"closeAboutSheet");
-	[NSApp endSheet:_aboutWindow];
-	[_aboutWindow orderOut:nil];
+  //DebugLog(@"closeAboutSheet");
+  [NSApp endSheet:_aboutWindow];
+  [_aboutWindow orderOut:nil];
 }
 
 @end

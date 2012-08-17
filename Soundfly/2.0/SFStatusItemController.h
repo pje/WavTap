@@ -10,7 +10,7 @@
 
 @interface SFStatusItemController : NSObject
 {
-	NSStatusItem * _statusItem;
+  NSStatusItem * _statusItem;
     id _delegate;
 }
 

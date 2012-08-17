@@ -25,16 +25,16 @@
 - init
 {
     self = [super init];
-    
+
     _sender = [[SFSender alloc] init];
     _receiver = [[SFReceiver alloc] init];
     _statusItemController = [[SFStatusItemController alloc] init];
-    
+
     [_sender setDelegate:self];
     [_receiver setDelegate:self];
     [_statusItemController setDelegate:self];
     [[SFCommunicationManager sharedManager] setDelegate:self];
-    
+
     return self;
 }
 
@@ -48,7 +48,7 @@
 - (void)awakeFromNib
 {
     [self _registerConnection];
-    
+
     [_sender bind:@"active" toPref:SENDER_ACTIVE];
     [_receiver bind:@"active" toPref:RECEIVER_ACTIVE];
     [_statusItemController bind:@"showStatusItem" toPref:SHOW_STATUS_ITEM];
@@ -62,42 +62,42 @@
 
 - (void)_registerConnection
 {
-	if(_connection == nil) {
+  if(_connection == nil) {
         NSString * connectionName = [[SFPreferencesManager sharedPreferencesManager] daemonConnectionName];
 
-		/* Kill already launched daemon */
+    /* Kill already launched daemon */
         [[SFCommunicationManager sharedManager] quitDaemon];
-		
-		/* Register new one */
-		_connection = [NSConnection defaultConnection];
-		
-		if([_connection registerName:connectionName]) {
-			//NSLog(@"REGISTER DAEMON %@ with name %@", self, connectionName);
-            
+
+    /* Register new one */
+    _connection = [NSConnection defaultConnection];
+
+    if([_connection registerName:connectionName]) {
+      //NSLog(@"REGISTER DAEMON %@ with name %@", self, connectionName);
+
             [[SFCommunicationManager sharedManager] startListeners];
         }
-		else {
-			_connection = nil;
-			NSLog(@"error registering %@", self);
-		}
-	}
+    else {
+      _connection = nil;
+      NSLog(@"error registering %@", self);
+    }
+  }
 }
 
 - (void)_unregisterConnection
 {
-	if(_connection != nil) {
-		[_connection registerName:nil];
-		_connection = nil;
-        
+  if(_connection != nil) {
+    [_connection registerName:nil];
+    _connection = nil;
+
         [[SFCommunicationManager sharedManager] stopListeners];
-	}
+  }
 }
 
 - (void)_updateStatusForModule:(SFAUModule*)module
 {
     int status = [module status];
     [[SFCommunicationManager sharedManager] moduleWithID:[module moduleID] didChangeParameter:kAUNetReceiveParam_Status toValue:status];
-    
+
     if(module == _receiver) {
         [_statusItemController setStreaming:(status == kAUNetStatus_Connected)];
     }

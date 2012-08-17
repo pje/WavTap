@@ -11,7 +11,7 @@
 
 @interface SFLinkTextField : NSTextField
 {
-	NSTrackingRectTag _trackingRectTag;
+  NSTrackingRectTag _trackingRectTag;
 }
 
 @end

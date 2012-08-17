@@ -11,8 +11,8 @@
 
 @interface SFVersionTextField : NSTextField
 {
-	NSArray * _versions;
-	int _currentVersionIndex;
+  NSArray * _versions;
+  int _currentVersionIndex;
 }
 
 - (void)setVersions:(NSArray*)inVersions;

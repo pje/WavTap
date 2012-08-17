@@ -5,7 +5,7 @@
 
 @interface SFPrefPaneAppController : NSObject
 {
-	NSPreferencePane * prefPane;
-	IBOutlet NSWindow * window;
+  NSPreferencePane * prefPane;
+  IBOutlet NSWindow * window;
 }
 @end

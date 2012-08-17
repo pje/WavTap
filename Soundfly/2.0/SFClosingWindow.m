@@ -12,12 +12,12 @@
 
 - (void)keyDown:(NSEvent*)event
 {
-	[[self delegate] closeAboutSheet];
+  [[self delegate] closeAboutSheet];
 }
 
 - (void)mouseDown:(NSEvent*)event
 {
-	[[self delegate] closeAboutSheet];
+  [[self delegate] closeAboutSheet];
 }
 
 @end

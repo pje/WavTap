@@ -13,41 +13,41 @@
 
 - (void)_commonInit
 {
-	_currentVersionIndex = -1;
-	_versions = nil;
+  _currentVersionIndex = -1;
+  _versions = nil;
 }
 
 - initWithFrame:(NSRect)frame
 {
-	self = [super initWithFrame:frame];
+  self = [super initWithFrame:frame];
 
-	[self _commonInit];
-	
-	return self;
+  [self _commonInit];
+
+  return self;
 }
 
 - initWithCoder:(NSCoder*)coder
 {
-	self = [super initWithCoder:coder];
-	
-	[self _commonInit];
-	
-	return self;
+  self = [super initWithCoder:coder];
+
+  [self _commonInit];
+
+  return self;
 }
 
 - (void)dealloc
 {
-	[_versions release];
-	[super dealloc];
+  [_versions release];
+  [super dealloc];
 }
 
 - (void)setVersions:(NSArray*)versions
 {
-	if(versions != _versions) {
-		[_versions release];
-		_versions = [versions retain];
-		[self changeVersion];
-	}
+  if(versions != _versions) {
+    [_versions release];
+    _versions = [versions retain];
+    [self changeVersion];
+  }
 }
 
 - (NSArray*)versions
@@ -57,20 +57,20 @@
 
 - (void)mouseDown:(NSEvent*)event
 {
-	[self changeVersion];
+  [self changeVersion];
 }
 
 - (void)changeVersion
 {
-	if(_versions == nil || [_versions count] == 0)
-		return;
-	
-	if(++_currentVersionIndex == [_versions count])
-		_currentVersionIndex = 0;
-	
-	NSString * version = [_versions objectAtIndex:_currentVersionIndex];
-	
-	[self setStringValue:version];
+  if(_versions == nil || [_versions count] == 0)
+    return;
+
+  if(++_currentVersionIndex == [_versions count])
+    _currentVersionIndex = 0;
+
+  NSString * version = [_versions objectAtIndex:_currentVersionIndex];
+
+  [self setStringValue:version];
 }
 
 @end

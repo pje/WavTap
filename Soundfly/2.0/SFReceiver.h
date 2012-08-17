@@ -10,10 +10,10 @@
 
 @interface SFReceiver : SFAUModule
 {
-	AudioDeviceID _outputDeviceID;
-    
-	AudioUnit _outputUnit;
-	AudioUnit _netReceiveUnit;
+  AudioDeviceID _outputDeviceID;
+
+  AudioUnit _outputUnit;
+  AudioUnit _netReceiveUnit;
 }
 
 @end

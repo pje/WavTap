@@ -15,20 +15,20 @@
 
 #define CHECK_ERR(function, string) \
 { \
-	OSStatus err = function; \
-	if(err != noErr) { \
-		NSLog(@"%@: %d", string, err); \
-		return err; \
-	} \
+  OSStatus err = function; \
+  if(err != noErr) { \
+    NSLog(@"%@: %d", string, err); \
+    return err; \
+  } \
 }
 
 #define CHECK_ERR_NORET(function, string) \
 { \
-	OSStatus err = function; \
-	if(err != noErr) { \
-		NSLog(@"%@: %d", string, err); \
-		return; \
-	} \
+  OSStatus err = function; \
+  if(err != noErr) { \
+    NSLog(@"%@: %d", string, err); \
+    return; \
+  } \
 }
 
 extern CFStringRef const kSFFirstTimeKey;

@@ -32,7 +32,7 @@ extern NSString * SFDefaultsDidChangeNotification;
 
 @interface SFPreferencesManager : NSObject
 {
-	BOOL _isLocal;
+  BOOL _isLocal;
 }
 
 + (SFPreferencesManager*)sharedPreferencesManager;

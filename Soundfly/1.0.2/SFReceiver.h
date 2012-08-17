@@ -10,10 +10,10 @@
 
 @interface SFReceiver : NSObject
 {
-	AudioDeviceID _outputDeviceID;
-	AudioUnit _outputUnit;
-	AudioUnit _netReceiveUnit;
-	AUGraph _graph;
+  AudioDeviceID _outputDeviceID;
+  AudioUnit _outputUnit;
+  AudioUnit _netReceiveUnit;
+  AUGraph _graph;
 }
 
 - (IBAction)showOptions:(id)sender;

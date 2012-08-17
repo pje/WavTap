@@ -10,9 +10,9 @@
 
 @interface SFDaemonManager : NSObject
 {
-	NSConnection * _connection;
-	id _daemonProxy;
-	id _delegate;
+  NSConnection * _connection;
+  id _daemonProxy;
+  id _delegate;
 }
 
 + (SFDaemonManager*)manager;

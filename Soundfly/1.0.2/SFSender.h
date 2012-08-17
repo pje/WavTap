@@ -10,11 +10,11 @@
 
 @interface SFSender : NSObject
 {
-	AudioDeviceID _outputDeviceID;
-	AudioDeviceID _soundflowerDeviceID;
-	AudioUnit _inputUnit;
-	AudioUnit _netSendUnit;
-	AUGraph _graph;
+  AudioDeviceID _outputDeviceID;
+  AudioDeviceID _soundflowerDeviceID;
+  AudioUnit _inputUnit;
+  AudioUnit _netSendUnit;
+  AUGraph _graph;
 }
 
 - (IBAction)showOptions:(id)sender;

@@ -10,11 +10,11 @@
 
 @interface SFSender : SFAUModule
 {
-	AudioDeviceID _outputDeviceID;
-	AudioDeviceID _soundflowerDeviceID;
-    
-	AudioUnit _inputUnit;
-	AudioUnit _netSendUnit;
+  AudioDeviceID _outputDeviceID;
+  AudioDeviceID _soundflowerDeviceID;
+
+  AudioUnit _inputUnit;
+  AudioUnit _netSendUnit;
 }
 
 @end

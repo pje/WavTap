@@ -24,9 +24,9 @@ static SFDaemonManager * _manager = nil;
 
 + (SFDaemonManager*)manager
 {
-	if(_manager == nil)
-		_manager = [[SFDaemonManager alloc] init];
-	return _manager;
+  if(_manager == nil)
+    _manager = [[SFDaemonManager alloc] init];
+  return _manager;
 }
 
 
@@ -35,24 +35,24 @@ static SFDaemonManager * _manager = nil;
 
 - (void)launchDaemonIfNeeded
 {
-	if(![self isDaemonRunning])
-		[self launchDaemon];
+  if(![self isDaemonRunning])
+    [self launchDaemon];
 }
 
 - (void)launchDaemon
 {
-	//return; // temp disabled
-	NSBundle * mainBundle = [NSBundle bundleForClass:[self class]];
-	NSString * daemonPath = [mainBundle pathForResource:SOUNDFLY_DAEMON ofType:@"app"];
-	[[NSWorkspace sharedWorkspace] openFile:nil withApplication:daemonPath andDeactivate:NO];
+  //return; // temp disabled
+  NSBundle * mainBundle = [NSBundle bundleForClass:[self class]];
+  NSString * daemonPath = [mainBundle pathForResource:SOUNDFLY_DAEMON ofType:@"app"];
+  [[NSWorkspace sharedWorkspace] openFile:nil withApplication:daemonPath andDeactivate:NO];
 }
 
 - (void)terminateDaemon
 {
     [[SFCommunicationManager sharedManager] quitDaemon];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSConnectionDidDieNotification object:_connection];
-	[_connection invalidate];
-	[_connection release];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSConnectionDidDieNotification object:_connection];
+  [_connection invalidate];
+  [_connection release];
     _connection = nil;
 }
 
@@ -62,97 +62,97 @@ static SFDaemonManager * _manager = nil;
 
 - (void)registerDaemonIfNeeded
 {
-	NSMutableDictionary * myDict = [[NSMutableDictionary alloc] init];
-	NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
-	NSBundle * mainBundle = [NSBundle bundleForClass:[self class]];
-	NSMutableArray * loginItems;
-	NSMutableDictionary *newLoginDefaults;
-	
-	[defaults addSuiteNamed:@"loginwindow"];
-	
-	[myDict setObject:[NSNumber numberWithBool:NO] forKey:@"Hide"];
-	[myDict setObject:[mainBundle pathForResource:SOUNDFLY_DAEMON ofType:@"app"] forKey:@"Path"];
-	
-	loginItems = [[NSMutableArray alloc] init];
-	[loginItems addObjectsFromArray:[[defaults persistentDomainForName:@"loginwindow"] objectForKey:@"AutoLaunchedApplicationDictionary"]];
-	
-	/* Remove old Soundfly login items */
-	NSMutableIndexSet * indexesToRemove = [[NSMutableIndexSet alloc] init];
-	
-	int index = 0;
-	int count = [loginItems count];
-	
-	for(index = 0; index < count; index++) {
-		NSDictionary * loginItem = [loginItems objectAtIndex:index];
-		NSString * path = [loginItem objectForKey:@"Path"];
-		if([[path lastPathComponent] isEqualToString:[SOUNDFLY_DAEMON stringByAppendingPathExtension:@"app"]])
-			[indexesToRemove addIndex:index];
-	}
-	
-	if([loginItems respondsToSelector:@selector(removeObjectsAtIndexes:)])
-		[loginItems removeObjectsAtIndexes:indexesToRemove];
-	else {
-		unsigned i = [indexesToRemove lastIndex];
-		while(i != NSNotFound) {
-			[loginItems removeObjectAtIndex:i];
-			i = [indexesToRemove indexLessThanIndex:i];
-		}
-	}
-	[indexesToRemove release];
-	
-	/* Add new */
-	[loginItems addObject:myDict];
-	[myDict release];
-	
-	newLoginDefaults = [NSMutableDictionary dictionaryWithDictionary:[defaults persistentDomainForName:@"loginwindow"]];
-	[newLoginDefaults setObject:loginItems forKey:@"AutoLaunchedApplicationDictionary"];
-	[defaults setPersistentDomain:newLoginDefaults forName:@"loginwindow"];
-	[defaults synchronize];
-	[defaults release];
-	[loginItems release];
+  NSMutableDictionary * myDict = [[NSMutableDictionary alloc] init];
+  NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
+  NSBundle * mainBundle = [NSBundle bundleForClass:[self class]];
+  NSMutableArray * loginItems;
+  NSMutableDictionary *newLoginDefaults;
+
+  [defaults addSuiteNamed:@"loginwindow"];
+
+  [myDict setObject:[NSNumber numberWithBool:NO] forKey:@"Hide"];
+  [myDict setObject:[mainBundle pathForResource:SOUNDFLY_DAEMON ofType:@"app"] forKey:@"Path"];
+
+  loginItems = [[NSMutableArray alloc] init];
+  [loginItems addObjectsFromArray:[[defaults persistentDomainForName:@"loginwindow"] objectForKey:@"AutoLaunchedApplicationDictionary"]];
+
+  /* Remove old Soundfly login items */
+  NSMutableIndexSet * indexesToRemove = [[NSMutableIndexSet alloc] init];
+
+  int index = 0;
+  int count = [loginItems count];
+
+  for(index = 0; index < count; index++) {
+    NSDictionary * loginItem = [loginItems objectAtIndex:index];
+    NSString * path = [loginItem objectForKey:@"Path"];
+    if([[path lastPathComponent] isEqualToString:[SOUNDFLY_DAEMON stringByAppendingPathExtension:@"app"]])
+      [indexesToRemove addIndex:index];
+  }
+
+  if([loginItems respondsToSelector:@selector(removeObjectsAtIndexes:)])
+    [loginItems removeObjectsAtIndexes:indexesToRemove];
+  else {
+    unsigned i = [indexesToRemove lastIndex];
+    while(i != NSNotFound) {
+      [loginItems removeObjectAtIndex:i];
+      i = [indexesToRemove indexLessThanIndex:i];
+    }
+  }
+  [indexesToRemove release];
+
+  /* Add new */
+  [loginItems addObject:myDict];
+  [myDict release];
+
+  newLoginDefaults = [NSMutableDictionary dictionaryWithDictionary:[defaults persistentDomainForName:@"loginwindow"]];
+  [newLoginDefaults setObject:loginItems forKey:@"AutoLaunchedApplicationDictionary"];
+  [defaults setPersistentDomain:newLoginDefaults forName:@"loginwindow"];
+  [defaults synchronize];
+  [defaults release];
+  [loginItems release];
 }
 
 - (void)unregisterDaemon
 {
-	NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
-	NSMutableArray * loginItems;
-	NSMutableDictionary *newLoginDefaults;
-	
-	[defaults addSuiteNamed:@"loginwindow"];
-	
-	loginItems = [[NSMutableArray alloc] init];
-	[loginItems addObjectsFromArray:[[defaults persistentDomainForName:@"loginwindow"] objectForKey:@"AutoLaunchedApplicationDictionary"]];
-	
-	/* Remove old Soundfly login items */
-	NSMutableIndexSet * indexesToRemove = [[NSMutableIndexSet alloc] init];
-	
-	int index = 0;
-	int count = [loginItems count];
-	
-	for(index = 0; index < count; index++) {
-		NSDictionary * loginItem = [loginItems objectAtIndex:index];
-		NSString * path = [loginItem objectForKey:@"Path"];
-		if([[path lastPathComponent] isEqualToString:[SOUNDFLY_DAEMON stringByAppendingPathExtension:@"app"]])
-			[indexesToRemove addIndex:index];
-	}
-	
-	if([loginItems respondsToSelector:@selector(removeObjectsAtIndexes:)])
-		[loginItems removeObjectsAtIndexes:indexesToRemove];
-	else {
-		unsigned i = [indexesToRemove lastIndex];
-		while(i != NSNotFound) {
-			[loginItems removeObjectAtIndex:i];
-			i = [indexesToRemove indexLessThanIndex:i];
-		}
-	}
-	[indexesToRemove release];
-	
-	newLoginDefaults = [NSMutableDictionary dictionaryWithDictionary:[defaults persistentDomainForName:@"loginwindow"]];
-	[newLoginDefaults setObject:loginItems forKey:@"AutoLaunchedApplicationDictionary"];
-	[defaults setPersistentDomain:newLoginDefaults forName:@"loginwindow"];
-	[defaults synchronize];
-	[defaults release];
-	[loginItems release];
+  NSUserDefaults * defaults = [[NSUserDefaults alloc] init];
+  NSMutableArray * loginItems;
+  NSMutableDictionary *newLoginDefaults;
+
+  [defaults addSuiteNamed:@"loginwindow"];
+
+  loginItems = [[NSMutableArray alloc] init];
+  [loginItems addObjectsFromArray:[[defaults persistentDomainForName:@"loginwindow"] objectForKey:@"AutoLaunchedApplicationDictionary"]];
+
+  /* Remove old Soundfly login items */
+  NSMutableIndexSet * indexesToRemove = [[NSMutableIndexSet alloc] init];
+
+  int index = 0;
+  int count = [loginItems count];
+
+  for(index = 0; index < count; index++) {
+    NSDictionary * loginItem = [loginItems objectAtIndex:index];
+    NSString * path = [loginItem objectForKey:@"Path"];
+    if([[path lastPathComponent] isEqualToString:[SOUNDFLY_DAEMON stringByAppendingPathExtension:@"app"]])
+      [indexesToRemove addIndex:index];
+  }
+
+  if([loginItems respondsToSelector:@selector(removeObjectsAtIndexes:)])
+    [loginItems removeObjectsAtIndexes:indexesToRemove];
+  else {
+    unsigned i = [indexesToRemove lastIndex];
+    while(i != NSNotFound) {
+      [loginItems removeObjectAtIndex:i];
+      i = [indexesToRemove indexLessThanIndex:i];
+    }
+  }
+  [indexesToRemove release];
+
+  newLoginDefaults = [NSMutableDictionary dictionaryWithDictionary:[defaults persistentDomainForName:@"loginwindow"]];
+  [newLoginDefaults setObject:loginItems forKey:@"AutoLaunchedApplicationDictionary"];
+  [defaults setPersistentDomain:newLoginDefaults forName:@"loginwindow"];
+  [defaults synchronize];
+  [defaults release];
+  [loginItems release];
 }
 
 
@@ -161,9 +161,9 @@ static SFDaemonManager * _manager = nil;
 
 - (BOOL)_connectToDaemon
 {
-	if(_connection == nil) {
-		NSString * connectionName = [[SFPreferencesManager sharedPreferencesManager] daemonConnectionName];
-		_connection = [[NSConnection connectionWithRegisteredName:connectionName host:nil] retain];
+  if(_connection == nil) {
+    NSString * connectionName = [[SFPreferencesManager sharedPreferencesManager] daemonConnectionName];
+    _connection = [[NSConnection connectionWithRegisteredName:connectionName host:nil] retain];
         if(_connection != nil) {
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_daemonDidDie:) name:NSConnectionDidDieNotification object:_connection];
             return YES;
@@ -171,34 +171,34 @@ static SFDaemonManager * _manager = nil;
         else {
             return NO;
         }
-	}
+  }
     else {
         return YES;
     }
 }
-	
+
 - (BOOL)isDaemonRunning
 {
-	return [self _connectToDaemon];
+  return [self _connectToDaemon];
 }
 
 - (void)setDelegate:(id)delegate
 {
-	_delegate = delegate;
+  _delegate = delegate;
 }
 
 - (void)_daemonDidDie:(NSNotification*)notification
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:NSConnectionDidDieNotification object:[notification object]];
-    
-	NSLog(@"daemon did die");
-    
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:NSConnectionDidDieNotification object:[notification object]];
+
+  NSLog(@"daemon did die");
+
     [_connection invalidate];
-	[_connection release];
+  [_connection release];
     _connection = nil;
 
-	if(_delegate != nil && [_delegate respondsToSelector:@selector(daemonDidDie)])
-		[_delegate daemonDidDie];
+  if(_delegate != nil && [_delegate respondsToSelector:@selector(daemonDidDie)])
+    [_delegate daemonDidDie];
 }
 
 @end

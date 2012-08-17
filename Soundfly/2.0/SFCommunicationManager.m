@@ -22,19 +22,19 @@ static SFCommunicationManager * _sharedManager = nil;
     if(_sharedManager == nil) {
         _sharedManager = [[SFCommunicationManager alloc] init];
     }
-    
+
     return _sharedManager;
 }
 
 - init
 {
-	self = [super init];
-	
-	NSString * appDomainName = [[NSBundle mainBundle] bundleIdentifier];
-	NSString * domainName = [[NSBundle bundleForClass:[self class]] bundleIdentifier];
-	_isDaemon = [domainName isEqualToString:appDomainName];
-	
-	return self;
+  self = [super init];
+
+  NSString * appDomainName = [[NSBundle mainBundle] bundleIdentifier];
+  NSString * domainName = [[NSBundle bundleForClass:[self class]] bundleIdentifier];
+  _isDaemon = [domainName isEqualToString:appDomainName];
+
+  return self;
 }
 
 - (void)setDelegate:(id)delegate
@@ -47,11 +47,11 @@ static SFCommunicationManager * _sharedManager = nil;
     if(_isDaemon) {
         [[NSDistributedNotificationCenter defaultCenter] addObserver:NSApp selector:@selector(terminate:) name:SFQuitDaemonNotification object:nil];
         [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(_requestStatusUpdate:) name:SFRequestStatusUpdateNotification object:nil];
-	}
-	else {
+  }
+  else {
         [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(_parameterDidChange:) name:SFParameterDidChangeNotification object:nil];
-	}
-    
+  }
+
 }
 
 - (void)stopListeners
@@ -60,10 +60,10 @@ static SFCommunicationManager * _sharedManager = nil;
         [[NSDistributedNotificationCenter defaultCenter] removeObserver:NSApp name:SFQuitDaemonNotification object:nil];
         [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:SFRequestStatusUpdateNotification object:nil];
 
-	}
-	else {
+  }
+  else {
         [[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:SFParameterDidChangeNotification object:nil];
-	}
+  }
 }
 
 - (void)quitDaemon

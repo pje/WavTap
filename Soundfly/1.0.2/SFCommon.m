@@ -26,63 +26,63 @@ NSView * SFViewForUnit(AudioUnit unit)
     Boolean isWritable;
     AudioUnitCocoaViewInfo * cocoaViewInfo = NULL;
     UInt32 numberOfClasses;
-    
+
     OSStatus result = AudioUnitGetPropertyInfo(unit, kAudioUnitProperty_CocoaUI, kAudioUnitScope_Global, 0, &dataSize, &isWritable);
-    
+
     numberOfClasses = (dataSize - sizeof(CFURLRef)) / sizeof(CFStringRef);
-    
+
     NSURL * CocoaViewBundlePath = nil;
     NSString * factoryClassName = nil;
-    
+
     if((result == noErr) && (numberOfClasses > 0)) {
         cocoaViewInfo = (AudioUnitCocoaViewInfo *)malloc(dataSize);
         if(AudioUnitGetProperty(unit,
-								kAudioUnitProperty_CocoaUI,
-								kAudioUnitScope_Global,
-								0,
-								cocoaViewInfo,
-								&dataSize) == noErr) {
-            CocoaViewBundlePath	= (NSURL *)cocoaViewInfo->mCocoaAUViewBundleLocation;
+                kAudioUnitProperty_CocoaUI,
+                kAudioUnitScope_Global,
+                0,
+                cocoaViewInfo,
+                &dataSize) == noErr) {
+            CocoaViewBundlePath  = (NSURL *)cocoaViewInfo->mCocoaAUViewBundleLocation;
             factoryClassName = (NSString *)cocoaViewInfo->mCocoaAUViewClass[0];
         }
-		else {
+    else {
             if(cocoaViewInfo != NULL) {
-				free(cocoaViewInfo);
-				cocoaViewInfo = NULL;
-			}
+        free(cocoaViewInfo);
+        cocoaViewInfo = NULL;
+      }
         }
     }
-	
-	NSView * unitView = nil;
-	
-	if(CocoaViewBundlePath && factoryClassName) {
-		NSBundle * viewBundle = [NSBundle bundleWithPath:[CocoaViewBundlePath path]];
-		if(viewBundle == nil) {
-			NSLog(@"Error loading AU view's bundle");
-			return nil;
-		}
-		
-		Class factoryClass = [viewBundle classNamed:factoryClassName];
-		if(factoryClass == Nil) {
+
+  NSView * unitView = nil;
+
+  if(CocoaViewBundlePath && factoryClassName) {
+    NSBundle * viewBundle = [NSBundle bundleWithPath:[CocoaViewBundlePath path]];
+    if(viewBundle == nil) {
+      NSLog(@"Error loading AU view's bundle");
+      return nil;
+    }
+
+    Class factoryClass = [viewBundle classNamed:factoryClassName];
+    if(factoryClass == Nil) {
             NSLog(@"Error getting AU view's factory class from bundle");
             return nil;
         }
-		
-		id factoryInstance = [[factoryClass alloc] init];
-		unitView = [factoryInstance uiViewForAudioUnit:unit withSize:NSZeroSize];
-		[CocoaViewBundlePath release];
-		[factoryInstance release];
-		
-		if(cocoaViewInfo) {
-			UInt32 i;
-			for(i = 0; i < numberOfClasses; i++)
-				CFRelease(cocoaViewInfo->mCocoaAUViewClass[i]);
-			
-			free(cocoaViewInfo);
-		}
-	}
-	
-	return unitView;
+
+    id factoryInstance = [[factoryClass alloc] init];
+    unitView = [factoryInstance uiViewForAudioUnit:unit withSize:NSZeroSize];
+    [CocoaViewBundlePath release];
+    [factoryInstance release];
+
+    if(cocoaViewInfo) {
+      UInt32 i;
+      for(i = 0; i < numberOfClasses; i++)
+        CFRelease(cocoaViewInfo->mCocoaAUViewClass[i]);
+
+      free(cocoaViewInfo);
+    }
+  }
+
+  return unitView;
 }
 
 Boolean SFPrefGetBoolValue(CFStringRef key, Boolean defaultValue)
@@ -93,7 +93,7 @@ Boolean SFPrefGetBoolValue(CFStringRef key, Boolean defaultValue)
     if(!prefExists) {
         value = defaultValue;
     }
-    
+
     return value;
 }
 
@@ -110,7 +110,7 @@ UInt32 SFPrefGetIntValue(CFStringRef key, UInt32 defaultValue)
     if(!prefExists) {
         value = defaultValue;
     }
-    
+
     return value;
 }
 
@@ -127,7 +127,7 @@ CFStringRef SFPrefCopyStringValue(CFStringRef key, CFStringRef defaultValue)
     if(value == NULL && defaultValue != NULL) {
         value = CFRetain(defaultValue);
     }
-    
+
     return value;
 }
 

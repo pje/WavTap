@@ -33,9 +33,9 @@ return; \
 
 @interface SFAUModule : NSObject
 {
-	AUGraph _graph;
+  AUGraph _graph;
     AUEventListenerRef _eventListenerRef;
-    
+
     id _delegate;
 }
 
