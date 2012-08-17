@@ -173,7 +173,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 			};
 			name = Development;
 		};
@@ -182,7 +183,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				INFOPLIST_FILE = "Info-SoundflowerDriver.plist";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 			};
 			name = Deployment;
 		};
@@ -199,6 +201,7 @@
 					"NUM_CHANS=$NUM_CHANS",
 					DEBUG,
 				);
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
@@ -206,6 +209,7 @@
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
 				PRODUCT_NAME = Soundflower;
 				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -225,6 +229,7 @@
 				DSTROOT = "$(PROJECT_DIR)";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "NUM_CHANS=$NUM_CHANS";
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
@@ -232,6 +237,7 @@
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
 				PRODUCT_NAME = Soundflower;
 				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
