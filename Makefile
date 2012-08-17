@@ -16,10 +16,23 @@ SoundflowerBed:
 
 all: Soundflower.kext SoundflowerBed
 
-installer: build
-	cd $(ROOT)/Tools && ./installer.rb
-
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(SF_SRC_DIR)/build
 	rm -rf $(SFB_SRC_DIR)/build
+
+unload:
+	sudo kextunload /System/Library/Extensions/Soundflower.kext #1
+	sudo kextunload /System/Library/Extensions/Soundflower.kext #2
+	# first unload will often fail, but will cause Soundflowers performAudioEngineStop to be called
+
+uninstall:
+	sudo rm -rf /System/Library/Extensions/Soundflower.kext
+	sudo rm -rf /Library/Receipts/Soundflower*
+	sudo rm -rf /var/db/receipts/com.cycling74.soundflower.*
+	sudo rm -rf /Applications/Soundflower
+
+install: all uninstall
+	sudo cp -rv $(ROOT)/Build/Soundflower.kext /System/Library/Extensions
+	sudo kextload -tv /System/Library/Extensions/Soundflower.kext
+	sudo touch /System/Library/Extensions
