@@ -33,7 +33,6 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		222FE3510EBB6D9900FD13FC /* WavTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WavTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		22952B1E104EC967003AF61F /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Soundflower.xcconfig; path = ../Source/Soundflower.xcconfig; sourceTree = SOURCE_ROOT; };
 		229B366F0EDC1DB500623222 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
@@ -120,7 +119,6 @@
 		29B97314FDCFA39411CA2CEA /* AudioThru */ = {
 			isa = PBXGroup;
 			children = (
-				22952B1E104EC967003AF61F /* Soundflower.xcconfig */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -286,7 +284,6 @@
 		};
 		222FE34D0EBB6D9900FD13FC /* Development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22952B1E104EC967003AF61F /* Soundflower.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
@@ -313,7 +310,6 @@
 		};
 		222FE34E0EBB6D9900FD13FC /* Deployment */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 22952B1E104EC967003AF61F /* Soundflower.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
