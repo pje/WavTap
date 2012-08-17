@@ -25,6 +25,7 @@ unload:
 	sudo kextunload /System/Library/Extensions/Soundflower.kext #1
 	sudo kextunload /System/Library/Extensions/Soundflower.kext #2
 	# first unload will often fail, but will cause Soundflowers performAudioEngineStop to be called
+	# TODO: fix
 
 uninstall:
 	sudo rm -rf /System/Library/Extensions/Soundflower.kext
