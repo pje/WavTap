@@ -90,7 +90,7 @@ bool SoundflowerDevice::createAudioEngines()
 		return true;
 	}
     
-    while (audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()) {
+    while ((audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject())) {
 		SoundflowerEngine*	audioEngine = NULL;
 		
         if (OSDynamicCast(OSDictionary, audioEngineDict) == NULL)

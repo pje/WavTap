@@ -1,13 +1,10 @@
-
 //SDKROOT[arch=ppc] = /Developer/SDKs/MacOSX10.4u.sdk
 //SDKROOT = /Developer/SDKs/MacOSX10.6.sdk
 SDKROOT = macosx10.6
 //SDKROOT = macosx10.7
 
-//GCC_VERSION[arch=ppc] = 4.0
 GCC_VERSION = com.apple.compilers.llvmgcc42
 
-MACOSX_DEPLOYMENT_TARGET = 10.6
-MODULE_VERSION = 1.6.6
-
 NUM_CHANS = 64
+MACOSX_DEPLOYMENT_TARGET = 10.8
+MODULE_VERSION = 1.6.6
