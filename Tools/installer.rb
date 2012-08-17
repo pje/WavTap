@@ -21,7 +21,6 @@ Dir.chdir libdir        # change to libdir so that requires work
 Dir.chdir @project_root
 @project_root = Dir.pwd
 
-
 ###################################################################
 # sub routines
 ###################################################################
@@ -58,7 +57,6 @@ def log_error(str)
   @error_log.flush
 end
 
-
 # This defines a wrapper that we use to call shell commands
 def cmd(commandString)
   out = ""
@@ -71,7 +69,6 @@ def cmd(commandString)
   log_error(out)
   log_error(err)
 end
-
 
 def getversion()
   theVersion = "0.0.0"
