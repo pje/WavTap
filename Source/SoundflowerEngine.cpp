@@ -291,14 +291,14 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         UInt32          maxBitWidth = 0;
         UInt32          maxNumChannels = 0;
         OSCollectionIterator*  formatIterator = NULL;
-    OSCollectionIterator*  sampleRateIterator = NULL;
+        OSCollectionIterator*  sampleRateIterator = NULL;
         OSDictionary*      formatDict;
         IOAudioSampleRate    sampleRate;
         IOAudioStreamFormat    initialFormat;
         bool          initialFormatSet;
         UInt32          channelID;
         char          outputStreamName[64];
-    char          inputStreamName[64];
+        char          inputStreamName[64];
 
         initialFormatSet = false;
 
@@ -307,14 +307,14 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 
         inputStream = new IOAudioStream;
         if (inputStream == NULL) {
-      IOLog("SF could not create new input IOAudioStream\n");
+            IOLog("SF could not create new input IOAudioStream\n");
             goto Error;
         }
 
         outputStream = new IOAudioStream;
         if (outputStream == NULL) {
-      IOLog("SF could not create new output IOAudioStream\n");
-      goto Error;
+            IOLog("SF could not create new output IOAudioStream\n");
+            goto Error;
         }
 
         snprintf(inputStreamName, 64, "Soundflower Input Stream #%u", (unsigned int)streamNum + 1);
@@ -322,7 +322,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 
         if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
             !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
-      IOLog("SF could not init one of the streams with audio engine. \n");
+            IOLog("SF could not init one of the streams with audio engine. \n");
             goto Error;
         }
 
@@ -334,7 +334,7 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 
         sampleRateIterator = OSCollectionIterator::withCollection(sampleRateArray);
         if (!sampleRateIterator) {
-      IOLog("SF NULL sampleRateIterator\n");
+            IOLog("SF NULL sampleRateIterator\n");
             goto Error;
         }
 
@@ -343,13 +343,13 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             IOAudioStreamFormat format;
 
             if (OSDynamicCast(OSDictionary, formatDict) == NULL) {
-        IOLog("SF error casting formatDict\n");
+                IOLog("SF error casting formatDict\n");
                 goto Error;
             }
 
             if (IOAudioStream::createFormatFromDictionary(formatDict, &format) == NULL) {
-        IOLog("SF error in createFormatFromDictionary()\n");
-        goto Error;
+                IOLog("SF error in createFormatFromDictionary()\n");
+                goto Error;
             }
 
             if (!initialFormatSet) {
@@ -359,14 +359,14 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             sampleRateIterator->reset();
             while ((number = (OSNumber *)sampleRateIterator->getNextObject())) {
                 if (!OSDynamicCast(OSNumber, number)) {
-          IOLog("SF error iterating sample rates\n");
+                    IOLog("SF error iterating sample rates\n");
                     goto Error;
                 }
 
                 sampleRate.whole = number->unsigned32BitValue();
 
                 inputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
-        outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
+                outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
 
                 if (format.fNumChannels > maxNumChannels) {
                     maxNumChannels = format.fNumChannels;
@@ -401,12 +401,12 @@ bool SoundflowerEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         }
 
         inputStream->setFormat(&initialFormat);
-    inputStream->setSampleBuffer(mBuffer, mBufferSize);
+        inputStream->setSampleBuffer(mBuffer, mBufferSize);
         addAudioStream(inputStream);
         inputStream->release();
 
         outputStream->setFormat(&initialFormat);
-    outputStream->setSampleBuffer(mBuffer, mBufferSize);
+        outputStream->setSampleBuffer(mBuffer, mBufferSize);
         addAudioStream(outputStream);
         outputStream->release();
 
@@ -552,15 +552,15 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
     SInt64        diff;
 
         if (audioEngine) {
-      // make sure we have a client, and thus new data so we don't keep on
-      // just looping around the last client's last buffer!
+            // make sure we have a client, and thus new data so we don't keep on
+            // just looping around the last client's last buffer!
             IOAudioStream *outStream = audioEngine->getAudioStream(kIOAudioStreamDirectionOutput, 1);
             if (outStream->numClients == 0) {
                 // it has, so clean the buffer
                 memset((UInt8*)audioEngine->mThruBuffer, 0, audioEngine->mBufferSize);
             }
 
-      audioEngine->currentBlock++;
+            audioEngine->currentBlock++;
             if (audioEngine->currentBlock >= audioEngine->numBlocks) {
                 audioEngine->currentBlock = 0;
                 audioEngine->takeTimeStamp();
@@ -569,8 +569,8 @@ void SoundflowerEngine::ourTimerFired(OSObject *target, IOTimerEventSource *send
             // calculate next time to fire, by taking the time and comparing it to the time we requested.
             clock_get_uptime(&time);
             absolutetime_to_nanoseconds(time, &thisTimeNS);
-      // this next calculation must be signed or we will introduce distortion after only a couple of vectors
-      diff = ((SInt64)audioEngine->nextTime - (SInt64)thisTimeNS);
+            // this next calculation must be signed or we will introduce distortion after only a couple of vectors
+            diff = ((SInt64)audioEngine->nextTime - (SInt64)thisTimeNS);
             sender->setTimeout(audioEngine->blockTimeoutNS + diff);
             audioEngine->nextTime += audioEngine->blockTimeoutNS;
         }
@@ -584,7 +584,7 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
     UInt32        offset = firstSampleFrame * channelCount;
     UInt32        byteOffset = offset * sizeof(float);
     UInt32        numBytes = numSampleFrames * channelCount * sizeof(float);
-  SoundflowerDevice*  device = (SoundflowerDevice*)audioDevice;
+    SoundflowerDevice*  device = (SoundflowerDevice*)audioDevice;
 
 #if 0
   IOLog("SoundflowerEngine[%p]::clipOutputSamples() -- channelCount:%u \n", this, (uint)channelCount);
@@ -603,9 +603,9 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
 #endif
   mLastValidSampleFrame = firstSampleFrame+numSampleFrames;
 
-// TODO: where is the sampleFrame wrapped?
-// TODO: try to put a mutex around reading and writing
-// TODO: why is the reading always trailing by at least 512 frames? (when 512 is the input framesize)?
+  // TODO: where is the sampleFrame wrapped?
+  // TODO: try to put a mutex around reading and writing
+  // TODO: why is the reading always trailing by at least 512 frames? (when 512 is the input framesize)?
 
   if (device->mMuteIn[0]) {
     memset((UInt8*)mThruBuffer + byteOffset, 0, numBytes);

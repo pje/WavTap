@@ -933,7 +933,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (num) {
     UInt32 val;
     CFNumberGetValue(num, kCFNumberLongType, &val);
-    CFRelease(num);
+//    CFRelease(num);
 
     switch (val) {
       case 64:
@@ -963,7 +963,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (num) {
     UInt32 val;
     CFNumberGetValue(num, kCFNumberLongType, &val);
-    CFRelease(num);
+//    CFRelease(num);
 
     switch (val) {
       case 64:

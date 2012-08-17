@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Soundflowerbed</string>
 	<key>CFBundleIconFile</key>
-	<string>appIcon.icns</string>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>com.cycling74.Soundflowerbed</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -18,6 +18,8 @@
 	<string>SFlB</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
