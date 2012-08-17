@@ -16,7 +16,7 @@ require 'pathname'
 libdir = "."
 Dir.chdir libdir        # change to libdir so that requires work
 
-@svn_root = ".."
+@project_root = ".."
 
 puts "  Unloading and removing existing Soundflower.kext"
 if File.exists?("/System/Library/Extensions/Soundflower.kext")
@@ -29,7 +29,7 @@ if File.exists?("/System/Library/Extensions/Soundflower.kext")
 end
 
 puts "  Copying to /System/Library/Extensions and loading kext"
-`sudo cp -rv "#{@svn_root}/Build/Soundflower.kext" /System/Library/Extensions`
+`sudo cp -rv "#{@project_root}/Build/Soundflower.kext" /System/Library/Extensions`
 `sudo kextload -tv /System/Library/Extensions/Soundflower.kext`
 `sudo touch /System/Library/Extensions`
 

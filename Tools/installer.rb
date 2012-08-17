@@ -15,11 +15,11 @@ include REXML
 libdir = "."
 Dir.chdir libdir        # change to libdir so that requires work
 
-@svn_root = ".."
+@project_root = ".."
 @version = "9.9.9"
 
-Dir.chdir @svn_root
-@svn_root = Dir.pwd
+Dir.chdir @project_root
+@project_root = Dir.pwd
 
 
 ###################################################################
@@ -27,15 +27,15 @@ Dir.chdir @svn_root
 ###################################################################
 
 def create_logs
-  @build_log = File.new("#{@svn_root}/Installer/_installer.log", "w")
+  @build_log = File.new("#{@project_root}/Installer/_installer.log", "w")
   @build_log.write("SOUNDFLOWER INSTALLER LOG: #{`date`}\n\n")
   @build_log.flush
-  @error_log = File.new("#{@svn_root}/Installer/_error.log", "w")
+  @error_log = File.new("#{@project_root}/Installer/_error.log", "w")
   @error_log.write("SOUNDFLOWER INSTALLER ERROR LOG: #{`date`}\n\n")
   @error_log.flush
   trap("SIGINT") { die }
 end
-  
+
 def die
   close_logs
   exit 0
@@ -63,7 +63,7 @@ end
 def cmd(commandString)
   out = ""
   err = ""
-  
+
   Open3.popen3(commandString) do |stdin, stdout, stderr|
     out = stdout.read
     err = stderr.read
@@ -76,11 +76,11 @@ end
 def getversion()
   theVersion = "0.0.0"
 
-  f = File.open("#{@svn_root}/Build/Soundflower.kext/Contents/Info.plist", "r")
+  f = File.open("#{@project_root}/Build/Soundflower.kext/Contents/Info.plist", "r")
   str = f.read
   theVersion = str.match(/<key>CFBundleShortVersionString<\/key>\n.*<string>(.*)<\/string>/).captures[0]
   f.close
-  
+
   puts"  version: #{theVersion}"
   return theVersion;
 end
@@ -92,27 +92,27 @@ end
 create_logs()
 @version = getversion()
 
-@build_folder = "#{@svn_root}/Build/Soundflower-#{@version}"
+@build_folder = "#{@project_root}/Build/Soundflower-#{@version}"
 
 puts "  Creating installer directory structure..."
 cmd("rm -rfv \"#{@build_folder}\"")                       # remove an old temp dir if it exists
 cmd("mkdir -pv \"#{@build_folder}\"")                     # now make a clean one, and build dir structure in it
 
 puts "  Building Package -- this could take a while..."
-cmd("rm -rfv \"#{@svn_root}/Installers/Soundflower.pkg\"")
-#cmd("packagemaker --verbose --root \"#{@svn_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@svn_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@svn_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
-cmd("packagemaker --verbose --doc \"#{@svn_root}/Installer/Soundflower.pmdoc\" --out \"#{@build_folder}/Soundflower-unsigned.pkg\" --certificate \"3rd Party Mac Developer Application: Cycling '74\"")
+cmd("rm -rfv \"#{@project_root}/Installers/Soundflower.pkg\"")
+#cmd("packagemaker --verbose --root \"#{@project_root}/Installer/root\" --id com.cycling74.soundflower --out \"#{@project_root}/Installer/Soundflower/Soundflower.pkg\" --version #{@version} --title Soundflower --resources \"#{@project_root}/Installer/Resources\" --target 10.4 --domain system --root-volume-only")
+cmd("packagemaker --verbose --doc \"#{@project_root}/Installer/Soundflower.pmdoc\" --out \"#{@build_folder}/Soundflower-unsigned.pkg\" --certificate \"3rd Party Mac Developer Application: Cycling '74\"")
 cmd("productsign --sign \"3rd Party Mac Developer Installer: Cycling '74\" \"#{@build_folder}/Soundflower-unsigned.pkg\" \"#{@build_folder}/Soundflower.pkg\"")
 cmd("rm -rf \"#{@build_folder}/Soundflower-unsigned.pkg\"")
 
 puts "  Copying readme, license, etc...."
-cmd("cp \"#{@svn_root}/License.txt\" \"#{@build_folder}\"")
-cmd("cp \"#{@svn_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
-cmd("cp \"#{@svn_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
+cmd("cp \"#{@project_root}/License.txt\" \"#{@build_folder}\"")
+cmd("cp \"#{@project_root}/Installer/ReadMe.rtf\" \"#{@build_folder}\"")
+cmd("cp \"#{@project_root}/Tools/Uninstall Soundflower.scpt\" \"#{@build_folder}\"")
 
 puts "  Creating Disk Image..."
-cmd("rm -rfv \"#{@svn_root}/Installer/Soundflower-#{@version}.dmg\"")
-cmd("hdiutil create -srcfolder \"#{@build_folder}\" \"#{@svn_root}/Build/Soundflower-#{@version}.dmg\"")
+cmd("rm -rfv \"#{@project_root}/Installer/Soundflower-#{@version}.dmg\"")
+cmd("hdiutil create -srcfolder \"#{@build_folder}\" \"#{@project_root}/Build/Soundflower-#{@version}.dmg\"")
 
 puts "  All done!"
 

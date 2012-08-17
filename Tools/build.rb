@@ -27,9 +27,9 @@ version = ARGV[1]
 out = nil
 err = nil
 
-@svn_root = ".."
-@source = "#{@svn_root}/Source"
-@source_sfb = "#{@svn_root}/SoundflowerBed"
+@project_root = ".."
+@source = "#{@project_root}/Source"
+@source_sfb = "#{@project_root}/SoundflowerBed"
 
 
 configuration = "Development" if configuration == "dev"
