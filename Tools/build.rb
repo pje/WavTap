@@ -16,25 +16,19 @@ include REXML
 libdir = "."
 Dir.chdir libdir        # change to libdir so that requires work
 
-if(ARGV.length != 1)
+if(ARGV.length > 1)
   puts "usage: "
-  puts "build.rb <required:configuration (Development|Deployment)>"
+  puts "build.rb [configuration (Development|Deployment)]"
   exit 0;
 end
 
-configuration = ARGV[0]
-version = ARGV[1]
-out = nil
-err = nil
+configuration = ARGV[0] || "Development"
+configuration = "Development" if configuration == "dev"
+configuration = "Deployment" if configuration == "dep"
 
 @project_root = ".."
 @source = "#{@project_root}/Source"
 @source_sfb = "#{@project_root}/SoundflowerBed"
-
-
-configuration = "Development" if configuration == "dev"
-configuration = "Deployment" if configuration == "dep"
-
 
 ###################################################################
 
@@ -42,18 +36,13 @@ puts "  Building the new Soundflower.kext with Xcode"
 
 Dir.chdir("#{@source}")
 Open3.popen3("xcodebuild -project Soundflower.xcodeproj -target SoundflowerDriver -configuration #{configuration} clean build") do |stdin, stdout, stderr|
-  out = stdout.read
-  err = stderr.read
+  if /BUILD SUCCEEDED/.match(stdout.read)
+    puts "    BUILD SUCCEEDED"
+  else
+    puts "    BUILD FAILED"
+    puts "      #{stderr.read}"
+  end
 end
-
-
-if /BUILD SUCCEEDED/.match(out)
- puts "    BUILD SUCCEEDED"
-else
- puts "    BUILD FAILED"
- puts "      #{err}"
-end
-
 
 ###################################################################
 
@@ -61,18 +50,13 @@ puts "  Building the new Soundflowerbed.app with Xcode"
 
 Dir.chdir("#{@source_sfb}")
 Open3.popen3("xcodebuild -project Soundflowerbed.xcodeproj -target Soundflowerbed -configuration #{configuration} clean build") do |stdin, stdout, stderr|
-  out = stdout.read
-  err = stderr.read
+  if /BUILD SUCCEEDED/.match(stdout.read)
+    puts "    BUILD SUCCEEDED"
+  else
+    puts "    BUILD FAILED"
+    puts "      #{stderr.read}"
+  end
 end
-
-
-if /BUILD SUCCEEDED/.match(out)
-  puts "    BUILD SUCCEEDED"
-else
-  puts "    BUILD FAILED"
-  puts "      #{err}"
-end
-
 
 ###################################################################
 
