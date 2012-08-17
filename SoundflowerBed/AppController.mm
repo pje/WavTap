@@ -518,7 +518,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   if (mSoundflower2Device) {
     m2chMenu = [mMenu addItemWithTitle:@"Soundflower (2ch)" action:@selector(doNothing) keyEquivalent:@""];
-    [m2chMenu setImage:[NSImage imageNamed:@"sf2"]];
+//    [m2chMenu setImage:[NSImage imageNamed:@"sf2"]];
     [m2chMenu setTarget:self];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"2ch submenu"];
       NSMenuItem *bufItem = [submenu addItemWithTitle:@"Buffer Size" action:@selector(doNothing) keyEquivalent:@""];
@@ -587,7 +587,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (mSoundflower16Device) {
 
     m16chMenu = [mMenu addItemWithTitle:@"Soundflower (64ch)" action:@selector(doNothing) keyEquivalent:@""];
-    [m16chMenu setImage:[NSImage imageNamed:@"sf16"]];
+//    [m16chMenu setImage:[NSImage imageNamed:@"sf16"]];
     [m16chMenu setTarget:self];
     m16StartIndex = [mMenu indexOfItem:m16chMenu];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"16ch submenu"];
@@ -670,13 +670,13 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   item = [mMenu addItemWithTitle:@"Audio Setup..." action:@selector(doAudioSetup) keyEquivalent:@""];
   [item setTarget:self];
 
-  item = [mMenu addItemWithTitle:@"About Soundflowerbed..." action:@selector(doAbout) keyEquivalent:@""];
+  item = [mMenu addItemWithTitle:@"About WavTap..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
-  // item = [mMenu addItemWithTitle:@"Hide Soundflowerbed" action:@selector(hideMenuItem) keyEquivalent:@""];
+  // item = [mMenu addItemWithTitle:@"Hide WavTap" action:@selector(hideMenuItem) keyEquivalent:@""];
   // [item setTarget:self];
 
-  item = [mMenu addItemWithTitle:@"Quit Soundflowerbed" action:@selector(doQuit) keyEquivalent:@""];
+  item = [mMenu addItemWithTitle:@"Quit WavTap" action:@selector(doQuit) keyEquivalent:@""];
   [item setTarget:self];
 
   [mSbItem setMenu:mMenu];

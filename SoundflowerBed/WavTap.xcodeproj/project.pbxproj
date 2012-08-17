@@ -15,8 +15,6 @@
 		222FE3380EBB6D9900FD13FC /* HelpWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F57307580312E91E01FEEC38 /* HelpWindowController.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		222FE33B0EBB6D9900FD13FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		222FE33C0EBB6D9900FD13FC /* sf16.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C9CCA5E606ED143E0076FAC2 /* sf16.tiff */; };
-		222FE33D0EBB6D9900FD13FC /* sf2.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C9CCA5E706ED143E0076FAC2 /* sf2.tiff */; };
 		222FE33E0EBB6D9900FD13FC /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -34,15 +32,13 @@
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		222FE3510EBB6D9900FD13FC /* Soundflowerbed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundflowerbed.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		222FE3510EBB6D9900FD13FC /* WavTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WavTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22952B1E104EC967003AF61F /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Soundflower.xcconfig; path = ../Source/Soundflower.xcconfig; sourceTree = SOURCE_ROOT; };
 		229B366F0EDC1DB500623222 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		C9CCA5E606ED143E0076FAC2 /* sf16.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = sf16.tiff; sourceTree = "<group>"; };
-		C9CCA5E706ED143E0076FAC2 /* sf2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = sf2.tiff; sourceTree = "<group>"; };
 		C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
@@ -116,7 +112,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				222FE3510EBB6D9900FD13FC /* Soundflowerbed.app */,
+				222FE3510EBB6D9900FD13FC /* WavTap.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,8 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				C9CFAC1E06EFA390001BE11F /* appIcon.icns */,
-				C9CCA5E606ED143E0076FAC2 /* sf16.tiff */,
-				C9CCA5E706ED143E0076FAC2 /* sf2.tiff */,
 				C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				229B366F0EDC1DB500623222 /* Info.plist */,
@@ -184,9 +178,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		222FE3310EBB6D9900FD13FC /* Soundflowerbed */ = {
+		222FE3310EBB6D9900FD13FC /* WavTap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 222FE34C0EBB6D9900FD13FC /* Build configuration list for PBXNativeTarget "Soundflowerbed" */;
+			buildConfigurationList = 222FE34C0EBB6D9900FD13FC /* Build configuration list for PBXNativeTarget "WavTap" */;
 			buildPhases = (
 				222FE3320EBB6D9900FD13FC /* Headers */,
 				222FE3390EBB6D9900FD13FC /* Resources */,
@@ -197,10 +191,10 @@
 			);
 			dependencies = (
 			);
-			name = Soundflowerbed;
+			name = WavTap;
 			productInstallPath = "$(HOME)/Applications";
 			productName = AudioThru;
-			productReference = 222FE3510EBB6D9900FD13FC /* Soundflowerbed.app */;
+			productReference = 222FE3510EBB6D9900FD13FC /* WavTap.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -211,7 +205,7 @@
 			attributes = {
 				LastUpgradeCheck = 0440;
 			};
-			buildConfigurationList = 222FE2FF0EBB5DD500FD13FC /* Build configuration list for PBXProject "Soundflowerbed" */;
+			buildConfigurationList = 222FE2FF0EBB5DD500FD13FC /* Build configuration list for PBXProject "WavTap" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -222,7 +216,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				222FE3310EBB6D9900FD13FC /* Soundflowerbed */,
+				222FE3310EBB6D9900FD13FC /* WavTap */,
 			);
 		};
 /* End PBXProject section */
@@ -234,8 +228,6 @@
 			files = (
 				222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */,
 				222FE33B0EBB6D9900FD13FC /* InfoPlist.strings in Resources */,
-				222FE33C0EBB6D9900FD13FC /* sf16.tiff in Resources */,
-				222FE33D0EBB6D9900FD13FC /* sf2.tiff in Resources */,
 				222FE33E0EBB6D9900FD13FC /* menuIcon.tiff in Resources */,
 				222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */,
 			);
@@ -308,7 +300,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/Soundflower;
-				PRODUCT_NAME = Soundflowerbed;
+				PRODUCT_NAME = WavTap;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (
@@ -332,7 +324,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/Soundflower;
-				PRODUCT_NAME = Soundflowerbed;
+				PRODUCT_NAME = WavTap;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (
@@ -346,7 +338,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		222FE2FF0EBB5DD500FD13FC /* Build configuration list for PBXProject "Soundflowerbed" */ = {
+		222FE2FF0EBB5DD500FD13FC /* Build configuration list for PBXProject "WavTap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222FE2F90EBB5DD500FD13FC /* Development */,
@@ -355,7 +347,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Development;
 		};
-		222FE34C0EBB6D9900FD13FC /* Build configuration list for PBXNativeTarget "Soundflowerbed" */ = {
+		222FE34C0EBB6D9900FD13FC /* Build configuration list for PBXNativeTarget "WavTap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				222FE34D0EBB6D9900FD13FC /* Development */,
