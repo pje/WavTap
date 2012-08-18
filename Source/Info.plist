@@ -5,17 +5,17 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>WavTap</string>
+	<string>Soundflower</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Version ${MODULE_VERSION}</string>
+	<string>Version ${MODULE_VERSION} copyright © 2004-2012 Cycling &apos;74</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.Cycling74.driver.WavTap</string>
+	<string>com.Cycling74.driver.Soundflower</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>WavTap</string>
+	<string>Soundflower</string>
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
@@ -76,7 +76,7 @@
 					<key>BlockSize</key>
 					<integer>8192</integer>
 					<key>Description</key>
-					<string>WavTap</string>
+					<string>Soundflower (${NUM_CHANS}ch)</string>
 					<key>Formats</key>
 					<array>
 						<dict>
@@ -116,11 +116,11 @@
 				</dict>
 			</array>
 			<key>CFBundleIdentifier</key>
-			<string>com.Cycling74.driver.WavTap</string>
+			<string>com.Cycling74.driver.Soundflower</string>
 			<key>IOClass</key>
-			<string>com_cycling74_driver_WavTapDevice</string>
+			<string>com_cycling74_driver_SoundflowerDevice</string>
 			<key>IOMatchCategory</key>
-			<string>com_cycling74_driver_WavTapDevice</string>
+			<string>com_cycling74_driver_SoundflowerDevice</string>
 			<key>IOProviderClass</key>
 			<string>IOResources</string>
 			<key>IOResourceMatch</key>
