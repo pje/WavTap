@@ -15,7 +15,7 @@
 
 /* Begin PBXFileReference section */
 		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
-		2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
+		3ED0D30F15DF2CD4006A6622 /* Soundflower.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
 		54D0ADA60A5E329B006380BD /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3540D62DE4E00C0F5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C93407620601317E002E6A19 /* SoundflowerDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerDevice.h; sourceTree = "<group>"; };
@@ -38,7 +38,7 @@
 		089C166AFE841209C02AAC07 /* SampleAudioDriver */ = {
 			isa = PBXGroup;
 			children = (
-				2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */,
+				3ED0D30F15DF2CD4006A6622 /* Soundflower.xcconfig */,
 				247142CAFF3F8F9811CA285C /* Source */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				19C28FB6FE9D52B211CA2CBB /* Products */,
@@ -190,7 +190,6 @@
 		};
 		54D0ADA20A5E329B006380BD /* Development */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
@@ -221,7 +220,6 @@
 		};
 		54D0ADA30A5E329B006380BD /* Deployment */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COPY_PHASE_STRIP = NO;
