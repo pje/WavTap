@@ -37,3 +37,6 @@ install: all uninstall
 	sudo cp -rv $(ROOT)/Build/Soundflower.kext /System/Library/Extensions
 	sudo kextload -tv /System/Library/Extensions/Soundflower.kext
 	sudo touch /System/Library/Extensions
+
+appIcon.icns:
+	cd $(SFB_SRC_DIR) && tiff2icns appIcon.tiff appIcon.icns

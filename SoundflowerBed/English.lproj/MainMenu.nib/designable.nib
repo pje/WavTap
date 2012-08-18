@@ -57,6 +57,7 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{80, 57}, {216, 34}}</string>
 							<reference key="NSSuperview" ref="845083901"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="375902303"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="979784372">
@@ -95,13 +96,14 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{89, 27}, {199, 42}}</string>
 							<reference key="NSSuperview" ref="845083901"/>
-							<reference key="NSNextKeyView" ref="331648500"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="227147509">
-								<int key="NSCellFlags">67108864</int>
+								<int key="NSCellFlags">69206017</int>
 								<int key="NSCellFlags2">138412032</int>
-								<string key="NSContents">github.com/pje/wav-tap</string>
-								<object class="NSFont" key="NSSupport" id="26">
+								<string key="NSContents">http://github.com/pje/wav-tap</string>
+								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>
 									<int key="NSfFlags">3100</int>
@@ -112,27 +114,10 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
-						<object class="NSTextField" id="331648500">
-							<reference key="NSNextResponder" ref="845083901"/>
-							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{89, 29}, {199, 21}}</string>
-							<reference key="NSSuperview" ref="845083901"/>
-							<reference key="NSNextKeyView"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="628007521">
-								<int key="NSCellFlags">67108864</int>
-								<int key="NSCellFlags2">138412032</int>
-								<string key="NSContents">~&gt;</string>
-								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="331648500"/>
-								<reference key="NSBackgroundColor" ref="515670787"/>
-								<reference key="NSTextColor" ref="2825295"/>
-							</object>
-							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
-						</object>
 					</array>
 					<string key="NSFrameSize">{377, 113}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="587231349"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
@@ -209,7 +194,6 @@
 						<array class="NSMutableArray" key="children">
 							<reference ref="375902303"/>
 							<reference ref="587231349"/>
-							<reference ref="331648500"/>
 						</array>
 						<reference key="parent" ref="759315484"/>
 					</object>
@@ -245,19 +229,6 @@
 						<reference key="object" ref="227147509"/>
 						<reference key="parent" ref="375902303"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">322</int>
-						<reference key="object" ref="331648500"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="628007521"/>
-						</array>
-						<reference key="parent" ref="845083901"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">323</int>
-						<reference key="object" ref="628007521"/>
-						<reference key="parent" ref="331648500"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -285,16 +256,79 @@
 					</object>
 				</object>
 				<string key="320.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="322.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="323.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">323</int>
+			<int key="maxID">325</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">AppController</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="bufferSizeChanged2ch:">id</string>
+						<string key="cloningChanged:">id</string>
+						<string key="outputDeviceSelected:">id</string>
+						<string key="routingChanged2ch:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="bufferSizeChanged2ch:">
+							<string key="name">bufferSizeChanged2ch:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="cloningChanged:">
+							<string key="name">cloningChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="outputDeviceSelected:">
+							<string key="name">outputDeviceSelected:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="routingChanged2ch:">
+							<string key="name">routingChanged2ch:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">mAboutController</string>
+						<string key="NS.object.0">HelpWindowController</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">mAboutController</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">mAboutController</string>
+							<string key="candidateClassName">HelpWindowController</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/AppController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">HelpWindowController</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">mTextView</string>
+						<string key="NS.object.0">NSTextView</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">mTextView</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">mTextView</string>
+							<string key="candidateClassName">NSTextView</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/HelpWindowController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
