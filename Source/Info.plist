@@ -34,7 +34,7 @@
 					<key>BlockSize</key>
 					<integer>8192</integer>
 					<key>Description</key>
-					<string>Soundflower (2ch)</string>
+					<string>WavTap (2ch)</string>
 					<key>Formats</key>
 					<array>
 						<dict>
@@ -76,7 +76,7 @@
 					<key>BlockSize</key>
 					<integer>8192</integer>
 					<key>Description</key>
-					<string>Soundflower (${NUM_CHANS}ch)</string>
+					<string>WavTap (${NUM_CHANS}ch)</string>
 					<key>Formats</key>
 					<array>
 						<dict>
