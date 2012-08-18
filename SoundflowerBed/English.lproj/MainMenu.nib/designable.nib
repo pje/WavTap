@@ -117,7 +117,7 @@
 						<object class="NSTextField" id="331648500">
 							<reference key="NSNextResponder" ref="845083901"/>
 							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{89, 11}, {199, 42}}</string>
+							<string key="NSFrame">{{89, 28}, {199, 21}}</string>
 							<reference key="NSSuperview" ref="845083901"/>
 							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView"/>
@@ -211,9 +211,9 @@
 						<int key="objectID">306</int>
 						<reference key="object" ref="845083901"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="331648500"/>
 							<reference ref="375902303"/>
 							<reference ref="587231349"/>
+							<reference ref="331648500"/>
 						</array>
 						<reference key="parent" ref="759315484"/>
 					</object>
