@@ -67,9 +67,7 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
     switch(inPropertyID)
     {
         case kAudioDevicePropertyNominalSampleRate:
-      //printf("kAudioDevicePropertyNominalSampleRate\n");
       if (isInput) {
-        //printf("soundflower device potential sample rate change\n");
         if (gThruEngine2->IsRunning() && gThruEngine2->GetInputDevice() == inDevice)
           [NSThread detachNewThreadSelector:@selector(srChanged2ch) toTarget:app withObject:nil];
         else if (gThruEngine16->IsRunning() && gThruEngine16->GetInputDevice() == inDevice)
@@ -77,7 +75,6 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       }
       else {
         if (inChannel == 0) {
-          //printf("non-soundflower device potential sample rate change\n");
           if (gThruEngine2->IsRunning() && gThruEngine2->GetOutputDevice() == inDevice)
             [NSThread detachNewThreadSelector:@selector(srChanged2chOutput) toTarget:app withObject:nil];
           else if (gThruEngine16->IsRunning() && gThruEngine16->GetOutputDevice() == inDevice)
@@ -87,15 +84,12 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       break;
 
     case kAudioDevicePropertyDeviceIsAlive:
-//      printf("kAudioDevicePropertyDeviceIsAlive\n");
       break;
 
     case kAudioDevicePropertyDeviceHasChanged:
-//      printf("kAudioDevicePropertyDeviceHasChanged\n");
       break;
 
     case kAudioDevicePropertyDataSource:
-      // printf("DeviceListenerProc : HEADPHONES! \n");
       if (gThruEngine2->IsRunning() && gThruEngine2->GetOutputDevice() == inDevice)
         [NSThread detachNewThreadSelector:@selector(srChanged2chOutput) toTarget:app withObject:nil];
       else if (gThruEngine16->IsRunning() && gThruEngine16->GetOutputDevice() == inDevice)
@@ -103,28 +97,21 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       break;
 
     case kAudioDevicePropertyDeviceIsRunning:
-//      printf("kAudioDevicePropertyDeviceIsRunning\n");
       break;
 
     case kAudioDeviceProcessorOverload:
-//      printf("kAudioDeviceProcessorOverload\n");
       break;
 
     case kAudioDevicePropertyAvailableNominalSampleRates:
-      //printf("kAudioDevicePropertyAvailableNominalSampleRates\n");
       break;
 
     case kAudioStreamPropertyPhysicalFormat:
-      //printf("kAudioStreamPropertyPhysicalFormat\n");
       break;
     case kAudioDevicePropertyStreamFormat:
-      //printf("kAudioDevicePropertyStreamFormat\n");
       break;
 
     case kAudioDevicePropertyStreams:
-      //printf("kAudioDevicePropertyStreams\n");
     case kAudioDevicePropertyStreamConfiguration:
-      //printf("kAudioDevicePropertyStreamConfiguration\n");
       if (!isInput) {
         if (inChannel == 0) {
           if (gThruEngine2->GetOutputDevice() == inDevice || gThruEngine16->GetOutputDevice() == inDevice) {
@@ -138,7 +125,6 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       break;
 
     default:
-      //printf("unsupported notification:%s\n", (char*)inPropertyID);
       break;
   }
 
@@ -161,7 +147,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
     switch ( messageType ) {
         case kIOMessageSystemWillSleep:
-        //printf("kIOMessageSystemWillSleep\n");
 
       [NSThread detachNewThreadSelector:@selector(suspend) toTarget:app withObject:nil];
 
@@ -169,32 +154,20 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
             break;
 
     case kIOMessageSystemWillNotSleep:
-      //printf("kIOMessageSystemWillNotSleep\n");
       break;
 
         case kIOMessageCanSystemSleep:
-       //printf("kIOMessageCanSystemSleep\n");
-            /* Idle sleep is about to kick in, but applications have a chance to prevent sleep
-            by calling IOCancelPowerChange.  Most applications should not do this. */
-
-            //IOCancelPowerChange(root_port, (long)messageArgument);
-
-            /*  Power Manager waits for your reply via one of these functions for up
-            to 30 seconds. If you don't acknowledge the power change by calling
-            IOAllowPowerChange(), you'll delay sleep by 30 seconds. */
 
             IOAllowPowerChange(root_port, (long)messageArgument);
             break;
 
         case kIOMessageSystemHasPoweredOn:
-      //printf("kIOMessageSystemHasPoweredOn\n");
 
       [NSTimer scheduledTimerWithTimeInterval:0.0 target:app selector:@selector(resume) userInfo:nil repeats:NO];
 
       break;
 
     default:
-       //printf("iomessage: %08lx\n", messageType);//"kIOMessageSystemWillPowerOn\n");
       break;
     }
 }
@@ -375,13 +348,8 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   int index = 0;
   for (AudioDeviceList::DeviceList::iterator i = thelist.begin(); i != thelist.end(); ++i, ++index) {
     if (0 == strncmp("Soundflower", (*i).mName, strlen("Soundflower"))) {
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioStreamPropertyPhysicalFormat, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyStreamFormat, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyNominalSampleRate, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyLatency, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertySafetyOffset, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyStreamConfiguration, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyAvailableNominalSampleRates, DeviceListenerProc, self));
 
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyDeviceIsAlive, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDevicePropertyDeviceHasChanged, DeviceListenerProc, self));
@@ -389,34 +357,19 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, true, kAudioDeviceProcessorOverload, DeviceListenerProc, self));
     }
     else {
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioStreamPropertyPhysicalFormat, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreamFormat, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyNominalSampleRate, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyLatency, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertySafetyOffset, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreamConfiguration, DeviceListenerProc, self));
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyStreams, DeviceListenerProc, self));
-      //verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyAvailableNominalSampleRates, DeviceListenerProc, self));
-
-      // this provides us, for example, with notification when the headphones are plugged/unplugged during playback
       verify_noerr (AudioDeviceAddPropertyListener((*i).mID, 0, false, kAudioDevicePropertyDataSource, DeviceListenerProc, self));
-
     }
   }
 
   // check for added/removed devices
-   verify_noerr (AudioHardwareAddPropertyListener(kAudioHardwarePropertyDevices, HardwareListenerProc, self));
+  verify_noerr (AudioHardwareAddPropertyListener(kAudioHardwarePropertyDevices, HardwareListenerProc, self));
 
   verify_noerr (AudioHardwareAddPropertyListener(kAudioHardwarePropertyIsInitingOrExiting, HardwareListenerProc, self));
   verify_noerr (AudioHardwareAddPropertyListener(kAudioHardwarePropertySleepingIsAllowed, HardwareListenerProc, self));
   verify_noerr (AudioHardwareAddPropertyListener(kAudioHardwarePropertyUnloadingIsAllowed, HardwareListenerProc, self));
-
-/*  UInt32 val, size = sizeof(UInt32);
-  AudioHardwareGetProperty(kAudioHardwarePropertySleepingIsAllowed, &size, &val);
-  printf("Sleep is %s\n", (val ? "allowed" : "not allowed"));
-  AudioHardwareGetProperty(kAudioHardwarePropertyUnloadingIsAllowed, &size, &val);
-  printf("Unloading is %s\n", (val ? "allowed" : "not allowed"));
-*/
 }
 
 - (void)RemoveListeners
@@ -462,11 +415,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [super dealloc];
 }
 
-/*- (void)updateThruLatency
-{
-  [mTotalLatencyText setIntValue:gThruEngine->GetThruLatency()];
-}
-*/
 - (void)buildRoutingMenu:(BOOL)is2ch
 {
   NSMenuItem *hostMenu = (is2ch ? m2chMenu : m16chMenu);
@@ -514,26 +462,25 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
 
   if (mSoundflower2Device) {
-    m2chMenu = [mMenu addItemWithTitle:@"Soundflower (2ch)" action:@selector(doNothing) keyEquivalent:@""];
-//    [m2chMenu setImage:[NSImage imageNamed:@"sf2"]];
-    [m2chMenu setTarget:self];
+      m2chMenu = [mMenu addItemWithTitle:@"Soundflower (2ch)" action:@selector(doNothing) keyEquivalent:@""];
+      [m2chMenu setTarget:self];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"2ch submenu"];
       NSMenuItem *bufItem = [submenu addItemWithTitle:@"Buffer Size" action:@selector(doNothing) keyEquivalent:@""];
-        m2chBuffer = [[NSMenu alloc] initWithTitle:@"2ch Buffer"];
-        item = [m2chBuffer addItemWithTitle:@"64" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
-        item = [m2chBuffer addItemWithTitle:@"128" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
-        item = [m2chBuffer addItemWithTitle:@"256" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
-        item = [m2chBuffer addItemWithTitle:@"512" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
-        [item setState:NSOnState]; // default
-        mCur2chBufferSize = item;
-        item = [m2chBuffer addItemWithTitle:@"1024" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
-        item = [m2chBuffer addItemWithTitle:@"2048" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
-        [item setTarget:self];
+      m2chBuffer = [[NSMenu alloc] initWithTitle:@"2ch Buffer"];
+      item = [m2chBuffer addItemWithTitle:@"64" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
+      item = [m2chBuffer addItemWithTitle:@"128" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
+      item = [m2chBuffer addItemWithTitle:@"256" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
+      item = [m2chBuffer addItemWithTitle:@"512" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
+      [item setState:NSOnState];
+      mCur2chBufferSize = item;
+      item = [m2chBuffer addItemWithTitle:@"1024" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
+      item = [m2chBuffer addItemWithTitle:@"2048" action:@selector(bufferSizeChanged2ch:) keyEquivalent:@""];
+      [item setTarget:self];
       [bufItem setSubmenu:m2chBuffer];
 
       [submenu addItem:[NSMenuItem separatorItem]];
@@ -544,34 +491,28 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
       item = [submenu addItemWithTitle:@"Channel 2" action:@selector(doNothing) keyEquivalent:@""];
       [item setTarget:self];
 
-      // iSchemy's edit
-      //
       [submenu addItem:[NSMenuItem separatorItem]];
 
       [[submenu addItemWithTitle:@"Clone to all channels" action:@selector(cloningChanged:) keyEquivalent:@""] setTarget:self];
-      //
-      // end
 
-    [m2chMenu setSubmenu:submenu];
+      [m2chMenu setSubmenu:submenu];
 
+      item = [mMenu addItemWithTitle:@"None (OFF)" action:@selector(outputDeviceSelected:) keyEquivalent:@""];
+      [item setTarget:self];
+      [item setState:NSOnState];
+      mCur2chDevice = item;
 
-
-    item = [mMenu addItemWithTitle:@"None (OFF)" action:@selector(outputDeviceSelected:) keyEquivalent:@""];
-    [item setTarget:self];
-    [item setState:NSOnState];
-    mCur2chDevice = item;
-
-    AudioDeviceList::DeviceList &thelist = mOutputDeviceList->GetList();
-    int index = 0;
-    for (AudioDeviceList::DeviceList::iterator i = thelist.begin(); i != thelist.end(); ++i) {
-      AudioDevice ad((*i).mID, false);
-      if (ad.CountChannels())
-      {
-        item = [mMenu addItemWithTitle:[NSString stringWithCString: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
-        [item setTarget:self];
-        mMenuID2[index++] = (*i).mID;
+      AudioDeviceList::DeviceList &thelist = mOutputDeviceList->GetList();
+      int index = 0;
+      for (AudioDeviceList::DeviceList::iterator i = thelist.begin(); i != thelist.end(); ++i) {
+          AudioDevice ad((*i).mID, false);
+          if (ad.CountChannels())
+          {
+            item = [mMenu addItemWithTitle:[NSString stringWithCString: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
+            [item setTarget:self];
+            mMenuID2[index++] = (*i).mID;
+          }
       }
-    }
   }
   else {
     item = [mMenu addItemWithTitle:@"Soundflower Is Not Installed!!" action:NULL keyEquivalent:@""];
@@ -580,11 +521,9 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [mMenu addItem:[NSMenuItem separatorItem]];
 
-
   if (mSoundflower16Device) {
 
     m16chMenu = [mMenu addItemWithTitle:@"Soundflower (64ch)" action:@selector(doNothing) keyEquivalent:@""];
-//    [m16chMenu setImage:[NSImage imageNamed:@"sf16"]];
     [m16chMenu setTarget:self];
     m16StartIndex = [mMenu indexOfItem:m16chMenu];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"16ch submenu"];
@@ -670,9 +609,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   item = [mMenu addItemWithTitle:@"About WavTap..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
-  // item = [mMenu addItemWithTitle:@"Hide WavTap" action:@selector(hideMenuItem) keyEquivalent:@""];
-  // [item setTarget:self];
-
   item = [mMenu addItemWithTitle:@"Quit WavTap" action:@selector(doQuit) keyEquivalent:@""];
   [item setTarget:self];
 
@@ -689,7 +625,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mOutputDeviceList = new AudioDeviceList(false);
   [ self InstallListeners];
 
-  // find soundflower devices, store and remove them from our output list
   AudioDeviceList::DeviceList &thelist = mOutputDeviceList->GetList();
   int index = 0;
   for (AudioDeviceList::DeviceList::iterator i = thelist.begin(); i != thelist.end(); ++i, ++index) {
@@ -717,7 +652,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
   [mSbItem retain];
 
-  //[sbItem setTitle:@"ее"];
   [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
   [mSbItem setHighlightMode:YES];
 
@@ -733,11 +667,9 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
     gThruEngine2->Start();
     gThruEngine16->Start();
 
-    // build default 'off' channel routing menus
     [self buildRoutingMenu:YES];
     [self buildRoutingMenu:NO];
 
-    // now read prefs
     [self readGlobalPrefs];
   }
 
@@ -790,25 +722,18 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mCur16chBufferSize = sender;
 }
 
-// iSchemy's edit
-//
-// action for item was clicked
 - (IBAction)cloningChanged:(id)sender
 {
-  // change item's state
   [sender setState:([sender state]==NSOnState) ? NSOffState : NSOnState];
   gThruEngine2->SetCloneChannels([sender state]==NSOnState);
   [self writeDevicePrefs:YES];
 }
 
-// preferences read
 - (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone
 {
   gThruEngine2->SetCloneChannels(clone);
   [sender setState:(clone ? NSOnState : NSOffState)];
 }
-//
-// end
 
 - (IBAction)routingChanged2ch:(id)outDevChanItem
 {
@@ -1049,25 +974,17 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   //CFRelease(arrayName);
 
-  // iSchemy's edit
-  //
-  // cloning is enabled only for 2ch mode
-  // sorta makes sense, huh?
   if (is2ch) {
     CFBooleanRef clone = (CFBooleanRef)CFPreferencesCopyAppValue(CFSTR("Clone channels"), kCFPreferencesCurrentApplication);
-    // if cloning is enabled in preferences, it will affect also the menu item's state
     NSMenuItem* item = [[m2chMenu submenu] itemWithTitle:@"Clone to all channels"];
       if (clone && item) {
         [self cloningChanged:item cloneChannels:CFBooleanGetValue(clone)];
         CFRelease(clone);
       }
-      // but if it is disabled, no state changing is needed
       else {
         thruEng->SetCloneChannels(false);
       }
   }
-  //
-  // end
 }
 
 - (void)writeDevicePrefs:(BOOL)is2ch
@@ -1093,9 +1010,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   //CFRelease(arrayName);
 
-  // iSchemy's edit
-  //
-  // I think that this needs no commentary
   if(is2ch){
     char cloneValue = thruEng->CloneChannels();
     CFNumberRef clone = (CFNumberRef)CFNumberCreate(kCFAllocatorSystemDefault, kCFNumberCharType, &cloneValue);
@@ -1104,8 +1018,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
                  kCFPreferencesCurrentApplication);
     CFRelease(clone);
   }
-  //
-  // end
 
   CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
@@ -1124,42 +1036,5 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 {
   [NSApp terminate:nil];
 }
-
-
-/*- (void)updateActualLatency:(NSTimer *)timer
-{
-  double thruTime = gThruEngine2->GetThruTime();
-  NSString *msg = [NSString stringWithFormat: @"%.0f", thruTime];
-
-  char *errmsg = gThruEngine2->GetErrorMessage();
-  msg = [NSString stringWithCString: errmsg];
-}
-
-
-- (IBAction)toggleThru:(id)sender
-{
-  bool enabled = [sender intValue];
-  gThruEngine2->EnableThru(enabled);
-}
-
-- (IBAction)inputLoadChanged:(id)sender
-{
-  gThruEngine2->SetInputLoad( [sender floatValue] / 100. );
-  gThruEngine16->SetInputLoad( [sender floatValue] / 100. );
-}
-
-- (IBAction)outputLoadChanged:(id)sender
-{
-  gThruEngine2->SetOutputLoad( [sender floatValue] / 100. );
-  gThruEngine16->SetOutputLoad( [sender floatValue] / 100. );
-}
-
-- (IBAction)extraLatencyChanged:(id)sender
-{
-  int val = [sender intValue];
-  gThruEngine2->SetExtraLatency(val);
-  [self updateThruLatency];
-}
-*/
 
 @end

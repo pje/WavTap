@@ -69,13 +69,4 @@
 - (void)readDevicePrefs:(BOOL)is2ch;
 - (void)writeDevicePrefs:(BOOL)is2ch;
 
-//- (IBAction)inputLoadChanged:(id)sender;
-//- (IBAction)outputLoadChanged:(id)sender;
-//- (IBAction)extraLatencyChanged:(id)sender;
-//- (IBAction)toggleThru:(id)sender;
-//- (IBAction)inputDeviceSelected:(id)sender;
-//- (IBAction)inputSourceSelected:(id)sender;
-//- (IBAction)outputSourceSelected:(id)sender;
-//- (void)updateActualLatency:(NSTimer *)timer;
-
 @end
