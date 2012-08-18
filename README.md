@@ -1,13 +1,15 @@
 ### WavTap
+
 capture whatever your mac is playing to an audio file.
 
-start or stop recording with `^⌘Space`
+start or stop recording with `^⌘Space` (control-command-space)
 
-(control-command-space)
-##### Installaion
+#### Installaion
+
 todo
 
-##### Nerd Corner
+#### Nerd Corner
+
 it's a fork — but lives independently of — [soundflower](https://github.com/tap/Soundflower).
 thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
 [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
