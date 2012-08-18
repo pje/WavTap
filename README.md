@@ -1,6 +1,6 @@
 ## WavTap
 
-capture whatever your mac is playing to an audio file.
+capture whatever your mac is playing to an audio file
 
 start or stop recording with `^⌘Space` (control-command-space)
 
