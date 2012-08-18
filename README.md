@@ -12,8 +12,8 @@ todo
 
 #### Nerd Corner
 
-it's a fork — but lives independently of — [soundflower](https://github.com/tap/Soundflower).
+it's a fork — but lives independently of — [Soundflower](https://github.com/tap/Soundflower).
 
-thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
+thanks to [ma++ ingalls](http://sfsound.org/matt.html), [Cycling '74](http://cycling74.com), [tap](http://github/tap), and everyone else who's contributed to soundflower.
 
 ɔ [GNU GPL](http://www.gnu.org/copyleft/gpl.html), alles
