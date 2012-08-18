@@ -552,28 +552,29 @@ IOReturn SoundflowerEngine::clipOutputSamples(const void *mixBuf, void *sampleBu
   // TODO: why is the reading always trailing by at least 512 frames? (when 512 is the input framesize)?
 
   if (device->mMuteIn[0]) {
-    memset((UInt8*)mThruBuffer + byteOffset, 0, numBytes);
+      memset((UInt8*)mThruBuffer + byteOffset, 0, numBytes);
   }
   else {
-    memcpy((UInt8*)mThruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
+      memcpy((UInt8*)mThruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
 
-    float masterGain = logTable[ device->mGain[0] ];
-    float masterVolume = logTable[ device->mVolume[0] ];
+      float masterGain = logTable[ device->mGain[0] ];
+      float masterVolume = logTable[ device->mVolume[0] ];
 
-    for (UInt32 channel = 0; channel < channelCount; channel++) {
-      SInt32 channelMute = device->mMuteIn[channel+1];
-      float channelGain = logTable[ device->mGain[channel+1] ];
-      float channelVolume = logTable[ device->mVolume[channel+1] ];
-      float adjustment = masterVolume * channelVolume * masterGain * channelGain;
+      for (UInt32 channel = 0; channel < channelCount; channel++) {
+          SInt32 channelMute = device->mMuteIn[channel+1];
+          float channelGain = logTable[ device->mGain[channel+1] ];
+          float channelVolume = logTable[ device->mVolume[channel+1] ];
+          float adjustment = masterVolume * channelVolume * masterGain * channelGain;
 
-      for (UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++) {
-        if (channelMute)
-          mThruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
-        else
-          mThruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
+          for (UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++) {
+              if (channelMute)
+                  mThruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
+              else
+                  mThruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
+          }
       }
-    }
   }
+
   return kIOReturnSuccess;
 }
 
