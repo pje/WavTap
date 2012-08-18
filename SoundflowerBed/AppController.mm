@@ -423,7 +423,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
       [m2chMenu setSubmenu:submenu];
 
-      item = [mMenu addItemWithTitle:@"None (OFF)" action:@selector(outputDeviceSelected:) keyEquivalent:@""];
+      item = [mMenu addItemWithTitle:@"None" action:@selector(outputDeviceSelected:) keyEquivalent:@""];
       [item setTarget:self];
       [item setState:NSOnState];
       mCur2chDevice = item;
@@ -450,10 +450,10 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   item = [mMenu addItemWithTitle:@"Audio Setup..." action:@selector(doAudioSetup) keyEquivalent:@""];
   [item setTarget:self];
 
-  item = [mMenu addItemWithTitle:@"About WavTap..." action:@selector(doAbout) keyEquivalent:@""];
+  item = [mMenu addItemWithTitle:@"About..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
-  item = [mMenu addItemWithTitle:@"Quit WavTap" action:@selector(doQuit) keyEquivalent:@""];
+  item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
   [item setTarget:self];
 
   [mSbItem setMenu:mMenu];
