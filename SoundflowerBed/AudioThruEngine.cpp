@@ -19,7 +19,6 @@ AudioThruEngine::AudioThruEngine() :
   mInputLoad(0.),
   mOutputLoad(0.)
 {
-//  mErrorMessage[0] = '\0';
   mInputBuffer = new AudioRingBuffer(4, 88200);
 
   // init routing map to default chan->chan
@@ -102,11 +101,9 @@ void  AudioThruEngine::Start()
 {
   if (mRunning) return;
   if (!mInputDevice.Valid() || !mOutputDevice.Valid()) {
-    //printf("invalid device\n");
     return;
   }
 
-  // $$$ should do some checks on the format/sample rate matching
   if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
     if (MatchSampleRate(false)) {
       printf("Error - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
@@ -114,15 +111,6 @@ void  AudioThruEngine::Start()
     }
   }
 
-
-  /*if (mInputDevice.mFormat.mChannelsPerFrame != mOutputDevice.mFormat.mChannelsPerFrame
-  || mInputDevice.mFormat.mBytesPerFrame != mOutputDevice.mFormat.mBytesPerFrame) {
-    printf("Error - format mismatch: %ld / %ld channels, %ld / %ld bytes per frame\n",
-      mInputDevice.mFormat.mChannelsPerFrame, mOutputDevice.mFormat.mChannelsPerFrame,
-      mInputDevice.mFormat.mBytesPerFrame, mOutputDevice.mFormat.mBytesPerFrame);
-    return;
-  }*/
-  //mErrorMessage[0] = '\0';
   mInputBuffer->Allocate(mInputDevice.mFormat.mBytesPerFrame, UInt32(kSecondsInRingBuffer * mInputDevice.mFormat.mSampleRate));
   mSampleRate = mInputDevice.mFormat.mSampleRate;
 
@@ -155,18 +143,9 @@ void  AudioThruEngine::Start()
   verify_noerr (AudioDeviceAddIOProc(mOutputDevice.mID, mOutputIOProc, this));
   verify_noerr (AudioDeviceStart(mOutputDevice.mID, mOutputIOProc));
 
-//  UInt32 propsize = sizeof(UInt32);
-//  UInt32 isAlreadyRunning;
-//  err =  (AudioDeviceGetProperty(mOutputDevice.mID, 0, false, kAudioDevicePropertyDeviceIsRunning, &propsize, &isAlreadyRunning));
-//  if (isAlreadyRunning)
-//    mOutputProcState = kRunning;
-//  else
-
-
   while (mInputProcState != kRunning || mOutputProcState != kRunning)
     usleep(1000);
 
-//  usleep(12000);
   ComputeThruOffset();
 }
 
@@ -177,21 +156,12 @@ void  AudioThruEngine::ComputeThruOffset()
     mInToOutSampleOffset = 0;
     return;
   }
-//  AudioTimeStamp inputTime, outputTime;
-//  verify_noerr (AudioDeviceGetCurrentTime(mInputDevice.mID, &inputTime));
-//  verify_noerr (AudioDeviceGetCurrentTime(mOutputDevice.mID, &outputTime));
 
-//  printf(" in host: %20.0f  samples: %20.f  safety: %7ld  buffer: %4ld\n", Float64(inputTime.mHostTime), inputTime.mSampleTime,
-//    mInputDevice.mSafetyOffset, mInputDevice.mBufferSizeFrames);
-//  printf("out host: %20.0f  samples: %20.f  safety: %7ld  buffer: %4ld\n", Float64(outputTime.mHostTime), outputTime.mSampleTime,
-//    mOutputDevice.mSafetyOffset, mOutputDevice.mBufferSizeFrames);
   mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + /*2 * */ mInputDevice.mBufferSizeFrames +
             mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
   mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
-//  printf("thru latency: %.0f frames, inToOutOffset: %0.f frames\n", latency, mInToOutSampleOffset);
 }
 
-// return whether we were running
 bool  AudioThruEngine::Stop()
 {
   if (!mRunning) return false;
