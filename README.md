@@ -2,6 +2,7 @@
 Capture whatever your mac is playing to an audio file.
 
 ^⌘Space record
+
 ^⌘Space stop
 
 #### Installation
