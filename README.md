@@ -16,4 +16,4 @@ it's a fork — but lives independently of — [soundflower](https://github.com/
 
 thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
 
-ɔ [GNU GPL](http://www.gnu.org/copyleft/gpl.html), all of it
+ɔ [GNU GPL](http://www.gnu.org/copyleft/gpl.html), alles
