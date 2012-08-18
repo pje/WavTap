@@ -14,7 +14,6 @@
 		222FE3370EBB6D9900FD13FC /* AudioRingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDAD0310C0D001FEEC38 /* AudioRingBuffer.h */; };
 		222FE3380EBB6D9900FD13FC /* HelpWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = F57307580312E91E01FEEC38 /* HelpWindowController.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
-		222FE33B0EBB6D9900FD13FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		222FE33E0EBB6D9900FD13FC /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -27,10 +26,11 @@
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
+		3E8AAF7715DFA1270096D8D5 /* appIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7615DFA1270096D8D5 /* appIcon.tiff */; };
+		3E8AAF7915DFA2120096D8D5 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7815DFA2120096D8D5 /* appIcon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		222FE3510EBB6D9900FD13FC /* WavTap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WavTap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		229B366F0EDC1DB500623222 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -38,6 +38,8 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3E8AAF7615DFA1270096D8D5 /* appIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = appIcon.tiff; sourceTree = "<group>"; };
+		3E8AAF7815DFA2120096D8D5 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
 		C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
@@ -119,6 +121,8 @@
 		29B97314FDCFA39411CA2CEA /* AudioThru */ = {
 			isa = PBXGroup;
 			children = (
+				3E8AAF7815DFA2120096D8D5 /* appIcon.png */,
+				3E8AAF7615DFA1270096D8D5 /* appIcon.tiff */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -143,7 +147,6 @@
 				C9CCA5E806ED143E0076FAC2 /* menuIcon.tiff */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				229B366F0EDC1DB500623222 /* Info.plist */,
-				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -225,9 +228,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */,
-				222FE33B0EBB6D9900FD13FC /* InfoPlist.strings in Resources */,
 				222FE33E0EBB6D9900FD13FC /* menuIcon.tiff in Resources */,
 				222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */,
+				3E8AAF7715DFA1270096D8D5 /* appIcon.tiff in Resources */,
+				3E8AAF7915DFA2120096D8D5 /* appIcon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,14 +255,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -273,12 +269,14 @@
 		222FE2F90EBB5DD500FD13FC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = WavTap;
 			};
 			name = Development;
 		};
 		222FE2FA0EBB5DD500FD13FC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_NAME = WavTap;
 			};
 			name = Deployment;
 		};
@@ -296,7 +294,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Applications/Soundflower;
+				INSTALL_PATH = /Applications/WavTap;
 				PRODUCT_NAME = WavTap;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
@@ -319,7 +317,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = /Applications/Soundflower;
+				INSTALL_PATH = /Applications/WavTap;
 				PRODUCT_NAME = WavTap;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;

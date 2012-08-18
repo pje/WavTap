@@ -16,7 +16,7 @@
 /* Begin PBXFileReference section */
 		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
 		3ED0D30F15DF2CD4006A6622 /* Soundflower.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
-		54D0ADA60A5E329B006380BD /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		54D0ADA60A5E329B006380BD /* WavTap.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WavTap.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3540D62DE4E00C0F5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C93407620601317E002E6A19 /* SoundflowerDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerDevice.h; sourceTree = "<group>"; };
 		C93407630601317E002E6A19 /* SoundflowerEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerEngine.h; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				54D0ADA60A5E329B006380BD /* Soundflower.kext */,
+				54D0ADA60A5E329B006380BD /* WavTap.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 			name = SoundflowerDriver;
 			productInstallPath = "$(SYSTEM_LIBRARY_DIR)/Extensions";
 			productName = SampleAudioDriver;
-			productReference = 54D0ADA60A5E329B006380BD /* Soundflower.kext */;
+			productReference = 54D0ADA60A5E329B006380BD /* WavTap.kext */;
 			productType = "com.apple.product-type.kernel-extension.iokit";
 		};
 /* End PBXNativeTarget section */
@@ -173,6 +173,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				PRODUCT_NAME = WavTap.kext;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
@@ -182,7 +183,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				INFOPLIST_FILE = "Info-SoundflowerDriver.plist";
+				INFOPLIST_FILE = "Info-WavTapDriver.plist";
+				PRODUCT_NAME = WavTap.kext;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
@@ -206,7 +208,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				PRODUCT_NAME = Soundflower;
+				PRODUCT_NAME = WavTap;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (
@@ -233,7 +235,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				PRODUCT_NAME = Soundflower;
+				PRODUCT_NAME = WavTap;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 				WARNING_CFLAGS = (

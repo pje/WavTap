@@ -1,6 +1,0 @@
-/* Localized versions of Info.plist keys */
-
-CFBundleName = "Soundflowerbed";
-CFBundleShortVersionString = "Soundflowerbed 1.6.6";
-CFBundleGetInfoString = "Soundflowerbed version 1.6.6, ma++ ingalls | Cycling74 | 2005-2012";
-NSHumanReadableCopyright = "Copyright © 2005 ma++ ingalls | Cycling74 | 2005-2012";
