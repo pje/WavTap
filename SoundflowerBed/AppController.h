@@ -2,7 +2,6 @@
 #import "HelpWindowController.h"
 #include "AudioDeviceList.h"
 
-
 @interface AppController : NSObject
 {
   NSStatusItem  *mSbItem;
