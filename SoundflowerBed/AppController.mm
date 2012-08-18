@@ -1,6 +1,3 @@
-/*
-*/
-
 #import "AppController.h"
 
 #include "AudioThruEngine.h"

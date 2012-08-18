@@ -1,5 +1,3 @@
-/* AppController */
-
 #import <Cocoa/Cocoa.h>
 #import "HelpWindowController.h"
 #include "AudioDeviceList.h"
@@ -53,8 +51,8 @@
 - (IBAction)outputDeviceSelected:(id)sender;
 - (IBAction)bufferSizeChanged2ch:(id)sender;
 - (IBAction)bufferSizeChanged16ch:(id)sender;
-- (IBAction)cloningChanged:(id)sender; //iSchemy
-- (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone; //here too
+- (IBAction)cloningChanged:(id)sender;
+- (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone;
 - (IBAction)routingChanged2ch:(id)sender;
 - (IBAction)routingChanged16ch:(id)sender;
 
