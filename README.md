@@ -2,7 +2,7 @@
 
 capture whatever your mac is playing to an audio file
 
-start or stop recording with `^⌘Space` (control-command-space)
+`^⌘Space` starts/stops recording (control-command-space)
 
 #### Installation
 
@@ -16,4 +16,4 @@ it's a fork — but lives independently of — [soundflower](https://github.com/
 
 thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
 
-/v [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
+ɔ [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
