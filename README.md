@@ -1,4 +1,4 @@
-### WavTap
+## WavTap
 
 capture whatever your mac is playing to an audio file.
 
