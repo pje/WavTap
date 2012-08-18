@@ -441,7 +441,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
     char text[128];
     for (UInt32 c = 1; c <= nchnls; ++c) {
       sprintf(text, "%s [%d]", name, (int)c);
-      item = [menu addItemWithTitle:[NSString stringWithCString:text] action:menuAction keyEquivalent:@""];
+      item = [menu addItemWithTitle:[NSString stringWithUTF8String:text] action:menuAction keyEquivalent:@""];
       [item setTarget:self];
 
       // set check marks according to route map
@@ -508,7 +508,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
           AudioDevice ad((*i).mID, false);
           if (ad.CountChannels())
           {
-            item = [mMenu addItemWithTitle:[NSString stringWithCString: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
+            item = [mMenu addItemWithTitle:[NSString stringWithUTF8String: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
             [item setTarget:self];
             mMenuID2[index++] = (*i).mID;
           }
@@ -594,7 +594,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
       AudioDevice ad((*i).mID, false);
       if (ad.CountChannels())
       {
-        item = [mMenu addItemWithTitle:[NSString stringWithCString: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
+        item = [mMenu addItemWithTitle:[NSString stringWithUTF8String: (*i).mName] action:@selector(outputDeviceSelected:) keyEquivalent:@""];
         [item setTarget:self];
         mMenuID16[index++] = (*i).mID;
       }
@@ -834,7 +834,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (strng) {
     char name[64];
     CFStringGetCString(strng, name, 64, kCFStringEncodingMacRoman);
-    NSMenuItem *item = [mMenu itemWithTitle:[NSString stringWithCString:name]];
+    NSMenuItem *item = [mMenu itemWithTitle:[NSString stringWithUTF8String:name]];
     if (item)
       [self outputDeviceSelected:item];
   }
@@ -846,7 +846,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
     // itemWithTitle only returns the first instance, and we need to find the second one, so
     // make calculations based on index #
-    int index = [mMenu indexOfItemWithTitle:[NSString stringWithCString:name]];
+    int index = [mMenu indexOfItemWithTitle:[NSString stringWithUTF8String:name]];
     if (index >= 0)
       [self outputDeviceSelected:[mMenu itemAtIndex:(m16StartIndex+index)]];
   }
@@ -914,11 +914,11 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (void)writeGlobalPrefs
 {
-  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorSystemDefault, [[mCur2chDevice title] cString], kCFStringEncodingMacRoman);
+  CFStringRef cfstr = CFStringCreateWithCString(kCFAllocatorSystemDefault, [[mCur2chDevice title] UTF8String], kCFStringEncodingMacRoman);
   CFPreferencesSetAppValue(CFSTR("2ch Output Device"), cfstr, kCFPreferencesCurrentApplication);
   CFRelease(cfstr);
 
-  cfstr = CFStringCreateWithCString(kCFAllocatorSystemDefault, [[mCur16chDevice title] cString], kCFStringEncodingMacRoman);
+  cfstr = CFStringCreateWithCString(kCFAllocatorSystemDefault, [[mCur16chDevice title] UTF8String], kCFStringEncodingMacRoman);
   CFPreferencesSetAppValue(CFSTR("16ch Output Device"), cfstr, kCFPreferencesCurrentApplication);
   CFRelease(cfstr);
 
@@ -940,11 +940,11 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (is2ch) {
     NSString *routingTag = @" [2ch Routing]";
     NSString *deviceName  = [mCur2chDevice title];
-    return CFStringCreateWithCString(kCFAllocatorSystemDefault, [[deviceName stringByAppendingString:routingTag] cString], kCFStringEncodingMacRoman);
+    return CFStringCreateWithCString(kCFAllocatorSystemDefault, [[deviceName stringByAppendingString:routingTag] UTF8String], kCFStringEncodingMacRoman);
   } else {
     NSString *routingTag = @" [16ch Routing]";
     NSString *deviceName  = [mCur16chDevice title];
-    return CFStringCreateWithCString(kCFAllocatorSystemDefault, [[deviceName stringByAppendingString:routingTag] cString], kCFStringEncodingMacRoman);
+    return CFStringCreateWithCString(kCFAllocatorSystemDefault, [[deviceName stringByAppendingString:routingTag] UTF8String], kCFStringEncodingMacRoman);
   }
 }
 
