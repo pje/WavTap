@@ -1,9 +1,7 @@
 ## WavTap
 Capture whatever your mac is playing to an audio file.
 
-^⌘Space record
-
-^⌘Space stop
+start or stop recording with ^⌘Space
 
 #### Installation
 Open the .dmg
