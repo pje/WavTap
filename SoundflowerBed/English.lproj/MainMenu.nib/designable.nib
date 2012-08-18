@@ -95,7 +95,7 @@
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{89, 28}, {199, 42}}</string>
 							<reference key="NSSuperview" ref="845083901"/>
-							<reference key="NSNextKeyView" ref="155642646"/>
+							<reference key="NSNextKeyView" ref="127736140"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="227147509">
 								<int key="NSCellFlags">67108864</int>
@@ -112,19 +112,18 @@
 							</object>
 							<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 						</object>
-						<object class="NSTextField" id="155642646">
+						<object class="NSTextField" id="127736140">
 							<reference key="NSNextResponder" ref="845083901"/>
 							<int key="NSvFlags">256</int>
 							<string key="NSFrame">{{89, 11}, {199, 42}}</string>
 							<reference key="NSSuperview" ref="845083901"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
-							<object class="NSTextFieldCell" key="NSCell" id="231565681">
+							<object class="NSTextFieldCell" key="NSCell" id="503713851">
 								<int key="NSCellFlags">67108864</int>
 								<int key="NSCellFlags2">138412032</int>
 								<string key="NSContents">~&gt;</string>
 								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="155642646"/>
+								<reference key="NSControlView" ref="127736140"/>
 								<reference key="NSBackgroundColor" ref="515670787"/>
 								<reference key="NSTextColor" ref="2825295"/>
 							</object>
@@ -207,7 +206,7 @@
 						<int key="objectID">306</int>
 						<reference key="object" ref="845083901"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="155642646"/>
+							<reference ref="127736140"/>
 							<reference ref="375902303"/>
 							<reference ref="587231349"/>
 						</array>
@@ -247,16 +246,16 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">322</int>
-						<reference key="object" ref="155642646"/>
+						<reference key="object" ref="127736140"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="231565681"/>
+							<reference ref="503713851"/>
 						</array>
 						<reference key="parent" ref="845083901"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">323</int>
-						<reference key="object" ref="231565681"/>
-						<reference key="parent" ref="155642646"/>
+						<reference key="object" ref="503713851"/>
+						<reference key="parent" ref="127736140"/>
 					</object>
 				</array>
 			</object>
@@ -300,10 +299,6 @@
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
 			<integer value="1050" key="NS.object.0"/>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<real value="1070" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
