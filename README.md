@@ -14,6 +14,6 @@ todo
 
 it's a fork — but lives independently of — [soundflower](https://github.com/tap/Soundflower).
 
-- [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
+thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
 
-- thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
+/v [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
