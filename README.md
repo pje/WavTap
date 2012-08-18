@@ -2,7 +2,7 @@
 
 capture whatever your mac is playing to an audio file
 
-`^⌘Space` starts/stops recording (control-command-space)
+`^⌘Space` starts/stops recording 
 
 #### Installation
 
