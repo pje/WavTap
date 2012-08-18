@@ -388,7 +388,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
 
   if (mSoundflower2Device) {
-      m2chMenu = [mMenu addItemWithTitle:@"Soundflower (2ch)" action:@selector(doNothing) keyEquivalent:@""];
+      m2chMenu = [mMenu addItemWithTitle:@"WavTap (2ch)" action:@selector(doNothing) keyEquivalent:@""];
       [m2chMenu setTarget:self];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"2ch submenu"];
       NSMenuItem *bufItem = [submenu addItemWithTitle:@"Buffer Size" action:@selector(doNothing) keyEquivalent:@""];
@@ -472,7 +472,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   AudioDeviceList::DeviceList &thelist = mOutputDeviceList->GetList();
   int index = 0;
   for (AudioDeviceList::DeviceList::iterator i = thelist.begin(); i != thelist.end(); ++i, ++index) {
-    if (0 == strcmp("Soundflower (2ch)", (*i).mName)) {
+    if (0 == strcmp("WavTap (2ch)", (*i).mName)) {
       mSoundflower2Device = (*i).mID;
       AudioDeviceList::DeviceList::iterator toerase = i;
       i--;
