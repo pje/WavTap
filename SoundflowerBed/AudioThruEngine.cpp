@@ -150,11 +150,7 @@ void  AudioThruEngine::Start()
   verify_noerr (AudioDeviceAddIOProc(mInputDevice.mID, InputIOProc, this));
   verify_noerr (AudioDeviceStart(mInputDevice.mID, InputIOProc));
 
-  if (mInputDevice.CountChannels() == 2)
-    mOutputIOProc = OutputIOProc;
-  else
-    mOutputIOProc = OutputIOProc16;
-
+  mOutputIOProc = OutputIOProc;
 
   verify_noerr (AudioDeviceAddIOProc(mOutputDevice.mID, mOutputIOProc, this));
   verify_noerr (AudioDeviceStart(mOutputDevice.mID, mOutputIOProc));
@@ -352,22 +348,6 @@ OSStatus AudioThruEngine::OutputIOProc (  AudioDeviceID      inDevice,
 
   return noErr;
 }
-
-// a hack to get 2 ioprocs on one output device -- although coreaudio allows
-// multiple ioprocs on one device, they have to be different functions
-// [makes sense, since there is no unique id given to each ioproc install]
-OSStatus AudioThruEngine::OutputIOProc16 (  AudioDeviceID      inDevice,
-                      const AudioTimeStamp*  inNow,
-                      const AudioBufferList*  inInputData,
-                      const AudioTimeStamp*  inInputTime,
-                      AudioBufferList*    outOutputData,
-                      const AudioTimeStamp*  inOutputTime,
-                      void*          inClientData)
-{
-  return AudioThruEngine::OutputIOProc (inDevice,inNow,inInputData,inInputTime,outOutputData,inOutputTime,inClientData);
-
-}
-
 
 UInt32 AudioThruEngine::GetOutputNchnls()
 {

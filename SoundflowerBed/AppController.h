@@ -5,33 +5,24 @@
 @interface AppController : NSObject
 {
   NSStatusItem  *mSbItem;
-  NSMenu      *mMenu;
+  NSMenu        *mMenu;
   NSMenuItem    *m2chMenu;
-  NSMenuItem    *m16chMenu;
-  NSMenu      *m2chBuffer;
-  NSMenu      *m16chBuffer;
+  NSMenu        *m2chBuffer;
 
-  BOOL      menuItemVisible;
-  int        m16StartIndex;
+  BOOL          menuItemVisible;
 
   NSMenuItem    *mCur2chDevice;
-  NSMenuItem    *mCur16chDevice;
   NSMenuItem    *mCur2chBufferSize;
-  NSMenuItem    *mCur16chBufferSize;
 
   NSMenuItem    *mSuspended2chDevice;
-  NSMenuItem    *mSuspended16chDevice;
 
-  AudioDeviceID        mSoundflower2Device;
-  AudioDeviceID        mSoundflower16Device;
+  AudioDeviceID mSoundflower2Device;
 
   AudioDeviceList *      mOutputDeviceList;
 
   UInt32 mNchnls2;
-  UInt32 mNchnls16;
 
   UInt32 mMenuID2[64];
-  UInt32 mMenuID16[64];
 
   IBOutlet HelpWindowController *mAboutController;
 }
@@ -40,20 +31,16 @@
 - (IBAction)resume;
 
 - (IBAction)srChanged2ch;
-- (IBAction)srChanged16ch;
 - (IBAction)srChanged2chOutput;
-- (IBAction)srChanged16chOutput;
 - (IBAction)checkNchnls;
 
 - (IBAction)refreshDevices;
 
 - (IBAction)outputDeviceSelected:(id)sender;
 - (IBAction)bufferSizeChanged2ch:(id)sender;
-- (IBAction)bufferSizeChanged16ch:(id)sender;
 - (IBAction)cloningChanged:(id)sender;
 - (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone;
 - (IBAction)routingChanged2ch:(id)sender;
-- (IBAction)routingChanged16ch:(id)sender;
 
 - (void)buildRoutingMenu:(BOOL)is2ch;
 - (void)buildDeviceList;
