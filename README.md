@@ -1,14 +1,14 @@
-## WavTap
-Capture whatever your mac is playing to an audio file.
+### WavTap
+capture whatever your mac is playing to an audio file.
 
-start or stop recording with ^⌘Space
+start or stop recording with `^⌘Space`
 
-#### Installation
-Open the .dmg
+#### Installaion
+todo
 
-#### Nerd Corner
-It's a fork — but lives independently of — [Soundflower](https://github.com/tap/Soundflower).
-Thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
+##### Nerd Corner
+it's a fork — but lives independently of — [soundflower](https://github.com/tap/Soundflower).
+thanks to ma++ ingalls, Cycling '74, @tap, and all the other contributors to Soundflower.
 [GNU GPL](http://www.gnu.org/copyleft/gpl.html)
 
 - the default shortcut (control-command-space) is editable on Lion+ via SystemPreferences -> Keyboard -> Services -> General -> WavTap
