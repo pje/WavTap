@@ -59,14 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>pid=`ps -axo pid,command,args | grep 'sox' | grep -v grep | awk '{ print $1 }'`
-
-if [[ -n $pid ]]; then
-  kill -9 $pid
-else
-  /usr/local/bin/sox -V6 -t coreaudio 'WavTap (2ch)' ~/Desktop/`date +%s`.wav
-fi
-</string>
+					<string>COMMAND_PHONY_TARGET</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>

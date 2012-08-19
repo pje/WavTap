@@ -38,5 +38,33 @@ install: all uninstall
 	sudo kextload -tv /System/Library/Extensions/Soundflower.kext
 	sudo touch /System/Library/Extensions
 
-appIcon.icns:
-	cd $(SFB_SRC_DIR) && tiff2icns appIcon.tiff appIcon.icns
+COMMAND_DIR := $(ROOT)/Command
+COMMAND_INSTALL_DIR := $(HOME)/Library/Services
+COMMAND_SCRIPT := $(COMMAND_DIR)/service.sh
+COMMAND_BUILD_DIR := $(COMMAND_DIR)/Build
+COMMAND_PRODUCT_NAME := WavTap
+COMMAND_TEMPLATE_PRODUCT := $(COMMAND_DIR)/$(COMMAND_PRODUCT_NAME).workflow
+COMMAND_TEMPLATE_PRODUCT_WFLOW := $(COMMAND_DIR)/WavTap.workflow/Contents/document.wflow
+COMMAND_TEMPLATE_PRODUCT_WFLOW_LENGTH := $(shell cat $(COMMAND_TEMPLATE_PRODUCT_WFLOW) | wc -l | xargs)
+COMMAND_BUILT_WORKFLOW := $(COMMAND_BUILD_DIR)/$(COMMAND_PRODUCT_NAME).workflow
+COMMAND_BUILT_WFLOW := $(COMMAND_BUILT_WORKFLOW)/Contents/document.wflow
+COMMAND_PHONY_TARGET_LINENO := $(shell cat $(COMMAND_TEMPLATE_PRODUCT_WFLOW) | grep -Eno 'COMMAND_PHONY_TARGET' | grep -Eo '[0-9]+')
+COMMAND_HEAD_N_ARG := $(shell expr $(COMMAND_PHONY_TARGET_LINENO) - 1)
+COMMAND_TAIL_N_ARG := $(shell expr $(COMMAND_TEMPLATE_PRODUCT_WFLOW_LENGTH) - $(COMMAND_PHONY_TARGET_LINENO))
+
+clean-command:
+	rm -rf $(COMMAND_BUILD_DIR)
+
+build-command:
+	mkdir -p $(COMMAND_BUILD_DIR)
+	cp -r $(COMMAND_TEMPLATE_PRODUCT) $(COMMAND_BUILD_DIR)
+	echo "" > $(COMMAND_BUILT_WFLOW)
+
+	head -n $(COMMAND_HEAD_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
+	echo '<string>' >> $(COMMAND_BUILT_WFLOW)
+	cat $(COMMAND_SCRIPT) >> $(COMMAND_BUILT_WFLOW)
+	echo '</string>' >> $(COMMAND_BUILT_WFLOW)
+	tail -n $(COMMAND_TAIL_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
+
+install-command: clean-command build-command
+	cp -rv $(COMMAND_BUILD_DIR)/* $(COMMAND_INSTALL_DIR)
