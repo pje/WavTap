@@ -12,7 +12,7 @@ select WavTap as the system audio output device within Audio Midi Setup
 
 click on the WavTap icon in the menubar and select Built-in Output
 
-`make uninstall` does what you'd expect
+`make uninstall` removes everything
 
 #### Nerd Corner
 
