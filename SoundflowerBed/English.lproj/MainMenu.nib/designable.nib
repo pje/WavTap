@@ -102,7 +102,7 @@
 							<object class="NSTextFieldCell" key="NSCell" id="227147509">
 								<int key="NSCellFlags">69206017</int>
 								<int key="NSCellFlags2">138412032</int>
-								<string key="NSContents">http://github.com/pje/wav-tap</string>
+								<string key="NSContents">http://github.com/pje/WavTap</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
 									<double key="NSSize">11</double>
