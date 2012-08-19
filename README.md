@@ -2,18 +2,22 @@
 
 capture whatever your mac is playing to an audio file
 
-`^⌘Space` starts/stops recording 
+`^⌘Space` starts/stops recording
 
 #### Installation
 
-todo
+`make install`
 
-- the default shortcut is editable on Lion-like systems via SystemPreferences -> Keyboard -> Services -> General -> WavTap
+select WavTap as the system audio output device within Audio Midi Setup
+
+click on the WavTap icon in the menubar and select Built-in Output
+
+`make uninstall` removes everything
 
 #### Nerd Corner
 
-it's a fork — but lives independently of — [Soundflower](https://github.com/tap/Soundflower).
+the default shortcut is editable via SystemPreferences/Keyboard/Services/General/WavTap
 
-thanks to [ma++ ingalls](http://sfsound.org/matt.html), [Cycling '74](http://cycling74.com), [tap](http://github/tap), and everyone else who's contributed to soundflower.
+it's a fork — but lives independently of — [Soundflower](https://github.com/tap/Soundflower). thanks to [ma++ ingalls](http://sfsound.org/matt.html), [Cycling '74](http://cycling74.com), [tap](http://github/tap), and everyone else who's contributed to it.
 
-ɔ [GNU GPL](http://www.gnu.org/copyleft/gpl.html), alles
+[GNU GPL](http://www.gnu.org/copyleft/gpl.html)
