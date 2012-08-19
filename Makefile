@@ -1,42 +1,47 @@
 SHELL=/bin/sh
 
 ROOT=$$(pwd)
-SF_SRC_DIR=$(ROOT)/Source
-SFB_SRC_DIR=$(ROOT)/SoundflowerBed
-BUILD_DIR=$(ROOT)/Build
-CONFIG="Development"
+PRODUCT_NAME=WavTap
+KEXT_DIR=$(ROOT)/Source
+APP_DIR=$(ROOT)/SoundflowerBed
+KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
+APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
+APP_INSTALL_DIR=/Applications
+CONFIG=Development
+SYSTEM_AUDIO_SETUP_APP=/Applications/Utilities/Audio\ MIDI\ Setup.app
+build-kext:
+	cd $(KEXT_DIR)
+	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
 
-Soundflower.kext:
-	cd $(SF_SRC_DIR)
-	xcodebuild -project $(SF_SRC_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration ${CONFIG} clean build
+build-app:
+	cd $(APP_DIR)
+	xcodebuild -project $(APP_DIR)/WavTap.xcodeproj -target WavTap -configuration ${CONFIG} clean build
 
-SoundflowerBed:
-	cd $(SFB_SRC_DIR)
-	xcodebuild -project $(SFB_SRC_DIR)/Soundflowerbed.xcodeproj -target Soundflowerbed -configuration ${CONFIG} clean build
+clean-kext:
+	rm -rf $(KEXT_DIR)/Build
 
-all: Soundflower.kext SoundflowerBed
+clean-app:
+	rm -rf $(APP_BUILD_DIR)
 
-clean:
-	rm -rf $(BUILD_DIR)
-	rm -rf $(SF_SRC_DIR)/build
-	rm -rf $(SFB_SRC_DIR)/build
+uninstall-kext:
+	if [[ "$(shell kextstat | grep $(PRODUCT_NAME) | grep -v grep)" ]]; then sudo kextunload /System/Library/Extensions/$(PRODUCT_NAME).kext; fi
+	sudo rm -rf /System/Library/Extensions/$(PRODUCT_NAME).kext
+	sudo rm -rf /Library/Receipts/$(PRODUCT_NAME)*
+	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
 
-unload:
-	sudo kextunload /System/Library/Extensions/Soundflower.kext #1
-	sudo kextunload /System/Library/Extensions/Soundflower.kext #2
-	# first unload will often fail, but will cause Soundflowers performAudioEngineStop to be called
-	# TODO: fix
+uninstall-app:
+	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill -9; fi
+	rm -rf /Applications/$(PRODUCT_NAME).app
 
-uninstall:
-	sudo rm -rf /System/Library/Extensions/Soundflower.kext
-	sudo rm -rf /Library/Receipts/Soundflower*
-	sudo rm -rf /var/db/receipts/com.cycling74.soundflower.*
-	sudo rm -rf /Applications/Soundflower
+install-kext: build-kext
+	sudo cp -rv $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext /System/Library/Extensions
+	sudo chmod -R 700 /System/Library/Extensions/$(PRODUCT_NAME).kext
+	sudo chown -R root:wheel /System/Library/Extensions/$(PRODUCT_NAME).kext
+	sudo kextload -v /System/Library/Extensions/$(PRODUCT_NAME).kext
+	sudo kextutil /System/Library/Extensions/$(PRODUCT_NAME).kext
 
-install: all uninstall
-	sudo cp -rv $(ROOT)/Build/Soundflower.kext /System/Library/Extensions
-	sudo kextload -tv /System/Library/Extensions/Soundflower.kext
-	sudo touch /System/Library/Extensions
+install-app: build-app
+	cp -r $(APP_BUILD_DIR)/$(PRODUCT_NAME).app $(APP_INSTALL_DIR)
 
 COMMAND_DIR := $(ROOT)/Command
 COMMAND_INSTALL_DIR := $(HOME)/Library/Services
@@ -66,5 +71,22 @@ build-command:
 	echo '</string>' >> $(COMMAND_BUILT_WFLOW)
 	tail -n $(COMMAND_TAIL_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
 
-install-command: clean-command build-command
+install-command: build-command
 	cp -rv $(COMMAND_BUILD_DIR)/* $(COMMAND_INSTALL_DIR)
+
+uninstall-command:
+	rm -rf $(COMMAND_INSTALL_DIR)/$(COMMAND_PRODUCT_NAME).workflow
+
+build: build-kext build-app build-command
+
+clean: clean-command clean-app clean-kext
+
+uninstall: uninstall-command uninstall-app uninstall-kext
+
+install: build uninstall install-kext install-app install-command
+	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
+	open $(SYSTEM_AUDIO_SETUP_APP)
+
+test:
+	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
+	open $(SYSTEM_AUDIO_SETUP_APP)

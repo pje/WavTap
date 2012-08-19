@@ -172,6 +172,7 @@
 		548AD6D409CE873500241D17 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				SYMROOT = "";
 			};
 			name = Development;
 		};
@@ -183,6 +184,7 @@
 					ppc,
 				);
 				INFOPLIST_FILE = "Info-SoundflowerDriver.plist";
+				SYMROOT = "";
 			};
 			name = Deployment;
 		};
@@ -192,9 +194,11 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/Build";
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_DIR)/Build";
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(PROJECT_DIR)";
+				DSTROOT = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NUM_CHANS=$NUM_CHANS",
@@ -204,9 +208,10 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
-				INSTALL_PATH = /../Build;
+				INSTALL_PATH = "";
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
 				PRODUCT_NAME = WavTap;
+				SYMROOT = "$(PROJECT_DIR)/Build";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -222,18 +227,21 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/Build";
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_DIR)/Build";
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
-				DSTROOT = "$(PROJECT_DIR)";
+				DSTROOT = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = "NUM_CHANS=$NUM_CHANS";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
-				INSTALL_PATH = /../Build;
+				INSTALL_PATH = "";
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
 				PRODUCT_NAME = WavTap;
+				SYMROOT = "$(PROJECT_DIR)/Build";
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
