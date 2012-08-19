@@ -86,7 +86,3 @@ uninstall: uninstall-command uninstall-app uninstall-kext
 install: build uninstall install-kext install-app install-command
 	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
 	open $(SYSTEM_AUDIO_SETUP_APP)
-
-test:
-	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
-	open $(SYSTEM_AUDIO_SETUP_APP)
