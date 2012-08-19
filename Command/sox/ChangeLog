@@ -1,0 +1,1656 @@
+Change History
+--------------
+
+This file contains a list of all changes starting after the release of
+sox-11gamma, followed by a list of prior authors and features.
+
+sox-14.4.0	20xx-xx-xx
+----------
+
+Previously deprecated features that have been removed in this release:
+
+  Deprec-  Feature    [O(ption)]
+  ated in  [F(ormat)] [E(ffect)]   Replacement
+  -------  ----------------------  ----------------------
+  14.3.0   O --interactive         --no-clobber
+  14.3.0   E filter                ~= sinc
+  14.3.0   E norm -b, norm -i      gain -B, gain -en
+  14.3.0   PLAY_RATE_ARG           SOX_OPTS
+  14.2.0   E key alias             pitch
+  14.2.0   E pan                   ~= remix
+  14.1.0   E resample alias        rate
+  14.1.0   E polyphase alias       rate
+  14.1.0   E rabbit alias          rate
+  14.3.1   F sndfile: sndfile 1.0.11 sndfile > 1.0.11
+  14.3.0   F flac: libFLAC < 1.1.3 libFLAC >= 1.1.3
+  14.3.1   F mp3: lame 3.97        lame > 3.97
+
+Newly deprecated features (to be removed in future):
+
+  Deprec-  Feature    [O(ption)]                           Removal
+  ated in  [F(ormat)] [E(ffect)]   Replacement             due after
+  -------  ----------------------  ----------------------  -------
+  14.4.0   E mixer                 remix                   14.4.0 + 1 year
+  14.4.0   E swap with parameters  remix                   14.4.0
+
+Previously deprecated features (to be removed in future):
+
+  Deprec-  Feature    [O(ption)]                           Removal
+  ated in  [F(ormat)] [E(ffect)]   Replacement             due after
+  -------  ----------------------  ----------------------  -------
+  14.3.0   O -1/-2/-3/-4/-8        -b                      14.4.0
+  14.3.0   O -s/-u/-f              -e                      14.4.0
+  14.3.0   O -A/-U/-o/-i/-a/-g     -e                      14.4.0
+
+File formats:
+
+  o Mention in man pages that WAV files support floating point encodings.
+  o Add support for floating point encodings in AIFF-C files. (Ulrich Klauer)
+  o Pad WAV data chunk to an even number of bytes (as required by the
+    specification). [3203418] (Ulrich Klauer)
+  o Add optional MP2 write support with twolame library. (Paul Kelly)
+
+Audio device drivers:
+
+  o Give pulseaudio driver higher priority than alsa or oss now that
+    its proven stable and gives user more features; such as per app
+    volume control. (cbagwell)
+  o Fix bug when specifying OSX coreaudio device name.  Would only
+    search for first 3 devices. (cbagwell)
+  o Fix sox hangups are exit when using coreaudio. (cbagwell)
+  o Improve buffering in coreaudio driver (Michael Chen)
+  o Support enabling play/rec mode when user invokes sox as either
+    play or play.exe on windows. (cbagwell)
+  o Fix compile of sunaudio driver on OpenBSD (cbagwell)
+
+Effects:
+
+  o Improvements to man pages for tempo effect.  Really made in 14.3.2.
+    (Jim Harkins).
+  o New upsample effect. (robs)
+  o Fix to effects pipeline to let fade effect specify time from end of
+    file again. (cbagwell and Thor Andreassen)
+  o Fix man page default error for splice effect. (Ulrich Klauer)
+  o Enable support for --plot option on biquad and fir effects. (Ulrich Klauer)
+  o Effects chain can now be unlimited in length. (Ulrich Klauer)
+  o Fix newfile/restart effects when merging or mixing files. (Ulrich Klauer)
+  o Fix crashes in compand and mcompand effects. [3420893] (Ulrich Klauer)
+  o Let the delay effect gracefully handle the special case that a delay can
+    be more than the input length. [3055399] (Ulrich Klauer)
+  o New hilbert and downsample effects. (Ulrich Klauer)
+  o Fix problem where fade would sometimes fail if specifying a fade-out
+    immediately after a fade-in. (robs)
+  o Stricter syntax checking for several effects (might reveal bugs hidden
+    in existing scripts). (Ulrich Klauer)
+  o Calculate output audio length for most effects. (Ulrich Klauer)
+  o Fix problems with several effects when the buffer size was not evenly
+    divisible by the number of channels. [3420899] (Ulrich Klauer)
+  o Complete rewrite of the trim effect with extended syntax (backwards
+    compatible) and capabilities. [FR 2941349] (Ulrich Klauer)
+  o Fix trim optimization unexpectedly seeking backwards. (Ulrich Klauer)
+  o Prevent samples from getting lost at effects chain transitions in
+    multiple effects chain/multiple output modes. (Ulrich Klauer)
+
+Misc:
+
+  o Minor improvements to the man page. (Ulrich Klauer)
+  o When using pipes (-p) on Windows, set file mode to binary. (cbagwell)
+  o Updated .dat format description in soxformat. (Jan Stary)
+  o Doxygen documentation for libSoX. (Doug Cook)
+
+Other bug fixes:
+
+  o Fix several memory leaks. [3309913] (Jin-Myung Won and Ulrich Klauer)
+  o Fixed crashes in apps that call sox_format_init/quit() mujltiple times.
+   (cbagwell)
+
+Internal improvements:
+
+  o Added use_threads variable to sox_globals. This should be used to enable
+    or disable use of parallel effects processing instead of directly calling
+    omp_set_num_threads. (Doug Cook)
+  o Fix compiler warnings. (Cristian Morales Vega [P. 3072301], Doug Cook)
+  o Improve large file support by using 64-bit numbers to count
+    samples. (Doug Cook, Thor Andreassen, Ulrich Klauer)
+
+sox-14.3.2	2011-02-27
+----------
+
+File formats:
+
+  o Add seek support to mp3 handler for speed improvements.  (Pavel Karneliuk)
+  o Fix bug were WavPack header was not updated correctly when closing
+    file.  Fixed libsox memory leak when closing WavPack files.
+    (David Bryant)
+  o Fix RIFF chunk length error when writing 24-bit files. (David Bryant)
+  o 24-bit WAV files were leaving channel maps unassigned. Change to use
+    common channel mappings based on channel count.  This allows to
+    work more seemlessly with other apps such as WavPack and Foobar2000.
+    (David Bryant)
+  o Fix ffmpeg playback bug caused by alignment requirements on some platforms.
+    Closes bug #3017690.  (Reuben Thomas).
+  o Fix memory leak in ffmpeg. (Doug Cook)
+  o Handle 0 length chunks in WAV files gracefully.  (Beat Jorg)
+  o When skipping over chunks, account for word alignment. Helps
+    with some Logic Pro generated files.  (D Lambley)
+  o Fix incorrect MP3 file length determination with VBR & .5s initial
+    silence.  (robs)
+
+Audio device drivers:
+
+  o Fix immediate segfault on OSX while attempting to record. (Adam Fritzler)
+  o Fix segfault on OSX playback for some HW that gives smaller then
+    requested buffers. (cbagwell)
+  o Clean up system resource in coreaudio on close.  Allows running
+    back-to-back open()/close()'s without exiting app first. (cbagwell)
+  o Add support for 32-bit samples to OSS driver. (Eric Lammerts)
+  o Add support for 24 and 32-bit samples to waveaudio (Win32) driver.
+    (Doug Cook)
+  o Support specifying audio device other than default on OSX (cbagwell)
+
+Effects:
+
+  o F.R. [3051700] spectrogram -r for `raw' spectrogram, no legend.  (robs)
+  o Fix -w option on stats effect. (Ronald Sprouse)
+  o Fix segfault with some ladspa plugins (Thor Andreassen)
+  o Optionally look for png.h in libpng directory to support OpenBSD
+    packaging.  Helps enable spectrograph effect. (cbagwell)
+  o libpng15 requires application to include zlib.h header file. (cbagwell)
+    Add this to spectrograph effect. [3184238]
+  o Enable LADSPA effects on all platforms without any external
+    dependencies.  Mainly useful for Linux, Windows and OS X which have
+    binaries readily available. (cbagwell)
+  o Support specifying an absolute end location for trim effect instead
+    only an offset from trim begin location. (Ulrich Klauer)
+  o Fix regression where MP3 handler required libmad headers to be installed.
+    (Samuli Suominen) 
+  o Allow dynamic loading of lame to be enabled even if lame header files
+    are not installed.  (Doug Cook)
+
+Other new features:
+
+  o Soxi now reports duration of AMR files.  (robs)
+  o Document the "multiple" combine option in man pages and in
+    usage output (Ulrich Klauer).
+
+Internal improvements:
+
+  o Distribute msvc9 project files that had been in CVS only. (cbagwell)
+  o Add msvc10 project files (also compatible with the Windows SDK 7.1).
+    (Doug Cook)
+  o cmake now compiles waveaudio driver under windows environment. (cbagwell)
+    [3072672]
+
+sox-14.3.1	2010-04-11
+----------
+
+Newly deprecated features (to be removed in future):
+
+  Deprec-  Feature    [O(ption)]                           Removal
+  ated in  [F(ormat)] [E(ffect)]   Replacement             due after
+  -------  ----------------------  ----------------------  -------
+  14.3.1   F mp3: lame 3.97        lame > 3.97             2011-04-11
+  14.3.1   F sndfile: sndfile 1.0.11 sndfile > 1.0.11      14.3.1
+
+Previously deprecated features (to be removed in future):
+
+  Deprec-  Feature    [O(ption)]                           Removal
+  ated in  [F(ormat)] [E(ffect)]   Replacement             due after
+  -------  ----------------------  ----------------------  -------
+  14.2.0   E key alias             pitch                   14.3.1
+  14.2.0   E pan                   ~= mixer/remix          14.3.1
+  14.3.0   F flac: libFLAC 1.1.2,3 libFLAC > 1.1.3         14.3.1
+  14.3.0   PLAY_RATE_ARG           SOX_OPTS                14.3.1
+  14.3.0   E norm -b, norm -i      gain -B, gain -en       2010-06-14
+  14.3.0   E filter                ~=sinc                  2010-06-14
+  14.1.0   E resample alias        rate                    2010-06-14
+  14.1.0   E polyphase alias       rate                    2010-06-14
+  14.1.0   E rabbit alias          rate                    2010-06-14
+
+LibSoX interface changes:
+
+  o Added new variants of sox_open to allow read/write from/to memory
+    buffers (in POSIX 2008 environment); see example5.c.  (robs)
+
+File formats:
+
+  o New Grandstream ring-tone (gsrt) format.  (robs)
+  o CVSD encode/decode speed-ups.  (Kimberly Rockwell, P. Chaintreuil)
+  o Add ability to select MP3 compression parameters.  (Jim Harkins)
+  o Now writes out ID3-tags in MP3 files with lame supports it.  (Doug Cook)
+  o Also can write VBR Tag ("XING Header") in MP3 files. (Jim Hark /
+    Doug Cook)
+  o Increase percision of MP3 encoders to use 24-bits instead of 
+    16-bits. (Doug Cook)
+  o Fix failed writing 24-bit PAF files (and possibly other libsndfile
+    based formats).  (cbagwell)
+  o Allow libsndfile to be dlopen()'ed at runtime if --enable-dl-sndfile
+    is used. (Doug Cook)
+  o Allow amr-nb/amr-wb to be dlopen()'ed at runtime if 
+    --enable-dl-amrwb or --enable-dl-amrnb is used. (Doug Cook)
+  o amrnb and amrwb formats can optionally use opencore-amr libraries.
+    (cbagwell)
+
+Audio device drivers:
+
+  o Add native windows audio driver.  (Pavel Karneliuk, Doug Cook)
+  o Add 32-bit support to ALSA driver.  (Pavel Hofman)
+  o Make OpenBSD sndio audio driver default over older sunau driver.
+   (cbagwell)
+
+Effects:
+
+  o Fix [2254919] silence doesn't trim digital silence correctly.  (robs)
+  o Fix [2859842] stats effect crashes on 64-bit arch.  (Ulrich Klauer)
+
+Other new features:
+
+  o Added libSoX example #4: concatenating audio files.  (robs)
+  o Show soxi version & usage information when no args given.  (robs)
+
+Other bug fixes:
+
+  o Fix build so that grouped files (e.g. play -r 6k "*.vox" plays all
+    at 6k) works.  (robs)
+  o Fix build to support auto file type detection with pipes on FreeBSD
+    and elsewhere.  (Dan Nelson)
+  o Fix simultaneous play & rec not working.  (robs)
+  o Fix multi-threading problems on multi-core Windows OS; also, change
+    default to single-threaded.
+  o Fix mistaken file size with pipe input on Windows.  (Doug Cook)
+  o Fix missing documentation for -R (repeatable), and pulseaudio driver.
+  o Fix memory leak of format private data.  (Slawomir Testowy)
+
+Internal improvements:
+
+  o Move bit-rot detection support files to sub-directory (could
+    previously cause build problems).  (robs)
+  o [2859244] Fixes to improve compatibility with MSVC.  (Doug Cook)
+  o Added utilities to help any format handler dlopen() external
+    libraries at run time instead of link time. (Doug Cook)
+  o Compiling with mingw now has feature parity with cygwin. (Doug Cook
+    and cbagwell)
+   
+
+
+sox-14.3.0	2009-06-14
+----------
+
+Previously deprecated features that have been removed in this release:
+
+  Deprec-  Feature    [O(ption)]
+  ated in  [F(ormat)] [E(ffect)]   Replacement
+  -------  ----------------------  ----------------------
+  14.1.0   E resample *            ~= rate
+  14.1.0   E polyphase *           ~= rate
+  14.1.0   E rabbit *              ~= rate
+  14.2.0   E dither: RPDF,scaled   dither (TPDF only)
+  14.1.0   F flac: libFLAC 1.1.1   libFLAC > 1.1.1
+
+  * But interface retained as an alias for `rate'.
+
+LibSoX interface changes:
+
+  o sox_format_init() has been supeseded by sox_init().
+  o Removed obsolete error codes (SOX_E...); new sox_strerror()
+    function to convert error codes to text.
+  o Use of sox_effect_options() is now mandatory when initialising an
+    effect (see example0.c for an example of this).
+  o sox_flow_effects() has a new (3rd) parameter: a void pointer
+    `client_data' that is passed as a new (2nd) parameter to the flow
+    callback function.  client_data may be NULL.
+
+File formats:
+
+  o Slight improvement to A-law/u-law conversion accuracy: round LSB
+    instead of truncating.  (robs)
+  o Fix length in wav header with multi-channel output to pipe.  (robs)
+  o Fix [2028181] w64 float format incompatibility.  (Tim Munro)
+  o Fix reading AIFF files with pad bytes in COMT chunks. (Joe Holt)
+  o Fix AIFF file length bug to stop reading trash data on files that
+    have extra chunks at end of file. (Joe Holt)
+  o Fix file length being 4 bytes short for AIFF sowt CD tracks. (Joe Holt)
+  o Fix [2404566] segfault when converting from MS ADPCM wav file.  (robs)
+  o Fix slight FLAC seek inaccuracy e.g. when using `trim' effect.  (robs)
+  o Fix mp3 decode sometimes being up to a block short.  (robs)
+  o Fix not outputing GSM-in-wav when input is GSM-in-wav.  (robs)
+
+Audio device drivers:
+
+  o New native OpenBSD audio handler for play/recording.  (Alexandre Ratchov)
+  o 24-bit support for ALSA handler.  (robs)
+  o Warn if ALSA under/overrun.  (robs)
+
+Effects:
+
+  o New `stats' effect; multichannel audio statistics.  (robs)
+  o New `sinc' FFT filter effect; replacement for `filter'.  (robs)
+  o New `fir' filter effect using external coefficients/file.  (robs)
+  o New `biquad' filter effect using external coefficients.  (robs)
+  o New `overdrive' effect.  (robs)
+  o New `vad' Voice Activity Detector effect.  (robs)
+  o `synth' enhancements: can now set common parameters for multiple
+    channels, new `pluck' and `tpdf' types, `scientific' note
+    notation, [2778142] just intonation.  (robs)
+  o New multi-channel support and revised sizing options for `spectrogram'.
+    N.B. revised options are not directly backwards compatible -- see the
+    man page for details of the new syntax.  (robs)
+  o Richer gain/normalise options.  (robs)
+  o [2704442] Slight change to `riaa' gain: now norm'd to 0dB @ 1k
+    (previously 19.9dB @ DC).  (Glenn Davis)
+  o Fix [2487589] `dither' clipping detection & handling.  (robs)
+  o Fix `repeat' sometimes stopping repeating too soon.  (robs)
+  o Fix `repeat' sometimes repeating wrong audio segments.  (robs)
+  o Fix [2332343] 'silence' segfault with certain lengths. (cbagwell)
+  o Fix `silence' empty output file with A-law input.  (robs)
+  o Fix temporary file problems in Windows (cygwin) with normalise and
+    other effects.  (robs)
+  o Fix [2779041] spectrogram PNG file is invalid on Windows.  (robs)
+  o Fix [2787587] `trim x 0' should produce zero length audio.  (robs)
+  o Parallel effects channel processing on some hyper-threading/mult-core
+    architectures.  New `--single-threaded' option to disable this.  (robs)
+
+Other new features:
+
+  o Added ability to create shared DLL's on cygwin (cbagwell)
+  o New `--guard' & `--norm' options; use temporary files to guard against
+    clipping for many, but not currently all, effects.  (robs)
+  o New `--ignore-length' option to ignore length in input file header (for
+    simple encodings & for mp3); instead, read to end of file.  (robs)
+  o New `--temp DIRECTORY' option.  (robs)
+  o New `--play-rate-arg ARG' option.  (robs)
+  o New SOX_OPTS environment variable; can be used to provide default
+    values for above and other options.  (robs)
+  o Grouped files, e.g. play -r 6k "*.vox" plays all at 6k.  (robs)
+  o Automatically `dither'; new `--no-dither' option to disable this.  (robs)
+  o Can now use `v' & `V' keys to adjust volume whilst playing audio (on some
+    systems).  (robs)
+  o New bitrate, time in seconds, & total options for soxi; bitrate
+    and file-size display for sox.  (robs)
+  o `Magic' (libmagic) file type detection now selected using `--magic'
+    option (where supported).
+  o [2003121] In many cases, no longer need to specify -t when inputing
+    audio from a `pipe'.  (robs)
+  o Support more Shoutcast URL variants.  (robs)
+  o Added libSoX example #3: playing audio.  (robs)
+
+Other bug fixes:
+
+  o Fix [2262177] SoX build could fail with parse /etc/issue error.  (robs)
+  o Fix "no handler for detected file type `application/octet-stream;
+    charset=binary'" with raw files when using libmagic.  (robs)
+
+Internal improvements:
+
+  o Rationalise use of and make repeatable across different platforms
+    pseudo random number generators.  (robs)
+  o Rationalise effects' options interface (getopt compatible).  (robs)
+  o Added stub headers to allow test compilation of all sources on
+    linux.  (robs)
+
+
+sox-14.2.0	2008-11-09
+----------
+
+Previously deprecated features that have been removed in this release:
+
+  Deprec-  Feature    [O(ption)]
+  ated in  [F(ormat)] [E(ffect)]   Replacement
+  -------  ----------------------  ----------------------
+  14.0.0   E pitch                 new pitch = old key
+
+File formats:
+
+  o New `.cvu' unfiltered CVSD; supports any bit-rate.  (robs)
+  o New `.sox' native format intended for intermediate files.  (robs)
+  o Fix WAV write on 64-bit arch.  (robs)
+  o Fix writing PRC ADPCM files.  (Silas Brown)
+  o Fix problems reading short mp3 files.  (robs)
+
+Effects:
+
+  o N.B. Reduced default bandwidth setting for `rate' effect from 99%
+    to 95%; use `rate -s' to be compatible with SoX v14.1.0.  (robs)
+  o New options for `rate' effect to configure phase response,
+    band-width and aliasing.  (robs)
+  o New options for 'dither' effect: RPDF, TPDF, noise-shaping.  (robs)
+  o New `riaa' effect: RIAA vinyl playback EQ.  (robs)
+  o New `loudness' effect: gain control with ISO 226 loudness
+    compensation.  (robs)
+  o New `bend' effect; pitch bending.  (robs)
+  o New -b option for the norm effect; can be used to fix stereo
+    imbalance.  (robs)
+  o Wider tempo range for `tempo' effect.  (robs)
+  o New --effects-file option to read effects and arguments from
+    a file instead of command line. (cbagwell)
+  o `filter' effect now supports --plot.  (robs)
+  o Improved documentation for the `stat' effect.  (robs)
+  o Fix broken audio pass-through with noiseprof effect.  (robs)
+  o Fix graph legend display when using --plot octave.  (robs)
+  o Fix rare crash with `rate' effect.  (robs)
+  o Fix [2190767] `norm' under-amplifying in some cases.  (George Yohng)
+  o Fix [2007062] Earwax effect can overflow; should clip. (robs)
+  o Fix [2223251] mcompand should use linkwitz-riley.  (robs)
+  o Fix `phaser' clicks and overflows.  (robs)
+  o Trim will now skip past 2G point correctly. (cbagwell)
+  o Improved handling of speed changes in the effects chain.  (robs)
+
+Other new features:
+
+  o New psuedo-effects "newfile" and ":" to allow running
+    multiple effect chains on a single file.  newfile will
+    create a new output file when an effect chain terminates.
+    Of most use with trim and silence effects. (cbagwell)
+  o Can now use multiple pipes as inputs to the combiner;
+    see `Special Filenames' in sox(1).  (robs)
+  o Display SoX build/run environment information with -V -V.  (robs)
+  o Display (with -V) the detected file-type if it differs from the 
+    file extension.  (robs)
+  o New -t option for soxi; to display the detected file type.  (robs)
+  o New -b/--bits, -e/--encoding alternative options for specifying
+    audio encoding parameters.  (robs)
+  o [FR 1958680] Support more than 32 input files.  (robs)
+  o New native Mac OSX audio handler for playing/recording. (cbagwell)
+
+Other bug fixes:
+
+  o Bump library version because it was not binary compatible with
+    SoX 14.0.1 (Pascal Giard)
+  o Turn off versioning of special libsox_fmt* libraries since thats
+    not really needed.  (kwizart)
+  o Fixed crash when running play with no arguments. (Dan Nelson)
+  o Allow libpng to be found with -static option. (cbagwell)
+  o Allow libsamplerate to be found if pkg-config is installed but
+    no samplerate.pc exists. (cbagwell)
+  o [2038855] external lpc10 lib patch.  (Oden Eriksson, Mandriva)
+  o Fix memory leaks in effects chain when restarting effects. (cbagwell)
+  o Fixed pkg-config CFLAGS. (evilynux)
+  o Fix sndfile inclusion in build in some circumstances.  (robs)
+  o Fix [2026912] Fails on URL-like filenames.  (robs)
+  o Always add _LARGEFILE_SUPPORT when off_t is 64bits to work around
+    buggy platforms.  Fixes not able to read WAV files. (cbagwell)
+
+Internal improvements:
+
+  o Fixed all compiler warnings (with gcc 4.3.1, 64-bit arch.).  (robs)
+  o Updates to internal effects chain API.  (cbagwell)
+  o Retire old FFT routines (speeds up `noisered' effect).  (robs)
+  o Allow effects to use getopt.  (robs)
+  o Use libmagic for mp3.  (robs)
+  o Change sox_seek() offset to 64-bit to work with > 2G files (cbagwell)
+  o Merged libsfx back into libsox to align with sox.h API. (cbagwell)
+
+
+sox-14.1.0	2008-7-29
+----------
+
+Previously deprecated features that have been removed in this release:
+
+  Deprec-  Feature    [O(ption)]
+  ated in  [F(ormat)] [E(ffect)]   Replacement
+  -------  ----------------------  ----------------------
+  13.0.0   O -e                    -n
+  13.0.0   O -b/-w/-l/-d           -1/-2/-4/-8
+  13.0.0   E avg, pick             mixer
+  13.0.0   E highp, lowp           highpass -1, lowpass -1
+  13.0.0   E mask                  dither
+  13.0.0   E vibro                 ~= tremolo
+  13.0.0   F auto                  Becomes internal only
+
+File formats:
+
+  o New option --help-format shows info about supported format(s).  (robs)
+  o New WavPack format (includes lossless audio compression, but not
+    guaranteed lossless file compression).  (robs)
+  o New htk format.  (robs)
+  o Add .f4 & .f8 raw file extensions.  (robs)
+  o Writing aiff, aifc & dvms now repeatable with -R.  (robs)
+  o Writing hcom no longer fails with unsupported rate--chooses
+    best match.  (robs)
+  o Au/snd: added support for 32-bit integer and 64-bit float PCM
+    encoding/decoding; display name of unsupported encoding.  (robs)
+  o Can now write .amb (.wav variant) files [FR 1902232].  (robs)
+  o Can now read 2,3(2.6),4 bit ADPCM .voc files [FR 1714991].  (robs)
+  o Can now read some MP3 ID3 tags.  (robs)
+  o Can now write Sounder files.  (robs)
+  o Can now write DEC-variant au files (with -x).  (robs)
+  o Comments support for SoundTool files.  (robs)
+  o Fix [1864216] comments mangled when writing ogg-vorbis.  (robs)
+  o Fix short noise at end of alsa playback.  (Morita Sho/Tim Munro/robs)
+  o Fix wve seek accuracy.  (robs)
+  o Fix lpc10 not working.  (robs)
+  o Fix [1187257] wav MS-ADPCM block-align size incorrect.  (robs)
+  o For wav & au, fix [548256] size in header wrong when piping out.  (robs)
+  o Fix IRCAM SF header processing; support all (modern) variants.  (robs)
+  o Fix 24-bit read/write on big-endian systems.  (robs)
+  o Fix crash trying to open non-existent play-list.  (robs)
+  o Fix FLAC read from stdin with libFLAC >= 8.  (Patrick Taylor Ramsey/robs)
+  o Fix [1997637] Trim effect loses samples (with wav).  (robs)
+
+Effects:
+
+  o New `splice' effect; splice together audio sections.  (robs)
+  o New `remix' effect; mixes any number of channels.  (robs)
+  o New `norm' (normalise) effect.  (robs)
+  o New `delay' effect; delay one or more channels.  (robs)
+  o New `contrast' enhancement effect [FR 708923].  (robs)
+  o Improved `rate' resampling effect; resample, polyphase, & rabbit
+    now deprecated.  (robs)
+  o New `spectrogram' effect; creates a PNG (if built with PNG lib).  (robs)
+  o `synth' can now sweep linearly and squarely (as well as
+    exponentially).  (robs)
+  o Can now `fade' out to EOF without giving file-length (if it can
+    be determined from the input file header).  (robs)
+  o Fix synth max. level setting for some output encodings.  (robs)
+  o Fix crash on 64-bit arch. with tempo & key effects.  (Sami Liedes)
+  o `gain' alias for the vol effect.  (robs)
+
+Other new features:
+
+  o Now possible to control play-back resampling quality (and hence
+    cpu-load) via the PLAY_RATE_ARG environment variable.  (robs)
+  o Command line support for multiple file comments.  (robs)
+  o New --combine=mix-power option to mix combine using 1/sqrt(n) scaling
+    instead of 1/n [FR 2012856].  (robs)
+  o New --input-buffer option to specify (only) input buffer size.  (robs)
+  o New `soxi' utility to extract/display file header fields.  (robs)
+  o Pkg-config support. (Pascal Giard)
+  o Simple VU meter.  (robs)
+  o Heuristic to detect when playing an album and set
+    the default replay-gain mode to `album'.  (robs)
+  o Better auto-choice of output file format parameters when
+    type is different to that of input file.  (robs)
+  o SoX now treats (and displays) encoding size & signal precision
+    separately.  (robs)
+  o Default audio devices (sox), and allow environment variables to
+    be used to override the default audio device driver (rec/play)
+    and default audio device (all).  (robs)
+  o Simpler file info display for `play'.  (robs)
+  o For some file-types, warn if file size seems too short.  (robs)
+  o Added auto-detect for caf, sndr, txw & sf files.  (robs)
+  o Added example0: simpler example of how to develop applications that
+    use the libSoX effects chain.  (robs)
+  o Added example2: simple example of how to develop applications that
+    use libSoX to read an audio file.  (robs)
+  o Moved contents of soxexam man page into soxeffect man page.  (robs)
+
+Other bug fixes:
+
+  o Fix [1890983] rec shortcut should apply bit depth (8-bit,
+    16-bit, etc.) to input handler.  (robs)
+  o Fix ungraceful handling of out of disc space and other write
+    errors (bug was introduced in 14.0.0).  (robs)
+  o Fix endian selection (-B, -L, -x) in some circumstances.  (robs)
+  o Fix auto-detect of hcom files.  (robs)
+
+Internal improvements:
+
+  o Use FORTIFY_SOURCE with gcc.  (robs)
+  o Fixed all compiler warnings (with gcc 4.2.3, 32-bit arch).  (robs)
+  o Reimplement (separately) SoundTool & Sounder format handlers.  (robs)
+  o Allow formats & effects to have any size of private data.  (robs)
+
+
+sox-14.0.1	2008-01-29
+----------
+
+  File formats:
+
+  o Added support for non-standard, non-WAVE_FORMAT_EXTENSIBLE
+    (esp. 24-bit) PCM wav (see wavpcm in soxformat.7 for details).  (robs)
+
+  Effects:
+
+  o Reimplemented reverb to be similar to freeverb.  (robs)
+
+  Bug fixes:
+
+  o Fix Sndtool read error causing noise at start.  (Reynir Stefánsson)
+  o Fix mixer with >4 numbers, and mixer -3 behaving as mixer -4.  (robs)
+  o Fix [1748909] sox does not report remaining playtime of mp3s.  (robs)
+  o Fix failure to read AIFF files with empty MARK chunk.  (robs)
+  o Fix spurious 'Premature EOF' message in some circumstances.  (robs)
+  o Switched to 16-bit for libao driver since not all its plugins
+    support it (such as oss, nas, and pulse audio) (Morita Sho)
+  o Stop crash when "rec" is run with no arguments (Morita Sho).
+  o Fix -V (without argument) on non-gnu systems.  (robs)
+  o Fix reported (with -V) output audio length in some cases.  (robs)
+  o Fix actual FLAC output file audio length in some cases.  (robs)
+  o Fix poor 24-bit FLAC compression & support newer versions of
+    libFLAC (1.2.x).  (robs)
+  o Fix loss of 1 decoded FLAC block when using "trim 0 ...".  (robs)
+  o Fix trim when first effect with IMA-ADPCM input wav file.  (robs)
+
+  Internal improvements:
+
+  o Let "make distcheck" run some automated test scripts.
+  o Distribute missing cmake files.
+  o Fix ogg vorbis compile error on some platforms.
+  o Remove unused libltdl that could cause header mismatch with
+    installed libltdl.
+  o Fix AMR detection with --disable-shared.  (robs)
+  o Updated configure to support linking to static libraries
+    on mingw for flac, ogg, and libsamplerate libraries.
+  o Added example1: simple example of how to develop applications that
+    use the libSoX effects chain.  (robs)
+
+
+sox-14.0.0	2007-09-11
+----------
+
+  File formats:
+
+  o Added ffmpeg support.  (Reuben Thomas)
+  o FLAC: added seekable decoding; added seek-table generation.  (robs)
+  o Added M3U & PLS playlist formats [FR# 1667341] (Note: SHOUTcast PLS
+    is only partially supported).  (robs)
+  o Made format readers and writers into individual modules for easier
+    distribution of differently-licensed code.  (Reuben Thomas)
+  o Added libao support.  (Reuben Thomas)
+  o Added support for ADPCM-encoded PRC files, based on Danny Smith's
+    rec2wav and sndcmp.  (Reuben Thomas)
+  o Added AMR-NB [FR# 728875] & AMR-WB formats (with external libs).  (robs)
+  o Added LPC-10 support.  (Reuben Thomas)
+
+  Effects:
+
+  o Use LADSPA effects (one input, one output).  (Reuben Thomas)
+  o --octave option changed to --plot; can now also use gnuplot to
+    plot effect transfer function.  (robs)
+  o Added soft-knee companding.  (robs)
+  o Show (with --plot) compand transfer function.  (robs)
+  o Allow e.g. "vol 6dB" (as well as "vol 6 dB").  (robs)
+  o Changed deemph filter from 1st order to 2nd order for
+    slightly better accuracy.  (robs)
+  o Add option to silence effect to leave periods of silence
+    in and only strip out extra silence.   (Mark Schreiber)
+  o synth can now generate any number of channels.  (robs)
+  o mixer can now mixdown to mono any number of channels.  (robs)
+  o Added oops effect (mixer special case).  (robs)
+  o All effects that could only work on mono or stereo audio, now
+    work with any number of channels.  (robs)
+  o Added WSOLA-based key and tempo effects.  (robs)
+
+  Other new features:
+
+  o Show (with -S) if clipping is occurring.  (robs)
+  o Added internet input file support (needs wget).  (robs)
+  o Made it possible to build without sound drivers.  (Reuben Thomas)
+
+  Bug fixes:
+
+  o Fix (m)compand transfer function non-linearities; fix compand
+    drain volume.  (robs)
+  o Fix crash with pan effect.  (robs)
+  o Add missing RM define to Makefiles so installs work.
+   (Bug# 1666599) (cbagwell)
+  o Fix I/O performance regression in 13.0.0.  (Reuben Thomas)
+  o Fix .lu, .la read regression in 13.0.0 [Bug# 1715076].  (robs)
+  o Fix uncompressed NIST/Sphere read regression in v13 [Bug #1736016].
+  o Fix displayed times when playing a file and using trim.  (robs)
+  o Fix CDDA sector duration display for non-CDDA sample rates.  (robs)
+  o synth fixes: brown noise; inverted square wave; offset < 0.  (robs)
+  o Fix crash when encoding Vorbis or FLAC: with no comment.  (robs)
+  o Fix effect drain problems: chorus, echo(s), phaser.  (robs)
+  o Fix rabbit responsiveness and memory problems.  (Peter Samuelson)
+  o Fix broken stereo audio when recording using ALSA.  (robs)
+  o Fix OSS driver on big endian machines that was introduced in
+    last release.
+
+  Internal improvements:
+
+  o Renamed libst to libsox for name recongition and to avoid
+    duplications with other existing libst libraries.  (Reuben Thomas)
+  o Moved effects to libsfx.  (Reuben Thomas)
+  o Got rid of several hundred compiler warnings.  (robs, Reuben Thomas)
+  o Added basic performance testing of I/O.  (Reuben Thomas)
+  o Effects chain processing now available in libSoX.  (robs)
+  o Added effects-chain buffering for effects that use a window [FR#
+    1621695].  (robs)
+  o Added cmake build files for Win32.  (robs)
+
+
+sox-13.0.0	2007-02-11
+----------
+
+  File formats:
+
+  o Support for .caf, .paf, .fap, .nist, .w64, .nist, Matlab 4.2/5.0
+    (Octave 2.0/2.1), .pvf, .sds, .sd2 and .xi file formats via libsndfile.
+    If available, libsndfile can also be used to handle all the other file
+    formats it understands.  (Reuben Thomas)
+  o Add FLAC support (robs)
+  o Support Maxis's XA format. (Dwayne C. Litzenberger)
+  o Add support for 24-bit PCM raw, wav (WAVE_FORMAT_EXTENSIBLE) [FR# 801015],
+    au, aiff, & flac files. (robs)
+  o Add AIFF-C output support.  (shashimoto)
+  o New .ima file format for raw IMA ADPCM.  (robs)
+  o Allow the rate and number of channels of .au files to be overridden
+    by command-line arguments. (robs)
+  o Add seek support for GSM data in WAV files. Rafal Maszkowski
+  o Allow encoding quality to be specified (FLAC & Ogg, but not
+    MP3 yet).  (robs)
+  o Rename -b to -1, -w to -2, -l to -4, -d to -8, and mask to dither.
+    (robs)
+  o New options for specifying endianness (and separate options for
+    nibble & bit reversal) [FR# 1621702].  (robs)
+  o Improved multi-channel file reading; fixes [1599990].  (robs)
+
+  Effects:
+
+  o Equalizer effect (Pascal Giard)
+  o bass and treble altering effects.  (robs)
+  o New optional rabbit resample routine, using libsamplerate
+    (aka Secret Rabbit Code).  (Reuben Thomas)
+  o Added allpass filter effect.  (robs)
+  o Documented the butterworth filter effects; added variable Q.  (robs)
+  o "rate" effect made an alias for "resample".
+  o Visualisation of various filters' frequency response via Octave.  (robs)
+  o Can now specify width of many 2nd-order filters as: Hz, octaves,
+    or Q.  (robs)
+  o Dither/mask amount now specifiable.  (robs)
+  o Consistent (and hopefully complete) clipping detection and
+    reporting.  (robs)
+  o Allow command-line time parameters of < 1 sec to omit the
+    leading 0. (robs)
+  o Improved synth usage and improved the synth entry in the man-
+    page.  (robs)
+  o Higher quality audio speed adjustment; also fixes [1155364].  (robs)
+  o Replacement flanger effect; also fixes [1393245].  (robs)
+  o Added silence padding effect.  (robs)
+  o Added ability for noiseprof to use stdout and noisered to use stdin
+    [FR# 1621694].  (Reuben Thomas)
+  o vibro effect name deprecated in favour of tremolo; this effect
+    reimplemented as a special case of synth.  (robs)
+
+  Other new features:
+
+  o Remove soxmix.  (Reuben Thomas)
+  o Preview mode now removed, as all it did was use rate rather than
+    resample, and rate has been removed.
+  o -V now gives only user-relevant messages, use -V -V to get
+    developer-relevant messages.  (robs)
+  o -V output much improved and expanded; now includes display of
+    (auto-)selected effects.  (robs)
+  o sox man-page overhaul, new soxexam man-page entries.  (robs)
+  o Added command line options for specifying the output file
+    comment.  (robs)
+  o Added ability to merge e.g. 2 mono files to 1 stereo file
+    [FR# 1297076].  (robs)
+  o Removed the restrictions whereby multiple input files had to have
+    the same data encoding & size, and in most situations where they
+    had to have the same # of channels, and for play where they had
+    to have the same sampling-rate.  (robs)
+  o Options to apply replay-gain on input; enabled by default
+    with `play'.  (robs)
+  o Can now use Ctrl-C to skip to next track when playing multiple
+    files (e.g. play *.mp3); Ctrl-C twice to exit.  (robs)
+  o Added --interactive option to prompt to overwrite pre-existing
+    output file.  (robs)
+  o Added large file support.  (Reuben Thomas)
+
+  Bug fixes:
+
+  o Fix writing MP3 files on AMD64 processors.
+  o More fixes to MP3 tag reading.  Sometimes tags were
+    detected as valid MP3 frames.
+  o Fix to stop, avoiding a crash, when starting of effects fails.
+    (Reuben Thomas)
+  o Fixed a bug introduced in 12.18.2 that stopped the draining
+    of effects from occuring.  This had stopped the reverse effect,
+    among others, from working.  (Reuben Thomas)
+  o Several effects are now optimised out in situations where they need
+    do nothing, e.g. changing rate from 8000 to 8000, or changing volume
+    by 0dB [Bug# 1395781].  (robs)
+  o Fix rounding error when reading command-line time
+    parameters. (robs)
+  o Fix nul file hander ignoring other format options if rate
+    option has not been given. (robs)
+  o Fix synth length accuracy. (robs)
+  o Fix broken audio when downmixing with any of the following
+    effects: synth, deemph, vibro. (robs)
+  o Fixed deemph & earwax effects to work with MP3, vorbis,
+    & FLAC.  (robs)
+  o Fix wav file handler discarding the last PCM sample in certain
+    circumstances. (robs)
+  o Fix [1627972] AIFF read bug when MARK chunk present.  (Richard Fuller)
+  o Fix [1160154] VOX to WAV conversion problem.  (robs)
+  o Removed (for output file only) the potentially
+    problematic -v option.  Use the vol effect instead.  (robs)
+  o Improved the accuracy of integer and floating point PCM
+    conversions.  (robs)
+  o Don't go into a loop on zero-padded WAVs.  (Jorge Serna)
+  o Fix to AIFF writing to avoid writing invalid files in some situations.
+    (Reuben Thomas)
+  o Fix compander effect bugs: [1613030] Compand fails to compress
+    clipping, [1181423] compand with 0 sec attack/release.  (robs)
+
+  Internal improvements:
+
+  o More and better self-tests. (robs)
+  o Build system overhaul to use the full set of GNU autotools.
+    (Reuben Thomas)
+  o Add new getopt1.c to win32 project file.
+  o Remove old, optional rate change and alaw/ulaw conversion code.
+    (Reuben Thomas)
+  o Removed the old internally invoked (but mentioned in the man page)
+    copy effect.  (robs)
+
+
+sox-12.18.2	2006-09-03
+-----------
+
+  o Adding in Debian's disk full fix (#313206).
+  o Finally got rid of reference to cleanup() function in
+    library.  Applications are now required to detect
+    all failures from return codes and cleanup as they
+    want.
+  o Changed how list of formats and effects are stored internally.
+    Effects libst users only. Dirk
+  o Store effects usage so that its accessable by applications.
+    Dirk
+  o Modify the synth effect to not use SIGINT to stop processing
+    and instead return ST_EOF.  This allows exact acount of
+    samples to be written out instead of an approximate amount.
+  o Fix hangup when attempting to write stereo MP3 files.
+    (1512218) Kendrick Shaw
+  o Fix deemph effect would lose stereo separation. (1479249)  robs
+  o Adding cross-platform support for getopt_long
+  o Make help screens print much more information and add
+    new --help-effect option.  (Originally from Dirk).
+  o Add support for using an external gsm library instead of
+    just the internal one.  Vladimir Nadvornik
+  o Updates to nul file handler to prevent crashes during output.
+    Martin Panter (1482869)
+
+
+sox-12.18.1	2006-05-07
+------------
+
+  o The "filter" effect could go into infinite drain mode.  Now
+    only drain 1 buffer.  noisered as well.
+  o SoX was ignoring user aborts (ctrl-c) if it occured during
+    effect drain operations.  This was bad if effects had
+    bugs and stuck in infinite loop.
+  o Stop SoX from crashing when file type could not be auto
+    determined (1417776).
+  o Output filenames with multiple '.' confused SoX.  (1417776)
+    Christian Hammer
+  o Moved to a common set of CLIP routines.  This fixed clipping
+    bugs in noisered and mcompand.
+  o Stop SoX from crashing on sphere files that contain large text
+    strings.  (1430025) Ulf Hamhammar
+  o Fix some overflow crashes in aiff handler. (1430024)  Ulf Hamhammar.
+  o Under windows, set piped input/output to binary mode (1417794). Martin
+    Panter
+  o Fixed broken internal version of strdup().  (1417790) Marty
+  o Stop infinite loop when reading MP3's with a tag size of
+    exactly 8192 bytes.  (1417511) Hans Fugal
+  o Fix typo in stlib.dsp for loading in Visual Studio 6.
+  o Fixed problems in silence effect related to removing multiple
+    periods of silence from the middle of the sound file.
+  o Reduced the window size greatly on the silence effect to
+    prevent leaving in silence that looked like noise still based
+    on RMS values.
+  o Prevent infinite loop in pitch effect from uninitialize variable.
+    Frank Heckenbach
+  o Prevent crashes when printing error mesages (1447239)
+  o Added makefile and support files to compile using Open Watcom
+    compiler.  (1417798) Marty
+  o Stop calling flow() on effects that returned EOF during drain().  Allows
+    two back-to-back reverse effects to work.
+  o Added support for multiple channels in .dat files.
+    (1366634) tomchristie
+
+
+sox-12.17.9	2005-12-05
+-----------
+
+  o Updates to compile under VC6. Jimen Ching
+  o Declare st_signalinfo_t to specifically be signed in case
+    platform does not default ot signed chars.  This
+    is required for NetBSD/powerpc.
+  o When seek()ing in AIFF, SMP, and WAV handlers, remaining samples were
+    incorrectly computed based on bytes and not samples.  Jukka
+  o Changed noisered effect to just warn during clipping instead
+    of aborting.  Ian Turner
+  o Fixed bug were pieces of audio were lost every buffer read
+    when running both -c and -r options together on mono audio.
+    Users probably percieved it as shorter audio files that
+    played with a sped up tempo.
+    Bugfix will also apply to other times when multiple effects
+    are ran on the command line.
+  o Added support for -V option to play/rec scripts.
+  o Fix to silence effect to allow negative periods to be specified
+    (to remove silence from middle of sound file).
+  o Fix swap option handling so that special case of "swap 1 1" will
+    work.
+  o Track length of Ogg Vorbis files on read.
+  o Add support for displaying a status line that tracks progress
+    of read/write routines.  Part of information requires read
+    file handlers to be able to determine file length.
+  o Converted alsa driver to use asoundlib instead of directly
+    talking to kernel driver.  This also means that device names
+    are now the ALSA logical names instead of /dev type names.
+  o Added ALSA support to play/rec scripts.
+  o Added st_open*, st_read, st_write, st_seek, st_close routines
+    to help simplify developer interface to libst.  See libst.3..
+  o Removed st_initformat(), st_copyformat(), and
+    st_checkformat() from library.  If your app used those
+    functions then copy them from 12.17.8 source code
+    directly into your application or update to use new
+    routines.
+  o Force word-alignment on AIFF SSND and APPL chunks on input.
+    Matthew Hodgson.
+  o Add fix to WAV handler to only return data in multiples
+    of sample_size*channels to better handle corrupt files.
+  o Fixed bug where "-4" option didn't work with avg
+    effect (Tom Christie).
+  o Fixed fade's fade-out-length to match man page
+    description as noted by Geoff Kuenning.  This required
+    updates to the sample crossfade scripts.  Also modified fade
+    effect to report when no more samples will be produced to
+    prevent unneeded reading of whole file.
+  o Allow aborting SoX with SIGTERM, along with previous SIGINT.
+    Norman Ramsey.
+
+
+sox-12.17.8	2005-08-22
+-----------
+
+  o noisered effect had compile problems with some compilers.
+  o "-x" option was being ignored since 12.17.7.
+  o Stuart Brady added support for reading and writing RIFX files (big
+    endian RIFF/WAV files).  Also added support for auto detecting
+    DEC-style ".sd\0" files.
+  o Gene Mar found typo in polyphase nuttall calculation.
+  o SMP buffer overflow (detected by gcc 4.0).  Reported by Marcus Meissner
+    and Matthias Saou.
+  o Fixed URL in manpage to resample overviews.
+  o Fixed WAV handler so that it didn't think WAV chunks with max size
+    were invalid chunks.  This allows WAV's to be used in pipes since
+    they have to default to max size.
+  o WAV files with alaw or ulaw data don't need extended format chunks.
+    (Lars Immisch)
+  o In AIFF files, fixed problem were short comments should cause
+    AIFF handler to get confused and become misaligned.
+
+
+sox-12.17.7	2004-12-20
+-----------
+
+  o Christian Weisgerber sent patches to man page fixes
+    and patches for sunaudio driver on openbsd.
+  o Default volume for soxmix wrongly set to 0 instead
+    of 1/#_input_files (float rounding error).
+  o Update to ALSA driver to do a better job of detecting
+    unsupported sample rate/size/encoding and change to
+    a supported one.
+  o Fix bug in alsa writing were last last partial buffer
+    wasn't being flushed.
+  o Guentcho Skordev pointed out ogg vorbis files were using
+    the same value for serial numbers each time.
+  o Changed sox to only read the exact size of a WAV data chunk
+    if cooledit IFF LIST chunk is found at the end of the file.
+    Normally, this isn't done to allow reading > 2gig WAV files.
+  o Modified configure to detect cygwin compiler after detecting
+    gcc compiler (fixes some default CFLAGS options).
+  o Added explicit rule for compile *.o from *.c so that
+    CPPFLAGS is always referenced.  Not all platform's default
+    rule includes CPPFLAGS (FreeBSD).
+  o Under linux, add include path to /lib/modules/* so that ALSA
+    include files can be auto detected.
+  o Ian Turner added an effect to remove noise from an audio
+    file by first profiling silent periods of the audio
+    to determine what the noise is (like background hiss on
+    cassette tapes).
+
+
+sox-12.17.6	2004-10-13
+-----------
+
+  o Changed comment code to always use copies of strings to
+    fix bug in WAV handlering freeing argv[] memory.
+  o Use calloc() to create ft_t structures so that all
+    memory is initialized before being referenced.
+  o Fixed VOC EOF bug were it thought there was an extra
+    block when there wasn't.
+  o Restructured directory layout so that source code is in
+    a seperate directory.
+  o Modified SoX to accept multiple input files.  Concatenates
+    files together in this case.
+  o Removed map effect so that loops and instr could be removed
+    from effects structures.  This makes effects engine stand
+    alone from the rest of the sox package.
+  o Benedikt Zeyen found a bug in synth effect when generating
+    brown noise that could cause clipping.
+  o David Leverton sent another patch to prevent crashes on
+    amd64's when resampling.
+  o Fixed a bug were MP3 files with large ID3v2 tags could
+    cause SoX to stick in a loop forever.  Now, it will
+    abort on IDv3 tags larger then 100k.  Could still be
+    improved to handle any size.
+  o Changed volume option (-v) so that it tracks the file
+    it was specified.  This means that when specified with
+    the input file, it changes volume before effects engine
+    and when specified with output file, its done after effects
+    engine.
+  o Added crossfade_cat.sh script that will concatenate to
+    audio files and do a crossfade between them.
+  o Fixed bug in fade effect were it was impossible to do a
+    fadeout starting from the beginning of the audio file.
+  o Removed rounding error when changing volume of audio with
+    "-v" option.  This error caused doing a "-v -1.0" twice
+    to not result in the original file.
+  o Fixed a possible overflow in lots of effects were MIN
+    value was treated as -MAX instead of -MAX-1.
+  o Modifed sox so its OK for effects to not process any
+    input or output bytes as long as they return ST_EOF.
+  o When effects output data and reported ST_EOF at the
+    same time, that buffer was discarded as well as
+    data from any chained effect.
+  o Added patch from Eric Benson that attempts to do a seek()
+    if the first effect is trim.  This greatly speeds up
+    processing large files.
+  o Daniel Pouzzner implemented a multi-band compander (using
+    the butterworth filters to split the audio into bands).
+  o Donnie Smith updated the silence effect so that its possible
+    to remove silence from the middle of a sound file by
+    using a negative value for stop_periods.
+  o Changed float routines to only work with normalized values
+    from -1:1.
+  o Modifed .au handler to be able to read and write 32-bit
+    and 64-bit float data.  Only tested reading so far.
+  o WAV with GSM data now always pads data to even number of bytes.
+  o Added support for writing 32-bit audio to AIFF.
+
+
+sox-12.17.5	2004-08-15
+-----------
+
+  o Thomas Klausner sent in patches to compile audio drivers under
+    NetBSD.
+  o Rahul Powar pointed out a memory leak in the WAV file handler.
+    It wasn't calling the correct close() function when closing
+    input files.
+  o Modified play.1 man page to not use multiple name lines.  This
+    appears to confuse some conversion programs.  Updated sox.1
+    man page for typo in reverb option.
+  o Andrew Church fixed problem with header of stereo 8SVX files.
+  o Jimen Ching added support to scan over garbage data at the
+    beginning of MP3 files to find valid frames.  This is useful
+    to play WAV and AIFF files that have MP3 data in them until
+    those handlers support it directly.  To play those, force
+    sox to use the mp3 handler with the "-t mp3" option.
+  o Added patch from Ulf Harnhammar to wav handler to prevent
+    buffer overflows.
+  o Added patch from Redhat to allow resample to work on certain 64-bit
+    machines (Sam Varshavchik)
+  o Tony Seebregts added a file handler for headerless Dialogic/OKI ADPCM
+    files (VOX files).
+  o Jan Paul Schmidt added a repeat effect to do loops the brute force way.
+    This is also good for file format that don't support loops as well.
+  o Fix for OSS driver in rate tolerance calcs that were off because
+    of type conversion problems.  Guenter Geiger.
+  o Allow reading sphere files with headers greater then 256 bytes.  Jimen
+    Ching.
+  o Fix for vorbis were comments are displayed in KEY=value format always.
+    Stop printing some info to stdout in case output is a pipe. Guenter
+    Geiger.
+  o J Robert Ray submitted fix for AIFF handler to ignore lowercase
+    chunks that are unknown.
+  o Bugfix for 8-bit voc files.  Jimen Ching
+  o General warning cleanups (cbagwell)
+  o Memory leaks in reading WAV files (Ufuk Kayserilioglu)
+  o Rearrange link order of ogg vorbis libraries so that they
+    can be compiled as static. (Christian Weisgerbr)
+
+
+sox-12.17.4	2003-03-22
+-----------
+
+  o Peter Nyhlen fixed a problem with reading Comments in Ogg Vorbis files.
+  o Added install target to allow installing libgsm from main Makefile.
+    Leigh Smith.
+  o Minor updates to sox.c to free unused memory and close all input
+    files during failures.
+  o Pieter Krul added a patch that makes play script look at AUDIODEV
+    environment variable if it exists to find which device to use.
+    This allows scripts to work with Solaris SunRays and is a good idea
+    in general.
+  o Updated config.sub to detect latest supported OS's.
+  o Fabrizio Gennari added support for reading and writing
+    MP3 files using the external libraries libmad and libmp3lame.
+  o Jens Henrik Goebbert sent in several bugfixes for integer overflows
+    in the compand effect.
+  o Dan Dickerman sent in patches for integer overflows in the resample
+    effect.
+  o Jimen Ching sent in a fix for multi-channel sound file processing
+    using the avg effect.
+  o Richards Bannister added patches to clean up prototypes and filter
+    private sizes being to small.
+  o Jimen Ching adds -d option to specify 64bit data size and changed
+    Ulaw/Alaw encoding to default to 8bit data size if not specified.
+  o David Singer pointed out that a MS program creates AIFF files
+    with an invalid length of 0 in its header.  Changed SoX to warn the
+    user but continue instead of aborting since SoX can still read
+    the file just fine.
+  o Bert van Leeuwen added a file handler for Psion record.app used
+    for System/Alarms in some Psion devices.
+  o Richard Bannister sent in a patch to make writing vorbis files
+    work with Vorbis 1.0 libraries.
+  o Fixed configure scripts so that they can be ran with the
+    --with-oss-dsp, --with-alsa, and --with-sun-audio options.
+    Was causing compile time problems.  Reported by Raul Coronado.
+  o Change Ogg Vorbis support to use VBR encoding to match defaults
+    of oggenc based on suggestion from Christian Weisgerber.
+  o Prints error message now when a channel value of -1 is given.
+    Reported by Pierre Fortin.
+  o Fixed bug were memory could be trashed if a input WAV file contained
+    a comment.  Found by Rhys Chard.
+  o Change command line to compile soxmix.o slightly to try and make
+    Forte compiler happy.
+  o Added support for ALSA 0.9 driver. Jimen Ching
+
+
+sox-12.17.3	2001-12-15
+-----------
+
+  o Removed check that prevented pan from being invoked when the
+    input and output channels were the same.
+  o Ciaran Anscomb added a flush to sunaudio driver after changing
+    settings.  This is because it can start buffering data as soon
+    as the device is open and the buffered data can be in a
+    wrong format.
+  o trim wasn't accounting for # of channels and was generally broken.
+  o Jeff Bonggren fixed trim bugs were it was failing when triming
+    data that equaled to BUFSIZ.  Also, trim now immediately returns
+    ST_EOF when its done instead of requiring an extra call that
+    returns no data.
+  o auto effect wasn't rewinding the file if the file was less then
+    132 bytes.  Changed auto parsing of header to be incremental
+    instead of reading in a large buffer.
+  o William Plant pointed out a bad pointer access in fade effect's
+    parsing of options.
+  o Ken pointed out a problem were private data was not 8-byte aligned
+    and causing crashes on most RISC CPU's.  Fixed by going back to
+    old style of declaring private data as type "double" which usually
+    forces strictest alignment.
+  o ima_rw was miscompiling on alpha's because of a header ordering
+    problem.
+  o Erik de Castro Lopo pointed out that when writing 16-bit VOC files
+    the headers did not contain the correct length or encoding type.
+  o Seperated st.h into 2 files.  st.h for libst users and st_i.h for
+    internal use.
+  o Added new types used extensively by libst: st_sample_t & st_size_t.
+    This allows for more deterministic behavior on 64-bit machines and
+    also allows sox to possibly work with much larger file sizes.
+  o SoX was some times getting confused and thinking an EOF was an
+    error case when reading audio files.  Removed unneeded aborts
+    when EOF was OK.
+  o Silence effect was broken on stereo files.  Also, made thresholds
+    relative to original bit percision of audio data.  When 16-bit audio
+    is scaled up to 32-bits, a little bit of noise starts to look like a
+    large amplitude of noise.  Also, now using RMS values to smooth out
+    clicks.  RMS rolling window size is 1/10 of sample rate.
+  o Changed Floats into a type of encoding instead of a size of audio data.
+  o Put a flush at the end of OSS driver so that no old data would be
+    left in internal buffers after changing audio format parameters.
+  o Fixed problem where play script wasn't installed correctly if you
+    build from another directory (pointed out by Mike Castle).
+  o Made GSM support internal to libst (no external library required).
+  o Change configure script to enable ulaw/alaw lookup tables and GSM
+    support by default.  Also have Makefile's make use of more configure
+    prefix options to allow for customized installs.
+  o Reverted ulaw/alaw conversion routines back to Sun's versions.
+  o Modified raw file handler to write files in the same generic buffered
+    fashion that was added for reading in 12.17.2.  Seems to have
+    speed up some types of writing.
+  o Reading Ogg Vorbis files could get confused of when EOF was reached.
+  o Added uninstall rules to Makefile.  Added new ststdint.h to define
+    *int*_t typedefs.
+  o Added internal strcasecmp for OS/2.
+  o Added support for swapping "bit" order (MSB becomes LSB) for raw u-law
+    and A-law data.  Some ISDN equipment prefers it this way.  Use -x flag
+    or new .la or .lu file extensions.
+  o Annonymous patch submitted to fix types and spelling problems in
+    various files.  Also, updated VOC files to have u-law and A-law
+    support as well as able to read in VOC files using a pipe.  More
+    examples added to soxexam file.
+
+
+sox-12.17.2	2001-09-15
+-----------
+
+  o Daniel Culbert found and fixed a bug in the polyphase effect
+    that occurs on platforms that rand() can return large values.
+    The bug resulted in polyphase resampling an audio file to a
+    different rate then it said it was.
+  o Stan Seibert contributed a handler for Ogg Vorbis files.  It
+    handles all input formats but can only save using default
+    settings.
+  o Darrick Servis has made major cleanups in the code in regards
+    to error conditions.  Helps people using libst.
+  o Darrick Servis has added added optional seek functionality sox.
+    Several formats have been modified to make use of this.
+  o Geoff Kuenning rewrote the average effect into a general-purpose
+    parametric mapping from N channels to M channels.
+  o Geoff Kuenning added an optional delay-time parameter to the compander
+    effect to allow companding to effectively operate based on future
+    knowledge.
+  o Geoff Kuenning Added support to fade and trim effect for specifying time
+    in hh:mm:ss.frac format.
+    Fixed a bug that caused integer overflow when large start/stop times
+    were used.
+  o Geoff Kuenning updated play/rec/soxeffect scripts to handle all effects
+    added since 12.17. Spell-checked soxexam.1 file.
+  o Jimen Ching updated ALSA configure support to auto-detect 4.x or 5.x API
+    and compile correctly under those two.  All other versions are unsupported.
+  o Merged in the NetBSD package changes into CVS finally.
+  o Removed broken support for non-ANSI compilers.
+  o Makefile now places the correct path to SoX in the play/rec scripts
+    based on configuration script values.
+  o Alexander Pevzner provided a fix for OSS driver for sound being
+    dropped under heavy CPU loads.  Moved GETBLKSIZE operation
+    until after setting up the format (SBLive! was modify the block size
+    after changing formats).
+  o With help from David Blythe, updated OSS drivers to use newer format
+    interface.  OSS driver will now attempt to detect a valid endian type
+    to use with sound card.
+  o Carsten Borchardt pointed out a bug in lowp filter.  Added new
+    nul file handler that reads and writes from/to nothing.
+    Also added new synth effect that creates sounds using a simple
+    synthesizer.  Created a testcd.sh that uses two new features
+    to create a test sound CD for testing audio equipment.
+  o Ben Last added a new program that uses libst and will merge two
+    seperate audio files into a single file with multiple channels.
+    This was merged into the standard sox.c file by cbagwell.
+  o Andreas Menke fixed some problems with the speed effect and
+    how effects were drained.  Also improved the usage of printf()'s
+    to use stderr.
+  o Corrected AU header length value when comments were less than
+    4 bytes.
+  o Added support for reading non-standard bit size data from AIFF files.
+  o Ignore unmatched MARK/INSTR chunks in AIFF files now instead of quiting.
+  o Fixed ALAW encoding bug in .au files as pointed out by Bruce Forsberg.
+  o Unified the raw reading functions.  Probably slightly faster for
+    most datatypes but was done to fix recording from the OSS driver.
+    Control-C stopped working somewhere during the 12.17 series.
+  o Ford Prefect added a dcshift which can shift the midline amplitude
+    towards the true center.  This will allow for a greater range
+    of volume adjustments without clipping audio data.
+  o Heikki Leinonen submitted a silence effect that will trim off
+    silence from the beginning of a file.  cbagwell made some modifications
+    to trim off front and back as well as some other tweaks.
+  o Made the "auto" effect the default file handler for input files.
+    Also have auto handler now use file extensions if it can't figure
+    it out.
+
+
+sox-12.17.1	2000-11-19
+-----------
+
+  o Andreas Kies fixed a bug were we were not detecting correctly
+    if an output file was seekable.
+  o Fixed a bug in the mask effect introduced in 12.17.  If the libc
+    version of rand() returned more then 15-bit values then it would
+    trash your data.  Reported by Friedhel Mehnert.
+  o Added a new fade in/out effect from Ari Moisio.
+  o AIFF files now ignore a MARK chunk if the loop type is NoLoop (0).
+  o Fixed bug were it was impossible to output ADPCM data in wav files.
+  o Fixed bug were rate had to be specified for sphere files (fix from
+    Antti Honkela).
+  o Added small work around to let compile with cygwin's gcc 95.2
+    which also now allows to compile with GSM support under windows.
+  o Removed accessing of sound devices in tests for sound support and
+    instead just look for needed header files.  This allows the sound
+    support to be detected even if the device is currently busy or when
+    compiled on a box that doesn't have a sound card but the OS supports
+    it (which is the enviornment of most distributions creating new
+    binaries).
+  o Added support to partially handle AIFC files but only uncompressed
+    versions.  This should allow people to work with raw CD audio data
+    on Mac OSX and also gives a basis for adding future support for
+    things like ADPCM processing.
+  o Added new "earwax" effect from Edward Beingessner.  It is meant to
+    be used for CD audio played through headphones.  It will move the
+    sound stage from left/right to in front of you.
+  o Trim effect did not compute locations as was documented in the
+    man pages.  Changed effect so that it computed the time the
+    same way that the fade effect does.
+
+
+sox-12.17	2000-09-08
+---------
+
+  o Sox can now read and write w98 compatible gsm .wav files,
+    if compiled properly with libgsm.  Thanks go to Stuart
+    Daines <sjd.u-net.com> for the gsm-wav patches.
+    This is new, and relatively untested. See -g format option.
+  o Sox can now write IMA_ADPCM and ADPCM compressed .wav,
+    this is new, and relatively untested. See -i and -a format
+    options in manpage.
+  o General changes to wav.c for writing additional wav formats.
+    Reading wave headers: more consistency checks.
+    Writing wave headers: fixes for w98.
+  o Speedups to adpcm read routines, new codex versions are
+    now in ima_rw.c and adpcm.c.
+  o Speedups for raw.c, especially for gcc with glibc.
+  o Fixed a segfault problem with ulaw/alaw conversion, where
+    an out-of-range index into the tables could occur.
+  o More detailed output from the stat effect.
+  o Continued rewrite of resample.c, now it is almost as
+    fast with floating arithmetic as the old (buggy) version
+    was with 16-bit integer arithmetic.  The older version
+    in sox-12.16 shifted frequencies slightly and was less
+    accurate.  (Stan Brooks)
+  o Extensive rewrite of polyphas.c, should be faster and use less memory
+    now.  The sox-12.16 polyphase code had some bugs.  (Stan Brooks)
+  o New effect 'filter' which is a high-quality DSP lowpass/
+    highpass/bandpass filter using windowed sinc function
+    methods, like polyphase and resample.  (Stan Brooks)
+  o Jan Paul Schmidt added new low/high/bandpass and bandlimit
+    filters to sox.  They have much better results then the old
+    versions of low/high/bandpass.  The new effects are all
+    Butterworth filters.
+  o New data file type supported, -sl or extension .sl for
+    signed 32-bit integers.  Some simplification of the raw.c
+    source.
+  o Some test programs and scripts in the test directory, for
+    making gnuplot plots of frequency response, error-levels
+    of rate-conversion and filter effects.
+  o Removed sbdsp code.  All modern unixes are support via OSS,
+    ALSA, or sun audio device interfaces.
+  o Added AVR handler from Jan Paul Schmidt.
+  o SoX now waits until the last possible moment before opening
+    the output file.  This will allow all input and effect options
+    to be parsed for errors and abort before overwriting any file.
+  o SoX will no longer write to files that exists.  This will keep
+    it from deleting files when a user mistakenly types "sox *.wav".
+  o Added new compander effect from Nick Bailey.  Nice general purpose
+    filter.
+  o Under Solaris, SoX now checks hardware ability to play stereo/PCM
+    and forces output data to match.  Sorry, no SunOS support.  I don't
+    have access to one any more.
+  o Fixed array overrun bug in rate effect as pointed out by Ian
+    Donaldson.
+  o Fixed clip24() range as pointed out by Ted Powell.
+  o Fixed possible segfault in echos effect, as pointed out by Zinx
+    Verituse.
+  o Moved most documentation to new "soxexam.1" manual page so that
+    all users on a unix system will have access to important information.
+    This means no more TIPS, CHEATS, or CHEATS.eft files.
+  o Richard Kent fixed a byte alignment problem in aiff comment code.
+  o Loring Holden added support to create missing directories on install
+    and support for installs from outside the source directory.
+  o Fabien COELHO added a pan and volume effect.
+  o Fabien COELHO added a speed effect to sox (like speeding up a tape
+    machine).  Also added pitch which changes pitch without effecting
+    duration and stretch which stretch time without effecting pitch.
+  o Leigh Smith updated aiff support to use the COMT check when writing
+    comments instead of the ANNO.  It is the prefered method from Apple
+    and newer programs are starting to require it.  Also fixed some bugs
+    in how we compute the length of various chunks in output files.
+  o Changed the default block alignement for IMA ADPCM WAV files to use
+    256 which is what windows programs use.  Badly written readers expect
+    256.
+  o Matthias Nutt helped add support for specifying multiple effects
+    to SoX on the command line.
+  o Curt Zirzow added a trim effect to trim off audio data.
+  o Updated ALSA driver to support new interface. Jimen Ching
+
+
+sox-12.16	1999-07-13
+---------
+
+  o Changed raw data functions to perform I/O operations using block reads.
+    Should improve speeds greatly, especially when filesize is in megs.
+    Got code ready to tweak speed more which also forced me to clean up
+    Endian test code.
+  o Fixed a bug in .au's handling of G.723.  It wasn't using the correct
+    number of bits.  Added A-law support to .au.
+  o Quoted $filename in play/rec scripts so that files with spaces in
+    their names can be given.
+  o Old OS/2 support didn't work.  Replaced with known working EMX
+    GCC compatible code.
+  o ADPCM WAV files were defaulting to 8-bit outputs and thus losing
+    some persision.  Now defaults to 16-bit signed uncompressed data.
+  o Fixed a couple cross-platform compiler issues.
+  o Jimen Ching has added support for "configure" in to SOX.  Finally,
+    a good solution to cross-platform compiling!
+  o Jimen Ching has added native support for the ALSA driver to play
+    and record audio from. (jching@flex.com)
+  o Minor correction for -r example in manual page.
+  o Renamed sox.sh to soxeffect and rewrote.  Symbolic links can be made
+    from this file to the name of a sox effect.  It will then run that
+    effect on STDIN and output the results to STDOUT.
+  o Fixed up some makefiles and 16-bit support from patches sent by
+    Mark Morgan Lloyd (markMLl.in@telemetry.co.uk).  Also added some
+    nice DOS test bat files from him as well.
+  o Cleaned up some more cross-platform compile problems.  In the process
+    got it working with Turbo C again, kinda.  It still locks DOS up at times.
+  o Made AIFF handler work with invalid headers that some programs generate.
+    Also fix an Endian bug thats been there for quite a long time (when
+    ran on Intel machines).  Made comment lengths even length to make
+    most MacOS programs happy.  cbagwell
+  o Resample function was updated by Andreas Wilde
+    (andreas@eakaw2.et.tu-dresden.de) to fix problem were freqs. were
+    off by a factor of 2.
+  o Added an effect that swaps stereo channels.  cbagwell
+  o Combined play and rec scripts to a single program to ease mantaince.
+    Also added GNU style long-options (--help).  Careful, some options have
+    change (but more logical).
+  o Fixed a very old silly bug were low/high/bandpass filters would
+    add some trash data to the end of the sound file.
+  o "avg" effect wouldn't give error message when you tried to average
+    x number of channels in to the same number of channels.
+  o Fixed core dump when writting AIFF files with no comments.
+    (Olaf Pueschel)
+
+
+sox-12.15	1998-10-01
+---------
+
+  o Juergen Mueller moved Sox forward quite a bit by adding all the
+    most commonly known "Guitar Effects".  He enhanced echo support,
+    added chorus, flanger, and reverb effects.  He also wrote a very
+    handy CHEAT.eft file for using various effects.
+  o Incorporated Yamaha TX-16W sampler file support provided by
+    Rob Talley (rob@aii.com) and Mark Lakata (lakata@physics.berkeley.edu).
+  o Fixed a small bug in hcom compression, dependent on sign
+    extension.  Leigh Smith (leigh@psychokiller.dialix.oz.au).
+  o sox -h now prints out the file formats and effects supported.
+    Leigh Smith and Chris Bagwell.
+  o smp transfers comments more completely.  Leigh Smith.
+  o aiff manages markers and loops correctly and produces more
+    verbose output.  Leigh Smith.
+  o Added polyphase resampler (kb@ece.cmu.edu).  This adds a slightly
+    different resampling algorithm to the mix.
+  o Michael Brown (mjb@pootle.demon.co.uk) sent a patch to stop crashes
+    from happening when reading mono MS ADPCM files.
+  o Fabrice Bellard has added a less buggy 'rate' conversion.  I've left
+    the old rate code included but if all goes well this will become
+    the new 'rate'.  Please test and let me know how it works.  Resample
+    effect needs to be reworked now.
+  o Heiko Eissfeldt: Implemented a simple deemphasis effect for
+    certain audio cd samples.
+  o Matija Nalis (mnalis@public.srce.hr) sent a patch to fix volume adjustment
+    (-v) option of sox.
+  o Fixed typo in optimazation flag in unix makefile, as pointed out by
+    Manoj Kasichainula (manojk@io.com).
+  o Fixed missing ';;' in play script. cbagwell
+  o Fixed bug in determining length of IMA and MS ADPCM WAVE files. cbagwell
+  o Fixed bug in how stereo effects were drained which fixed the
+    "reverse" effect from only saving half of stereo files. cbagwell
+  o Can use "-e" without an effect again.
+  o Added -g and -a options for new style support of GSM and ADPCM.  Added
+    error checking to various formats to avoid allowing these types.
+
+
+sox-12.14	1998-05-15
+---------
+
+  o Bumped major version number up and shortened name.  The shorter name
+    should help the various distributions using this package.
+  o Added support for MS ADPCM and IMA (or DVI) ADPCM for .wav files.
+    Thanks to Mark Podlipec's xanim for this code (podlipec@ici.net).
+  o Change Lance Norskog's email address to thinman@meer.net.  The old
+    one was bouncing.
+  o Added path string to play and rec strings so that it could be run by
+    users without complete paths setup (i.e. Ran by "rc" files during bootup
+    or shutdown)
+  o Fixed -e option from Richard Guenther
+      (richard.guenther@student.uni-tuebingen.de) and fixed a small bug
+    in stat.
+  o Fixed a bug in the mask effect for ULAW/ALAW files.
+  o Fixed a bug in cdr output files that appended trash to end of file.
+  o Guenter Geiger (geiger@iem.mhsg.ac.at) made a rather large patch to
+    allow sox to work on 64-bit alphas.  It was done the easiest meathod
+    by changing all long declarations to use a macro that knows to
+    make it 32-bits.  Want to port to another 64-bit-but-not-alpha
+    machine?  Grep for "alpha" to see changes.  There are most likely
+    several bugs left for alphas.  Guenter is also supporting this
+    package for the Debian distribution.
+  o Did some major code cleanups to clear out some warning messages
+    during compile.  This is to clear up problems I'm finding under
+    both alpha and dos.  Some warning messages are actually useful
+    now (pointing out possible data loss).  Hopefully, I didn't
+    break anything.
+  o Code clean up allows me to finally compile code under Turbo C
+    again.  Too bad the EXE gets a currupted stack somewhere and locks
+    up the system.  Anyone want to try it with Borland C for me?
+    If you get a working EXE I would like to start distributing a DOS
+    package like there used to be.
+  o Speaking of cleanups, anyone want to help cleanup the makefiles for
+    various platforms?  They are quite outdated right now and it is
+    very obvious that Sox hasn't been able to compile under all the
+    platforms it once did for several releases.  Please send in
+    the cleaned-up makefile versions along with what programs you
+    used to compile it with.
+  o There is a known bug in hcom's compress() function.  It is allocating
+    memory that can't be free'd under some OS's.  It causes a core dump.
+
+
+sox-11gamma-cb3	1997-03-28
+---------------
+
+This release of sox is mainly a bugfix release.  The following things
+have changed:
+
+  o  Documentation has been updated when it was obviously wrong.
+     Much more work could be done.  Man pages were updated to
+     work correctly on Solaris and add some missing info.
+  o  Several people sent me patches to fix compiling on Solaris
+     as well as fix a few bugs.
+  o  Change USS driver's name to OSS.  Man, does that driver
+     like to change names!  This could cause problems if you
+     have made your own custom play and rec scripts.
+  o  Updated my email address.  Sorry if I haven't responded to
+     any emails as I no longer have access to my old address.
+     Please use cbagwell@sprynet.com.
+  o  Fixed unix test scripts so that they worked again.
+  o  Fixed endian bug in psion .wve code.
+  o  Replaced outdated voc info file with detailed format info
+     inside voc code.
+  o  Added new sound format, cvsd (Continuously Variable Slope Delta)
+     from Thomas Sailer (sailer@ife.ee.ethz.ch).
+
+
+sox-11gamma-cb2	1996-10-04
+---------------
+
+This release of sox is based on the latest gamma version released
+plus some patches I've made to support the following new features:
+
+I would like to thank everyone that wrote me about the long
+standing bug in Sox that could DELETE your /dev/* file if the
+program was aborted for reason such as invalid audio file.  Special
+thanks for Bryan Franklin for sending in a patch when I was
+to busy to even look for it.
+
+  o  Better play support for 8-bit stereo voc files.  New support
+     for outputing both 8-bit and 16-bit stereo voc files.
+  o  Built-in support for playing and recording from Linux /dev/dsp.
+     This is a re-write and seperate module from the previous
+     support included inside the sbdsp module.  Also fixes a buffer
+     size bug that showed up when using newer versions of OSS.
+     This driver will work with OSS (and older versions called USS, TASD
+     and Voxware).
+  o  Support for audio playing and recording with SunOS /dev/audio.
+  o  Fixes a bug were /dev/audio or /dev/dsp could be deleted
+     when playing an invalid format audio file.
+  o  Expanded options for play and rec scripts.  You can now specify
+     sox effects after the filename and hear them in real time.
+     Please be sure that an older version of sox is not in your path
+     because these script will possibly find it first and
+     incorrectly use it.
+  o  Setting play/record volume still requires an external program.
+     If you have one a command line program to do this (such as
+     "mixer" for Linux) then you will want to edit the play and rec
+     to use this.  The current support for it is only in example
+     form of how it can be done.
+
+
+List of earlier SoX Contributors
+--------------------------------
+Covering the time from its creation (Jul '91) until sox-11gamma (Feb '95):
+
+  o Lance Norskog		thinman at netcom.com
+	Creator & maintenance
+  o Guido Van Rossum		guido at cwi.nl
+	AU, AIFF, AUTO, HCOM, reverse, many bug fixes
+  o Jef Poskanzer		jef at well.sf.ca.us
+	original code for u-law and delay line
+  o Bill Neisius		bill%solaria at hac2arpa.hac.com 
+	DOS port, 8SVX, Sounder, Soundtool formats
+	Apollo fixes, stat with auto-picker
+  o Rick Richardson		rick at digibd.com
+	WAV and SB driver handlers, fixes
+  o David Champion		dgc3 at midway.uchicago.edu
+	Amiga port 
+  o Pace Willisson		pace at blitz.com
+	Fixes for ESIX
+  o Leigh Smith			leigh at psychok.dialix.oz.au
+	SMP and comment movement support.
+  o David Sanderson		dws at ssec.wisc.edu
+	AIX3.1 fixes
+  o Glenn Lewis			glewis at pcocd2.intel.com
+	AIFF chunking fixes
+  o Brian Campbell		brianc at quantum.qnx.com
+	QNX port and 16-bit fixes
+  o Chris Adams			gt8741 at prism.gatech.edu
+	DOS port fixes
+  o John Kohl			jtkohl at kolvir.elcr.ca.us
+	BSD386 port, VOC stereo support
+  o Ken Kubo			ken at hmcvax.claremont.edu
+	VMS port, VOC stereo support
+  o Frank Gadegast 		phade at cs.tu-berlin.de
+	Microsoft C 7.0 & C Borland 3.0 ports
+  o David Elliot		dce at scmc.sony.com
+	CD-R format support
+  o David Sears			dns at essnj3.essnjay.com
+	Linux support
+  o Tom Littlejohn		tlit at seq1.loc.gov
+	Raw textual data
+  o Boisy G. Pitre 		boisy at microware.com
+	OS9 port
+  o Sun Microsystems, Guido Van Rossum
+	CCITT G.711, G.721, G.723 implementation
+  o Graeme Gill			graeme at labtam.labtam.oz.au
+	A-LAW format, Good .WAV handling, avg channel expansion
+  o Allen Grider		grider at hfsi.hfsi.com
+	VOC stereo mode, WAV file handling
+  o Michel Fingerhut 		Michel.Fingerhut at ircam.fr
+	Upgrade 'sf' format to current IRCAM format.  Float file support.
+  o Chris Knight
+	Achimedes Acorn support
+  o Richard Caley 		R.Caley at ed.ac.uk
+	Psion WVE handler
+  o Lutz Vieweg			lkv at mania.RoBIN.de
+	MAUD (Amiga) file handler
+  o Tim Gardner			timg at tpi.com
+	Windows NT port for V7
+  o Jimen Ching 		jiching at wiliki.eng.hawaii.edu
+	Libst porting bugs
+  o Lauren Weinstein		lauren at vortex.com
+	DOS porting, scripts, professional use
