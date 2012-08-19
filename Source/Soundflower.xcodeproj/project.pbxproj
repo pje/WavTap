@@ -16,7 +16,7 @@
 /* Begin PBXFileReference section */
 		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
 		2249EC7E0ED70C7E003C8357 /* Soundflower.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Soundflower.xcconfig; sourceTree = "<group>"; };
-		54D0ADA60A5E329B006380BD /* Soundflower.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Soundflower.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		54D0ADA60A5E329B006380BD /* WavTap.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WavTap.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3540D62DE4E00C0F5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C93407620601317E002E6A19 /* SoundflowerDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerDevice.h; sourceTree = "<group>"; };
 		C93407630601317E002E6A19 /* SoundflowerEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SoundflowerEngine.h; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				54D0ADA60A5E329B006380BD /* Soundflower.kext */,
+				54D0ADA60A5E329B006380BD /* WavTap.kext */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -106,7 +106,7 @@
 			name = SoundflowerDriver;
 			productInstallPath = "$(SYSTEM_LIBRARY_DIR)/Extensions";
 			productName = SampleAudioDriver;
-			productReference = 54D0ADA60A5E329B006380BD /* Soundflower.kext */;
+			productReference = 54D0ADA60A5E329B006380BD /* WavTap.kext */;
 			productType = "com.apple.product-type.kernel-extension.iokit";
 		};
 /* End PBXNativeTarget section */
@@ -206,7 +206,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				PRODUCT_NAME = Soundflower;
+				PRODUCT_NAME = WavTap;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
@@ -233,7 +233,7 @@
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = /../Build;
 				MODULE_NAME = com.Cycling74.driver.Soundflower;
-				PRODUCT_NAME = Soundflower;
+				PRODUCT_NAME = WavTap;
 				WARNING_CFLAGS = (
 					"-Wmost",
 					"-Wno-four-char-constants",
