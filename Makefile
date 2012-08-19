@@ -2,8 +2,8 @@ SHELL=/bin/sh
 
 ROOT=$$(pwd)
 PRODUCT_NAME=WavTap
-KEXT_DIR=$(ROOT)/Source
-APP_DIR=$(ROOT)/SoundflowerBed
+KEXT_DIR=$(ROOT)/Extension
+APP_DIR=$(ROOT)/App
 KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
@@ -21,7 +21,7 @@ clean-kext:
 	rm -rf $(KEXT_DIR)/Build
 
 clean-app:
-	rm -rf $(APP_BUILD_DIR)
+	rm -rf $(APP_DIR)/build/UninstalledProducts
 
 uninstall-kext:
 	if [[ "$(shell kextstat | grep $(PRODUCT_NAME) | grep -v grep)" ]]; then sudo kextunload /System/Library/Extensions/$(PRODUCT_NAME).kext; fi
