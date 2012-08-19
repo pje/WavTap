@@ -9,6 +9,7 @@ APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
 CONFIG=Development
 SYSTEM_AUDIO_SETUP_APP=/Applications/Utilities/Audio\ MIDI\ Setup.app
+
 build-kext:
 	cd $(KEXT_DIR)
 	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
