@@ -73,7 +73,7 @@ build-command:
 	tail -n $(COMMAND_TAIL_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
 
 install-command: build-command
-	cp -rv $(COMMAND_BUILD_DIR)/* $(COMMAND_INSTALL_DIR)
+	cp -rv $(COMMAND_BUILD_DIR)/$(COMMAND_PRODUCT_NAME).workflow $(COMMAND_INSTALL_DIR)
 
 uninstall-command:
 	rm -rf $(COMMAND_INSTALL_DIR)/$(COMMAND_PRODUCT_NAME).workflow
