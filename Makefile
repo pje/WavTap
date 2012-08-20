@@ -74,6 +74,7 @@ build-command:
 
 install-command: build-command
 	cp -rv $(COMMAND_BUILD_DIR)/$(COMMAND_PRODUCT_NAME).workflow $(COMMAND_INSTALL_DIR)
+	defaults write pbs NSServicesStatus -dict-add '"(null) - WavTap - runWorkflowAsService"' '{ "key_equivalent" = "@^Space"; }'
 
 uninstall-command:
 	rm -rf $(COMMAND_INSTALL_DIR)/$(COMMAND_PRODUCT_NAME).workflow
