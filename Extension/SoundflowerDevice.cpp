@@ -57,11 +57,11 @@ bool SoundflowerDevice::initHardware(IOService *provider)
     
     if (!super::initHardware(provider))
         goto Done;
-    
-    setDeviceName("Soundflower");
-    setDeviceShortName("Soundflower");
-    setManufacturerName("ma++ ingalls for Cycling '74");
-    
+
+    setDeviceName("WavTap");
+    setDeviceShortName("WavTap");
+    setManufacturerName("WavTap");
+
     if (!createAudioEngines())
         goto Done;
     
