@@ -441,7 +441,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
       }
   }
   else {
-    item = [mMenu addItemWithTitle:@"Soundflower Is Not Installed!!" action:NULL keyEquivalent:@""];
+    item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
     [item setTarget:self];
   }
 
