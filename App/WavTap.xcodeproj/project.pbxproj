@@ -143,8 +143,10 @@
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
+			indentWidth = 2;
 			name = AudioThru;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
@@ -282,6 +284,7 @@
 		222FE2F90EBB5DD500FD13FC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = WavTap;
 			};
 			name = Development;
@@ -289,6 +292,7 @@
 		222FE2FA0EBB5DD500FD13FC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = WavTap;
 			};
 			name = Deployment;
@@ -305,10 +309,12 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/WavTap;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = WavTap;
+				SDKROOT = macosx10.7;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (
@@ -328,10 +334,12 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/WavTap;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = WavTap;
+				SDKROOT = macosx10.7;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
 				WARNING_CFLAGS = (

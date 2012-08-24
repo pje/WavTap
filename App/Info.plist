@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>SFlB</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.0.2</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>
