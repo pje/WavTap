@@ -560,6 +560,8 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
+  [self recordStop];
+
   if (gThruEngine2) {
     gThruEngine2->Stop();
   }
@@ -812,6 +814,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (void)doQuit
 {
+  [self recordStop];
   [NSApp terminate:nil];
 }
 
