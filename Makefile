@@ -34,6 +34,9 @@ uninstall-app:
 	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill -9; fi
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
+uninstall-command:
+	if [[ -a ~/Library/Services/WavTap.workflow ]]; then rm -rf ~/Library/Services/WavTap.workflow; fi
+
 install-kext: build-kext
 	sudo cp -rv $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext /System/Library/Extensions
 	sudo chmod -R 700 /System/Library/Extensions/$(PRODUCT_NAME).kext
@@ -54,6 +57,6 @@ build: build-kext build-app
 
 clean: clean-app clean-kext
 
-uninstall: uninstall-app uninstall-kext
+uninstall: uninstall-command uninstall-app uninstall-kext
 
 install: build uninstall install-kext install-app launch-app launch-system-audio-setup
