@@ -519,8 +519,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [self buildMenu];
 
-  [self bindHotKeys];
-
   if (mSoundflower2Device) {
     gThruEngine2 = new AudioThruEngine;
     gThruEngine2->SetInputDevice(mSoundflower2Device);
@@ -531,6 +529,8 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
     [self buildRoutingMenu:NO];
 
     [self readGlobalPrefs];
+    
+    [self bindHotKeys];
   }
 
   // ask to be notified on system sleep to avoid a crash
