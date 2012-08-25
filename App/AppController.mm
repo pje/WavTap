@@ -272,7 +272,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (i == thelist.end()) // we didn't find it, turn selection to none
     [self outputDeviceSelected:[mMenu itemAtIndex:1]];
   else
-    [self buildRoutingMenu:YES];
+    [self buildRoutingMenu];
 
   [pool release];
 }
@@ -350,7 +350,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [super dealloc];
 }
 
-- (void)buildRoutingMenu:(BOOL)is2ch
+- (void)buildRoutingMenu
 {
   NSMenuItem *hostMenu = m2chMenu;
   UInt32 nchnls = (mNchnls2 = gThruEngine2->GetOutputNchnls());
@@ -525,8 +525,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
     gThruEngine2->Start();
 
-    [self buildRoutingMenu:YES];
-    [self buildRoutingMenu:NO];
+    [self buildRoutingMenu];
 
     [self readGlobalPrefs];
     
@@ -631,7 +630,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [sender setState:NSOnState];
   mCur2chDevice = sender;
   [self readDevicePrefs:YES];
-  [self buildRoutingMenu:YES];
+  [self buildRoutingMenu];
 }
 
 - (void)doNothing { }
