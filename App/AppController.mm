@@ -11,7 +11,7 @@ Boolean startOnAwake = false;
 void  CheckErr(OSStatus err)
 {
   if (err) {
-    printf("error %-4.4s %i\n", (char *)&err, (int)err);
+    NSLog(@"error %-4.4s %i\n", (char *)&err, (int)err);
     throw 1;
   }
 }
