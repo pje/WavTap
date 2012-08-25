@@ -9,6 +9,7 @@
   NSMenuItem *m2chMenu;
   NSMenu *m2chBuffer;
   BOOL menuItemVisible;
+  BOOL mIsRecording;
   NSMenuItem *mCur2chDevice;
   NSMenuItem *mCur2chBufferSize;
   NSMenuItem *mSuspended2chDevice;
@@ -32,6 +33,7 @@
 - (void)buildRoutingMenu:(BOOL)is2ch;
 - (void)buildDeviceList;
 - (void)buildMenu;
+- (void)bindHotKeys;
 - (void)InstallListeners;
 - (void)RemoveListeners;
 - (void)readGlobalPrefs;
