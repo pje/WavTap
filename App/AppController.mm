@@ -1,4 +1,5 @@
 #import "AppController.h"
+#import <Carbon/Carbon.h>
 
 #include "AudioThruEngine.h"
 
