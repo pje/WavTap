@@ -770,27 +770,38 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
--(void)doToggleRecord
+-(void)recordStart
 {
   NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
+  [task launch];
+  [item setTitle:@"Stop Recording"];
+  mIsRecording = YES;
+}
 
+-(void)recordStop
+{
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
+  [task launch];
+  [item setTitle:@"Record"];
+  mIsRecording = NO;
+}
+
+-(void)doToggleRecord
+{
   if(mIsRecording){
-    NSArray *argv=[NSArray arrayWithObjects:nil];
-    NSTask *task=[[NSTask alloc] init];
-    [task setArguments: argv];
-    [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
-    [task launch];
-    [item setTitle:@"Record"];
-    mIsRecording = NO;
-    
+    [self recordStop];
   } else {
-    NSArray *argv=[NSArray arrayWithObjects:nil];
-    NSTask *task=[[NSTask alloc] init];
-    [task setArguments: argv];
-    [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
-    [task launch];
-    [item setTitle:@"Stop Recording"];
-    mIsRecording = YES;
+    [self recordStart];
   }
 }
 
