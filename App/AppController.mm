@@ -5,10 +5,10 @@
 
 @implementation AppController
 
-AudioThruEngine  *gThruEngine2 = NULL;
+AudioThruEngine *gThruEngine2 = NULL;
 Boolean startOnAwake = false;
 
-void  CheckErr(OSStatus err)
+void CheckErr(OSStatus err)
 {
   if (err) {
     NSLog(@"error %-4.4s %i\n", (char *)&err, (int)err);
@@ -16,8 +16,8 @@ void  CheckErr(OSStatus err)
   }
 }
 
-OSStatus  HardwareListenerProc (  AudioHardwarePropertyID  inPropertyID,
-                                    void*          inClientData)
+OSStatus  HardwareListenerProc (AudioHardwarePropertyID inPropertyID,
+                                  void* inClientData)
 {
   AppController *app = (AppController *)inClientData;
   NSLog(@"HardwareListenerProc\n");
@@ -56,11 +56,11 @@ OSStatus  HardwareListenerProc (  AudioHardwarePropertyID  inPropertyID,
     return (noErr);
 }
 
-OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
-                                    UInt32                  inChannel,
-                                    Boolean                 isInput,
-                                    AudioDevicePropertyID   inPropertyID,
-                                    void*                   inClientData)
+OSStatus  DeviceListenerProc (AudioDeviceID inDevice,
+                                UInt32 inChannel,
+                                Boolean isInput,
+                                AudioDevicePropertyID inPropertyID,
+                                void* inClientData)
 {
   AppController *app = (AppController *)inClientData;
 
@@ -189,7 +189,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   //[pool release];
 }
 
-
 - (IBAction)srChanged2ch
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -243,7 +242,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [pool release];
 }
 
-
 - (IBAction)refreshDevices
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -269,8 +267,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [pool release];
 }
-
-
 
 - (void)InstallListeners;
 {
@@ -509,28 +505,29 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   }
 
   // ask to be notified on system sleep to avoid a crash
-  IONotificationPortRef  notify;
-    io_object_t            anIterator;
+  IONotificationPortRef notify;
+  io_object_t anIterator;
 
-    root_port = IORegisterForSystemPower(self, &notify, MySleepCallBack, &anIterator);
-    if ( !root_port ) {
-    printf("IORegisterForSystemPower failed\n");
-    }
-  else
-    CFRunLoopAddSource(CFRunLoopGetCurrent(),
-                        IONotificationPortGetRunLoopSource(notify),
-                        kCFRunLoopCommonModes);
+  root_port = IORegisterForSystemPower(self, &notify, MySleepCallBack, &anIterator);
+  if (!root_port) {
+    NSLog(@"IORegisterForSystemPower failed\n");
+  } else {
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notify), kCFRunLoopCommonModes);
+  }
+}
+
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-  if (gThruEngine2)
+  if (gThruEngine2) {
     gThruEngine2->Stop();
+  }
 
-  if (mSoundflower2Device)
+  if (mSoundflower2Device) {
     [self writeGlobalPrefs];
+  }
 }
-
 
 - (IBAction)bufferSizeChanged2ch:(id)sender
 {
@@ -587,25 +584,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   // here -- probably should check to see if there are any potential problems
   // and handle this more properly
   gThruEngine2->SetOutputDevice( (val < 0 ? kAudioDeviceUnknown : mMenuID2[val]) );
-  //[self updateThruLatency];
-
   [mCur2chDevice setState:NSOffState];
   [sender setState:NSOnState];
   mCur2chDevice = sender;
-
-  // get the channel routing from the prefs
   [self readDevicePrefs:YES];
-
-  // now set the menu
   [self buildRoutingMenu:YES];
 }
 
-
-
-- (void)doNothing
-{
-
-}
+- (void)doNothing { }
 
 - (void)readGlobalPrefs
 {
@@ -751,9 +737,9 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 -(void)doAbout
 {
-  // orderFrontStandardAboutPanel doesnt work for background apps
   [mAboutController doAbout];
 }
+
 - (void)doQuit
 {
   [NSApp terminate:nil];
