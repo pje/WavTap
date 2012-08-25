@@ -15,6 +15,8 @@ EventHandlerUPP hotKeyFunction;
 AudioThruEngine *gThruEngine2 = NULL;
 Boolean startOnAwake = false;
 
+UInt32 MENU_ITEM_TOGGLE_RECORD_TAG=1;
+
 void CheckErr(OSStatus err)
 {
   if (err) {
