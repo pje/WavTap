@@ -25,8 +25,11 @@
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
+		3E63F79C15E91805005221AF /* record_start in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record_start */; };
+		3E63F79D15E91805005221AF /* record_stop in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* record_stop */; };
+		3E63F79E15E9181D005221AF /* record_stop in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* record_stop */; };
+		3E63F79F15E91821005221AF /* record_start in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record_start */; };
 		3E82F12515E15B6900F16BCB /* sox in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12415E15B6900F16BCB /* sox */; };
-		3E82F12715E15B7600F16BCB /* toggle_record in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12615E15B7600F16BCB /* toggle_record */; };
 		3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */; };
 		3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB6916E15E8E83A00F632B8 /* Carbon.framework */; };
 /* End PBXBuildFile section */
@@ -38,8 +41,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 12;
 			files = (
-				3E82F12715E15B7600F16BCB /* toggle_record in CopyFiles */,
 				3E82F12515E15B6900F16BCB /* sox in CopyFiles */,
+				3E63F79F15E91821005221AF /* record_start in CopyFiles */,
+				3E63F79E15E9181D005221AF /* record_stop in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,8 +57,9 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3E63F79A15E91805005221AF /* record_start */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record_start; sourceTree = "<group>"; };
+		3E63F79B15E91805005221AF /* record_stop */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record_stop; sourceTree = "<group>"; };
 		3E82F12415E15B6900F16BCB /* sox */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sox; sourceTree = "<group>"; };
-		3E82F12615E15B7600F16BCB /* toggle_record */ = {isa = PBXFileReference; lastKnownFileType = text; path = toggle_record; sourceTree = "<group>"; };
 		3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
 		3EB6916E15E8E83A00F632B8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
@@ -138,8 +143,9 @@
 		29B97314FDCFA39411CA2CEA /* AudioThru */ = {
 			isa = PBXGroup;
 			children = (
+				3E63F79A15E91805005221AF /* record_start */,
+				3E63F79B15E91805005221AF /* record_stop */,
 				3EB6916E15E8E83A00F632B8 /* Carbon.framework */,
-				3E82F12615E15B7600F16BCB /* toggle_record */,
 				3E82F12415E15B6900F16BCB /* sox */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -251,6 +257,8 @@
 				222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */,
 				222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */,
 				3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */,
+				3E63F79C15E91805005221AF /* record_start in Resources */,
+				3E63F79D15E91805005221AF /* record_stop in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

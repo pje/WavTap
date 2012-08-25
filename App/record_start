@@ -23,8 +23,6 @@ fi
 recorder_process='/Applications/WavTap.app/Contents/SharedSupport/sox'
 pid=`ps -axo pid,command,args | grep $recorder_process | grep -v grep | awk '{ print $1 }'`
 
-if [[ -n $pid ]]; then
-  kill -SIGINT $pid
-else
-	/Applications/WavTap.app/Contents/SharedSupport/sox -V6 -t coreaudio 'WavTap (2ch)' $output_file
+if [[ -z $pid ]]; then
+  /Applications/WavTap.app/Contents/SharedSupport/sox -V6 -t coreaudio 'WavTap (2ch)' $output_file
 fi

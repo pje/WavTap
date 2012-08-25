@@ -772,21 +772,26 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 -(void)doToggleRecord
 {
-  mIsRecording = !mIsRecording;
-
   NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
 
   if(mIsRecording){
-    [item setTitle:@"Stop Recording"];
-  } else {
+    NSArray *argv=[NSArray arrayWithObjects:nil];
+    NSTask *task=[[NSTask alloc] init];
+    [task setArguments: argv];
+    [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
+    [task launch];
     [item setTitle:@"Record"];
+    mIsRecording = NO;
+    
+  } else {
+    NSArray *argv=[NSArray arrayWithObjects:nil];
+    NSTask *task=[[NSTask alloc] init];
+    [task setArguments: argv];
+    [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
+    [task launch];
+    [item setTitle:@"Stop Recording"];
+    mIsRecording = YES;
   }
-  
-  NSArray *argv=[NSArray arrayWithObjects:nil];
-  NSTask *task=[[NSTask alloc] init];
-  [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/toggle_record"];
-  [task launch];
 }
 
 -(void)doAbout
