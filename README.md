@@ -6,17 +6,15 @@ create quick audio screenshots from whatever your mac is playing
 
 #### Installation
 
-`make install`
+run the [installer](https://github.com/downloads/pje/WavTap/WavTap.pkg).
 
-select WavTap as the system audio output device within Audio Midi Setup
+open Audio Midi Setup, right-click on WavTap, select "use this device for sound output"
 
-click on the WavTap icon in the menubar and select Built-in Output
-
-`make uninstall` removes everything
+open WavTap, click on its icon in the menu bar, make sure "Built-in Output" is checked
 
 #### Nerd Corner
 
-the default shortcut is editable via SystemPreferences/Keyboard/Services/General/WavTap
+`make uninstall` removes everything
 
 it's a fork — but lives independently of — [Soundflower](https://github.com/tap/Soundflower). thanks to [ma++ ingalls](http://sfsound.org/matt.html), [Cycling '74](http://cycling74.com), [tap](http://github.com/tap), and everyone else who's contributed to it.
 
