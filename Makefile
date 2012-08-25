@@ -44,12 +44,16 @@ install-kext: build-kext
 install-app: build-app
 	cp -r $(APP_BUILD_DIR)/$(PRODUCT_NAME).app $(APP_INSTALL_DIR)
 
+launch-app:
+	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
+
+launch-system-audio-setup:
+	open $(SYSTEM_AUDIO_SETUP)
+
 build: build-kext build-app
 
 clean: clean-app clean-kext
 
 uninstall: uninstall-app uninstall-kext
 
-install: build uninstall install-kext install-app
-	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
-	open $(SYSTEM_AUDIO_SETUP)
+install: build uninstall install-kext install-app launch-app launch-system-audio-setup
