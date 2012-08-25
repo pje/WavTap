@@ -19,24 +19,24 @@ OSStatus  HardwareListenerProc (  AudioHardwarePropertyID  inPropertyID,
                                     void*          inClientData)
 {
   AppController *app = (AppController *)inClientData;
-printf("HardwareListenerProc\n");
+  NSLog(@"HardwareListenerProc\n");
     switch(inPropertyID)
     {
         case kAudioHardwarePropertyDevices:
-//      printf("kAudioHardwarePropertyDevices\n");
+//      NSLog(@"kAudioHardwarePropertyDevices\n");
 
            // An audio device has been added or removed to the system, so lets just start over
       [NSThread detachNewThreadSelector:@selector(refreshDevices) toTarget:app withObject:nil];
             break;
 
         case kAudioHardwarePropertyIsInitingOrExiting:
-//    printf("kAudioHardwarePropertyIsInitingOrExiting\n");
+//    NSLog(@"kAudioHardwarePropertyIsInitingOrExiting\n");
                        // A UInt32 whose value will be non-zero if the HAL is either in the midst of
                         //initializing or in the midst of exiting the process.
             break;
 
         case kAudioHardwarePropertySleepingIsAllowed:
-//    printf("kAudioHardwarePropertySleepingIsAllowed\n");
+//    NSLog(@"kAudioHardwarePropertySleepingIsAllowed\n");
                     //    A UInt32 where 1 means that the process will allow the CPU to idle sleep
                     //    even if there is audio IO in progress. A 0 means that the CPU will not be
                     //    allowed to idle sleep. Note that this property won't affect when the CPU is
@@ -44,7 +44,7 @@ printf("HardwareListenerProc\n");
             break;
 
         case kAudioHardwarePropertyUnloadingIsAllowed:
-//    printf("kAudioHardwarePropertyUnloadingIsAllowed\n");
+//    NSLog(@"kAudioHardwarePropertyUnloadingIsAllowed\n");
                      //   A UInt32 where 1 means that this process wants the HAL to unload itself
                      //   after a period of inactivity where there are no IOProcs and no listeners
                      //   registered with any AudioObject.
@@ -108,7 +108,7 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       if (!isInput) {
         if (inChannel == 0) {
           if (gThruEngine2->GetOutputDevice() == inDevice) {
-            //printf("non-soundflower device potential # of chnls change\n");
+            //NSLog(@"non-wavtap device potential # of chnls change\n");
             [NSThread detachNewThreadSelector:@selector(checkNchnls) toTarget:app withObject:nil];
           }
           else // this could be an aggregate device in the middle of constructing, going from/to 0 chans & we need to add/remove to menu
