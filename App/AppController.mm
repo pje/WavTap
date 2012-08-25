@@ -463,15 +463,15 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   }
 
   [mMenu addItem:[NSMenuItem separatorItem]];
-  
-  
+
+
   item = [mMenu addItemWithTitle:@"Record" action:@selector(doToggleRecord) keyEquivalent:@""];
   [item setTarget:self];
   [item setTag:MENU_ITEM_TOGGLE_RECORD_TAG];
   [self setToggleRecordHotKey:@" "];
   [mMenu addItem:[NSMenuItem separatorItem]];
 
-  
+
   item = [mMenu addItemWithTitle:@"About..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
@@ -526,7 +526,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
     [self buildRoutingMenu];
 
     [self readGlobalPrefs];
-    
+
     [self bindHotKeys];
   }
 
@@ -775,7 +775,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 -(void)recordStart
 {
   NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
-  
+
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
@@ -788,7 +788,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 -(void)recordStop
 {
   NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
-  
+
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
