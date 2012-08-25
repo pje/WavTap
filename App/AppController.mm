@@ -1,42 +1,52 @@
 #import "AppController.h"
+#import <Carbon/Carbon.h>
 
 #include "AudioThruEngine.h"
 
+OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData)
+{
+  [userData doToggleRecord];
+  return noErr;
+}
+
 @implementation AppController
 
-AudioThruEngine  *gThruEngine2 = NULL;
+EventHandlerUPP hotKeyFunction;
+AudioThruEngine *gThruEngine2 = NULL;
 Boolean startOnAwake = false;
 
-void  CheckErr(OSStatus err)
+UInt32 MENU_ITEM_TOGGLE_RECORD_TAG=1;
+
+void CheckErr(OSStatus err)
 {
   if (err) {
-    printf("error %-4.4s %i\n", (char *)&err, (int)err);
+    NSLog(@"error %-4.4s %i\n", (char *)&err, (int)err);
     throw 1;
   }
 }
 
-OSStatus  HardwareListenerProc (  AudioHardwarePropertyID  inPropertyID,
-                                    void*          inClientData)
+OSStatus  HardwareListenerProc (AudioHardwarePropertyID inPropertyID,
+                                  void* inClientData)
 {
   AppController *app = (AppController *)inClientData;
-printf("HardwareListenerProc\n");
+  NSLog(@"HardwareListenerProc\n");
     switch(inPropertyID)
     {
         case kAudioHardwarePropertyDevices:
-//      printf("kAudioHardwarePropertyDevices\n");
+//      NSLog(@"kAudioHardwarePropertyDevices\n");
 
            // An audio device has been added or removed to the system, so lets just start over
       [NSThread detachNewThreadSelector:@selector(refreshDevices) toTarget:app withObject:nil];
             break;
 
         case kAudioHardwarePropertyIsInitingOrExiting:
-//    printf("kAudioHardwarePropertyIsInitingOrExiting\n");
+//    NSLog(@"kAudioHardwarePropertyIsInitingOrExiting\n");
                        // A UInt32 whose value will be non-zero if the HAL is either in the midst of
                         //initializing or in the midst of exiting the process.
             break;
 
         case kAudioHardwarePropertySleepingIsAllowed:
-//    printf("kAudioHardwarePropertySleepingIsAllowed\n");
+//    NSLog(@"kAudioHardwarePropertySleepingIsAllowed\n");
                     //    A UInt32 where 1 means that the process will allow the CPU to idle sleep
                     //    even if there is audio IO in progress. A 0 means that the CPU will not be
                     //    allowed to idle sleep. Note that this property won't affect when the CPU is
@@ -44,7 +54,7 @@ printf("HardwareListenerProc\n");
             break;
 
         case kAudioHardwarePropertyUnloadingIsAllowed:
-//    printf("kAudioHardwarePropertyUnloadingIsAllowed\n");
+//    NSLog(@"kAudioHardwarePropertyUnloadingIsAllowed\n");
                      //   A UInt32 where 1 means that this process wants the HAL to unload itself
                      //   after a period of inactivity where there are no IOProcs and no listeners
                      //   registered with any AudioObject.
@@ -55,11 +65,11 @@ printf("HardwareListenerProc\n");
     return (noErr);
 }
 
-OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
-                                    UInt32                  inChannel,
-                                    Boolean                 isInput,
-                                    AudioDevicePropertyID   inPropertyID,
-                                    void*                   inClientData)
+OSStatus  DeviceListenerProc (AudioDeviceID inDevice,
+                                UInt32 inChannel,
+                                Boolean isInput,
+                                AudioDevicePropertyID inPropertyID,
+                                void* inClientData)
 {
   AppController *app = (AppController *)inClientData;
 
@@ -108,7 +118,7 @@ OSStatus  DeviceListenerProc (  AudioDeviceID           inDevice,
       if (!isInput) {
         if (inChannel == 0) {
           if (gThruEngine2->GetOutputDevice() == inDevice) {
-            //printf("non-soundflower device potential # of chnls change\n");
+            //NSLog(@"non-wavtap device potential # of chnls change\n");
             [NSThread detachNewThreadSelector:@selector(checkNchnls) toTarget:app withObject:nil];
           }
           else // this could be an aggregate device in the middle of constructing, going from/to 0 chans & we need to add/remove to menu
@@ -188,7 +198,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   //[pool release];
 }
 
-
 - (IBAction)srChanged2ch
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -242,7 +251,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [pool release];
 }
 
-
 - (IBAction)refreshDevices
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -264,12 +272,10 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   if (i == thelist.end()) // we didn't find it, turn selection to none
     [self outputDeviceSelected:[mMenu itemAtIndex:1]];
   else
-    [self buildRoutingMenu:YES];
+    [self buildRoutingMenu];
 
   [pool release];
 }
-
-
 
 - (void)InstallListeners;
 {
@@ -324,11 +330,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (id)init
 {
+  mIsRecording = NO;
   mOutputDeviceList = NULL;
 
   mSoundflower2Device = 0;
   mNchnls2 = 0;
   mSuspended2chDevice = NULL;
+
+  [ self bindHotKeys];
 
   return self;
 }
@@ -341,7 +350,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   [super dealloc];
 }
 
-- (void)buildRoutingMenu:(BOOL)is2ch
+- (void)buildRoutingMenu
 {
   NSMenuItem *hostMenu = m2chMenu;
   UInt32 nchnls = (mNchnls2 = gThruEngine2->GetOutputNchnls());
@@ -379,6 +388,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
     [superMenu setSubmenu:menu];
   }
+}
+
+- (void)setToggleRecordHotKey:(NSString*)keyEquivalent
+{
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+
+  [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
+  [item setKeyEquivalent:keyEquivalent];
 }
 
 - (void)buildMenu
@@ -447,8 +464,13 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [mMenu addItem:[NSMenuItem separatorItem]];
 
-  item = [mMenu addItemWithTitle:@"Audio Setup..." action:@selector(doAudioSetup) keyEquivalent:@""];
+
+  item = [mMenu addItemWithTitle:@"Record" action:@selector(doToggleRecord) keyEquivalent:@""];
   [item setTarget:self];
+  [item setTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  [self setToggleRecordHotKey:@" "];
+  [mMenu addItem:[NSMenuItem separatorItem]];
+
 
   item = [mMenu addItemWithTitle:@"About..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
@@ -501,35 +523,53 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
     gThruEngine2->Start();
 
-    [self buildRoutingMenu:YES];
-    [self buildRoutingMenu:NO];
+    [self buildRoutingMenu];
 
     [self readGlobalPrefs];
+
+    [self bindHotKeys];
   }
 
   // ask to be notified on system sleep to avoid a crash
-  IONotificationPortRef  notify;
-    io_object_t            anIterator;
+  IONotificationPortRef notify;
+  io_object_t anIterator;
 
-    root_port = IORegisterForSystemPower(self, &notify, MySleepCallBack, &anIterator);
-    if ( !root_port ) {
-    printf("IORegisterForSystemPower failed\n");
-    }
-  else
-    CFRunLoopAddSource(CFRunLoopGetCurrent(),
-                        IONotificationPortGetRunLoopSource(notify),
-                        kCFRunLoopCommonModes);
+  root_port = IORegisterForSystemPower(self, &notify, MySleepCallBack, &anIterator);
+  if (!root_port) {
+    NSLog(@"IORegisterForSystemPower failed\n");
+  } else {
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notify), kCFRunLoopCommonModes);
+  }
+}
+
+- (void)bindHotKeys
+{
+  hotKeyFunction = NewEventHandlerUPP(myHotKeyHandler);
+  EventTypeSpec eventType;
+  eventType.eventClass = kEventClassKeyboard;
+  eventType.eventKind = kEventHotKeyReleased;
+  InstallApplicationEventHandler(hotKeyFunction,1,&eventType,self,NULL);
+
+  UInt32 keyCode = 49;
+  EventHotKeyRef theRef = NULL;
+  EventHotKeyID keyID;
+  keyID.signature = 'FOO ';
+  keyID.id = 1;
+  RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-  if (gThruEngine2)
+  [self recordStop];
+
+  if (gThruEngine2) {
     gThruEngine2->Stop();
+  }
 
-  if (mSoundflower2Device)
+  if (mSoundflower2Device) {
     [self writeGlobalPrefs];
+  }
 }
-
 
 - (IBAction)bufferSizeChanged2ch:(id)sender
 {
@@ -586,25 +626,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   // here -- probably should check to see if there are any potential problems
   // and handle this more properly
   gThruEngine2->SetOutputDevice( (val < 0 ? kAudioDeviceUnknown : mMenuID2[val]) );
-  //[self updateThruLatency];
-
   [mCur2chDevice setState:NSOffState];
   [sender setState:NSOnState];
   mCur2chDevice = sender;
-
-  // get the channel routing from the prefs
   [self readDevicePrefs:YES];
-
-  // now set the menu
-  [self buildRoutingMenu:YES];
+  [self buildRoutingMenu];
 }
 
-
-
-- (void)doNothing
-{
-
-}
+- (void)doNothing { }
 
 - (void)readGlobalPrefs
 {
@@ -743,18 +772,49 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
--(void)doAudioSetup
+-(void)recordStart
 {
-  [[NSWorkspace sharedWorkspace] launchApplication:@"Audio MIDI Setup"];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
+  [task launch];
+  [item setTitle:@"Stop Recording"];
+  mIsRecording = YES;
+}
+
+-(void)recordStop
+{
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
+  [task launch];
+  [item setTitle:@"Record"];
+  mIsRecording = NO;
+}
+
+-(void)doToggleRecord
+{
+  if(mIsRecording){
+    [self recordStop];
+  } else {
+    [self recordStart];
+  }
 }
 
 -(void)doAbout
 {
-  // orderFrontStandardAboutPanel doesnt work for background apps
   [mAboutController doAbout];
 }
+
 - (void)doQuit
 {
+  [self recordStop];
   [NSApp terminate:nil];
 }
 

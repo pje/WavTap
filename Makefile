@@ -8,11 +8,13 @@ KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
 CONFIG=Development
-SYSTEM_AUDIO_SETUP_APP=/Applications/Utilities/Audio\ MIDI\ Setup.app
+SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 
 build-kext:
 	cd $(KEXT_DIR)
 	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
+	# sudo chmod -R 700 $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext
+	# sudo chown -R root:wheel $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext
 
 build-app:
 	cd $(APP_DIR)
@@ -34,6 +36,9 @@ uninstall-app:
 	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill -9; fi
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
+uninstall-command:
+	if [[ -a ~/Library/Services/WavTap.workflow ]]; then rm -rf ~/Library/Services/WavTap.workflow; fi
+
 install-kext: build-kext
 	sudo cp -rv $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext /System/Library/Extensions
 	sudo chmod -R 700 /System/Library/Extensions/$(PRODUCT_NAME).kext
@@ -44,47 +49,16 @@ install-kext: build-kext
 install-app: build-app
 	cp -r $(APP_BUILD_DIR)/$(PRODUCT_NAME).app $(APP_INSTALL_DIR)
 
-COMMAND_DIR := $(ROOT)/Command
-COMMAND_INSTALL_DIR := $(HOME)/Library/Services
-COMMAND_SCRIPT := $(COMMAND_DIR)/service.sh
-COMMAND_BUILD_DIR := $(COMMAND_DIR)/Build
-COMMAND_PRODUCT_NAME := WavTap
-COMMAND_TEMPLATE_PRODUCT := $(COMMAND_DIR)/$(COMMAND_PRODUCT_NAME).workflow
-COMMAND_TEMPLATE_PRODUCT_WFLOW := $(COMMAND_DIR)/WavTap.workflow/Contents/document.wflow
-COMMAND_TEMPLATE_PRODUCT_WFLOW_LENGTH := $(shell cat $(COMMAND_TEMPLATE_PRODUCT_WFLOW) | wc -l | xargs)
-COMMAND_BUILT_WORKFLOW := $(COMMAND_BUILD_DIR)/$(COMMAND_PRODUCT_NAME).workflow
-COMMAND_BUILT_WFLOW := $(COMMAND_BUILT_WORKFLOW)/Contents/document.wflow
-COMMAND_PHONY_TARGET_LINENO := $(shell cat $(COMMAND_TEMPLATE_PRODUCT_WFLOW) | grep -Eno 'COMMAND_PHONY_TARGET' | grep -Eo '[0-9]+')
-COMMAND_HEAD_N_ARG := $(shell expr $(COMMAND_PHONY_TARGET_LINENO) - 1)
-COMMAND_TAIL_N_ARG := $(shell expr $(COMMAND_TEMPLATE_PRODUCT_WFLOW_LENGTH) - $(COMMAND_PHONY_TARGET_LINENO))
+launch-app:
+	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
 
-clean-command:
-	rm -rf $(COMMAND_BUILD_DIR)
+launch-system-audio-setup:
+	open $(SYSTEM_AUDIO_SETUP)
 
-build-command:
-	mkdir -p $(COMMAND_BUILD_DIR)
-	cp -r $(COMMAND_TEMPLATE_PRODUCT) $(COMMAND_BUILD_DIR)
-	echo "" > $(COMMAND_BUILT_WFLOW)
+build: build-kext build-app
 
-	head -n $(COMMAND_HEAD_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
-	echo '<string>' >> $(COMMAND_BUILT_WFLOW)
-	cat $(COMMAND_SCRIPT) >> $(COMMAND_BUILT_WFLOW)
-	echo '</string>' >> $(COMMAND_BUILT_WFLOW)
-	tail -n $(COMMAND_TAIL_N_ARG) $(COMMAND_TEMPLATE_PRODUCT_WFLOW) >> $(COMMAND_BUILT_WFLOW)
-
-install-command: build-command
-	cp -rv $(COMMAND_BUILD_DIR)/$(COMMAND_PRODUCT_NAME).workflow $(COMMAND_INSTALL_DIR)
-	defaults write pbs NSServicesStatus -dict-add '"(null) - WavTap - runWorkflowAsService"' '{ "key_equivalent" = "@^Space"; }'
-
-uninstall-command:
-	rm -rf $(COMMAND_INSTALL_DIR)/$(COMMAND_PRODUCT_NAME).workflow
-
-build: build-kext build-app build-command
-
-clean: clean-command clean-app clean-kext
+clean: clean-app clean-kext
 
 uninstall: uninstall-command uninstall-app uninstall-kext
 
-install: build uninstall install-kext install-app install-command
-	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
-	open $(SYSTEM_AUDIO_SETUP_APP)
+install: build uninstall install-kext install-app launch-app launch-system-audio-setup
