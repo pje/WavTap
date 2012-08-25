@@ -3,8 +3,15 @@
 
 #include "AudioThruEngine.h"
 
+OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData)
+{
+  [userData doToggleRecord];
+  return noErr;
+}
+
 @implementation AppController
 
+EventHandlerUPP hotKeyFunction;
 AudioThruEngine *gThruEngine2 = NULL;
 Boolean startOnAwake = false;
 
@@ -321,11 +328,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (id)init
 {
+  mIsRecording = NO;
   mOutputDeviceList = NULL;
 
   mSoundflower2Device = 0;
   mNchnls2 = 0;
   mSuspended2chDevice = NULL;
+
+  [ self bindHotKeys];
 
   return self;
 }
@@ -378,6 +388,14 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   }
 }
 
+- (void)setToggleRecordHotKey:(NSString*)keyEquivalent
+{
+  NSMenuItem *item = [mMenu itemWithTag:0];
+
+  [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
+  [item setKeyEquivalent:keyEquivalent];
+}
+
 - (void)buildMenu
 {
   NSMenuItem *item;
@@ -385,6 +403,16 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
 
   if (mSoundflower2Device) {
+
+      item = [mMenu addItemWithTitle:@"Record" action:@selector(doToggleRecord) keyEquivalent:@""];
+      [item setTarget:self];
+
+      [item setTag:0];
+
+      [self setToggleRecordHotKey:@" "];
+
+      [mMenu addItem:[NSMenuItem separatorItem]];
+
       m2chMenu = [mMenu addItemWithTitle:@"WavTap (2ch)" action:@selector(doNothing) keyEquivalent:@""];
       [m2chMenu setTarget:self];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"2ch submenu"];
@@ -444,9 +472,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [mMenu addItem:[NSMenuItem separatorItem]];
 
-  item = [mMenu addItemWithTitle:@"Audio Setup..." action:@selector(doAudioSetup) keyEquivalent:@""];
-  [item setTarget:self];
-
   item = [mMenu addItemWithTitle:@"About..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
@@ -492,6 +517,8 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
   [self buildMenu];
 
+  [self bindHotKeys];
+
   if (mSoundflower2Device) {
     gThruEngine2 = new AudioThruEngine;
     gThruEngine2->SetInputDevice(mSoundflower2Device);
@@ -516,6 +543,20 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   }
 }
 
+- (void)bindHotKeys
+{
+  hotKeyFunction = NewEventHandlerUPP(myHotKeyHandler);
+  EventTypeSpec eventType;
+  eventType.eventClass = kEventClassKeyboard;
+  eventType.eventKind = kEventHotKeyReleased;
+  InstallApplicationEventHandler(hotKeyFunction,1,&eventType,self,NULL);
+
+  UInt32 keyCode = 49;
+  EventHotKeyRef theRef = NULL;
+  EventHotKeyID keyID;
+  keyID.signature = 'FOO ';
+  keyID.id = 1;
+  RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
@@ -730,9 +771,23 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   CFPreferencesAppSynchronize(kCFPreferencesCurrentApplication);
 }
 
--(void)doAudioSetup
+-(void)doToggleRecord
 {
-  [[NSWorkspace sharedWorkspace] launchApplication:@"Audio MIDI Setup"];
+  mIsRecording = !mIsRecording;
+
+  NSMenuItem *item = [mMenu itemWithTag:0];
+
+  if(mIsRecording){
+    [item setTitle:@"Stop Recording"];
+  } else {
+    [item setTitle:@"Record"];
+  }
+  
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/toggle_record"];
+  [task launch];
 }
 
 -(void)doAbout
