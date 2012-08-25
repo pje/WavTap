@@ -392,7 +392,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent
 {
-  NSMenuItem *item = [mMenu itemWithTag:0];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
 
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
@@ -405,16 +405,6 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
 
   if (mSoundflower2Device) {
-
-      item = [mMenu addItemWithTitle:@"Record" action:@selector(doToggleRecord) keyEquivalent:@""];
-      [item setTarget:self];
-
-      [item setTag:0];
-
-      [self setToggleRecordHotKey:@" "];
-
-      [mMenu addItem:[NSMenuItem separatorItem]];
-
       m2chMenu = [mMenu addItemWithTitle:@"WavTap (2ch)" action:@selector(doNothing) keyEquivalent:@""];
       [m2chMenu setTarget:self];
       NSMenu *submenu = [[NSMenu alloc] initWithTitle:@"2ch submenu"];
@@ -473,7 +463,15 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
   }
 
   [mMenu addItem:[NSMenuItem separatorItem]];
+  
+  
+  item = [mMenu addItemWithTitle:@"Record" action:@selector(doToggleRecord) keyEquivalent:@""];
+  [item setTarget:self];
+  [item setTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  [self setToggleRecordHotKey:@" "];
+  [mMenu addItem:[NSMenuItem separatorItem]];
 
+  
   item = [mMenu addItemWithTitle:@"About..." action:@selector(doAbout) keyEquivalent:@""];
   [item setTarget:self];
 
@@ -776,7 +774,7 @@ MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageA
 {
   mIsRecording = !mIsRecording;
 
-  NSMenuItem *item = [mMenu itemWithTag:0];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
 
   if(mIsRecording){
     [item setTitle:@"Stop Recording"];
