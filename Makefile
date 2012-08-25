@@ -13,8 +13,6 @@ SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 build-kext:
 	cd $(KEXT_DIR)
 	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
-	# sudo chmod -R 700 $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext
-	# sudo chown -R root:wheel $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext
 
 build-app:
 	cd $(APP_DIR)
