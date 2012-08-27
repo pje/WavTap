@@ -221,13 +221,13 @@ OSStatus AudioThruEngine::InputIOProc (  AudioDeviceID      inDevice,
 
 // Output IO Proc
 // Rendering output for 1 buffer + safety offset into the future
-OSStatus AudioThruEngine::OutputIOProc (  AudioDeviceID      inDevice,
-                      const AudioTimeStamp*  inNow,
-                      const AudioBufferList*  inInputData,
-                      const AudioTimeStamp*  inInputTime,
-                      AudioBufferList*    outOutputData,
-                      const AudioTimeStamp*  inOutputTime,
-                      void*          inClientData)
+OSStatus AudioThruEngine::OutputIOProc (AudioDeviceID inDevice,
+                      const AudioTimeStamp* inNow,
+                      const AudioBufferList* inInputData,
+                      const AudioTimeStamp* inInputTime,
+                      AudioBufferList* outOutputData,
+                      const AudioTimeStamp* inOutputTime,
+                      void* inClientData)
 {
   AudioThruEngine *This = (AudioThruEngine *)inClientData;
 

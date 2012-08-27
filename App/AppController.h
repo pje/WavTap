@@ -30,6 +30,7 @@
 - (IBAction)cloningChanged:(id)sender;
 - (IBAction)cloningChanged:(id)sender cloneChannels:(bool)clone;
 - (IBAction)routingChanged2ch:(id)sender;
+- (void)doToggleRecord;
 - (void)buildRoutingMenu:(BOOL)is2ch;
 - (void)buildDeviceList;
 - (void)buildMenu;
