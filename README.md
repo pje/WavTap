@@ -4,6 +4,8 @@ create quick audio screenshots from whatever your mac is playing
 
 `^⌘Space` starts/stops recording
 
+NB: this is still alpha software—it's guaranteed to be unstable.
+
 #### Installation
 
 run the [installer](https://github.com/downloads/pje/WavTap/WavTap.pkg).
