@@ -3,9 +3,6 @@
 
 #include "AudioDevice.h"
 
-class CARingBuffer;
-class AudioRingBuffer;
-
 class AudioThruEngine {
 public:
   AudioThruEngine();
@@ -67,8 +64,6 @@ protected:
   SInt32 mActualThruLatency;
   Float64 mSampleRate;
   Float64 mInToOutSampleOffset; // subtract from the output time to obtain input time
-//  CARingBuffer *mInputBuffer;
-  AudioRingBuffer *mInputBuffer;
   double mInputLoad, mOutputLoad;
   double mThruTime;
   int mChannelMap[64];

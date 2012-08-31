@@ -11,12 +11,10 @@
 		222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB2031157A901FEEC38 /* AudioDevice.h */; };
 		222FE3350EBB6D9900FD13FC /* AudioThruEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB60311589801FEEC38 /* AudioThruEngine.h */; };
 		222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */ = {isa = PBXBuildFile; fileRef = F573070B03117CCD01FEEC38 /* AudioDeviceList.h */; };
-		222FE3370EBB6D9900FD13FC /* AudioRingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDAD0310C0D001FEEC38 /* AudioRingBuffer.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F591DD860310A6BE01FEEC38 /* AppController.mm */; };
-		222FE3430EBB6D9900FD13FC /* AudioRingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDAE0310C0D001FEEC38 /* AudioRingBuffer.cpp */; };
 		222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDB3031157A901FEEC38 /* AudioDevice.cpp */; };
 		222FE3450EBB6D9900FD13FC /* AudioThruEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */; };
 		222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */; };
@@ -186,8 +184,6 @@
 		F591DD850310A6BE01FEEC38 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		F591DD860310A6BE01FEEC38 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppController.mm; sourceTree = "<group>"; };
 		F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
-		F591DDAD0310C0D001FEEC38 /* AudioRingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioRingBuffer.h; sourceTree = "<group>"; };
-		F591DDAE0310C0D001FEEC38 /* AudioRingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioRingBuffer.cpp; sourceTree = "<group>"; };
 		F591DDB2031157A901FEEC38 /* AudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioDevice.h; sourceTree = "<group>"; };
 		F591DDB3031157A901FEEC38 /* AudioDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDevice.cpp; sourceTree = "<group>"; };
 		F591DDB60311589801FEEC38 /* AudioThruEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioThruEngine.h; sourceTree = "<group>"; };
@@ -214,8 +210,6 @@
 			children = (
 				F591DD850310A6BE01FEEC38 /* AppController.h */,
 				F591DD860310A6BE01FEEC38 /* AppController.mm */,
-				F591DDAD0310C0D001FEEC38 /* AudioRingBuffer.h */,
-				F591DDAE0310C0D001FEEC38 /* AudioRingBuffer.cpp */,
 				F591DDB2031157A901FEEC38 /* AudioDevice.h */,
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
 				F591DDB60311589801FEEC38 /* AudioThruEngine.h */,
@@ -436,7 +430,6 @@
 				222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */,
 				222FE3350EBB6D9900FD13FC /* AudioThruEngine.h in Headers */,
 				222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */,
-				222FE3370EBB6D9900FD13FC /* AudioRingBuffer.h in Headers */,
 				3E4FF10B15F0076B004D221A /* CARingBuffer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -510,7 +503,6 @@
 			files = (
 				222FE3410EBB6D9900FD13FC /* main.m in Sources */,
 				222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */,
-				222FE3430EBB6D9900FD13FC /* AudioRingBuffer.cpp in Sources */,
 				222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */,
 				222FE3450EBB6D9900FD13FC /* AudioThruEngine.cpp in Sources */,
 				222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */,
