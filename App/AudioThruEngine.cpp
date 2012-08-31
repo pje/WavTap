@@ -1,5 +1,6 @@
 #include "AudioThruEngine.h"
 #include "AudioRingBuffer.h"
+//#include "CARingBuffer.h"
 #include <unistd.h>
 
 #define USE_AUDIODEVICEREAD 0
@@ -15,49 +16,37 @@ AudioThruEngine::AudioThruEngine() :
   mMuting(false),
   mThruing(true),
   mBufferSize(512),
-  mExtraLatencyFrames(0),
-  mInputLoad(0.),
-  mOutputLoad(0.)
+  mExtraLatencyFrames(0)
 {
-  mInputBuffer = new AudioRingBuffer(4, 88200);
+//  mInputBuffer = new CARingBuffer();
 
-  // init routing map to default chan->chan
-  for (int i = 0; i < 64; i++)
-    mChannelMap[i] = i;
+  mInputBuffer = new AudioRingBuffer(4, 88200);
 }
 
 AudioThruEngine::~AudioThruEngine()
 {
-  SetDevices(kAudioDeviceUnknown, kAudioDeviceUnknown);
+  Stop();
+  InitInputDevice(kAudioDeviceUnknown);
+  InitOutputDevice(kAudioDeviceUnknown);
   delete mInputBuffer;
 }
 
-void  AudioThruEngine::SetDevices(AudioDeviceID input, AudioDeviceID output)
+void  AudioThruEngine::InitInputDevice(AudioDeviceID input)
 {
-  Stop();
-
-  if (input != kAudioDeviceUnknown)
-    mInputDevice.Init(input, true);
-  if (output != kAudioDeviceUnknown)
-    mOutputDevice.Init(output, false);
-}
-
-
-void  AudioThruEngine::SetInputDevice(AudioDeviceID input)
-{
-  Stop();
   mInputDevice.Init(input, true);
   SetBufferSize(mBufferSize);
-  mInputBuffer->Clear();
-  Start();
+
+    SetChannelMap(0, 0);
+    SetChannelMap(1, 1);
+
+//  mInputBuffer = new CARingBuffer();
+//  mInputBuffer->Allocate(2, 4, 88200);
 }
 
-void  AudioThruEngine::SetOutputDevice(AudioDeviceID output)
+void  AudioThruEngine::InitOutputDevice(AudioDeviceID output)
 {
-  Stop();
-  mOutputDevice.Init(output, false);
+  mOutputDeviceID.Init(output, false);
   SetBufferSize(mBufferSize);
-  Start();
 }
 
 void  AudioThruEngine::SetBufferSize(UInt32 size)
@@ -65,72 +54,47 @@ void  AudioThruEngine::SetBufferSize(UInt32 size)
   bool wasRunning = Stop();
   mBufferSize = size;
   mInputDevice.SetBufferSize(size);
-  mOutputDevice.SetBufferSize(size);
+  mOutputDeviceID.SetBufferSize(size);
   if (wasRunning) Start();
 }
 
-void  AudioThruEngine::SetExtraLatency(SInt32 frames)
-{
-  mExtraLatencyFrames = frames;
-  if (mRunning)
-    ComputeThruOffset();
-}
-
-// change sample rate of one device to match another - returns if successful or not
 OSStatus AudioThruEngine::MatchSampleRate(bool useInputDevice)
 {
   OSStatus status = kAudioHardwareNoError;
-
   mInputDevice.UpdateFormat();
-  mOutputDevice.UpdateFormat();
-
-  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate)
+  mOutputDeviceID.UpdateFormat();
+  if (mInputDevice.mFormat.mSampleRate != mOutputDeviceID.mFormat.mSampleRate)
   {
-    if (useInputDevice)
-      status = mOutputDevice.SetSampleRate(mInputDevice.mFormat.mSampleRate);
-    else
-      status = mInputDevice.SetSampleRate(mOutputDevice.mFormat.mSampleRate);
-
-    printf("reset sample rate\n");
+    if (useInputDevice) {
+      status = mOutputDeviceID.SetSampleRate(mInputDevice.mFormat.mSampleRate);
+    } else {
+      status = mInputDevice.SetSampleRate(mOutputDeviceID.mFormat.mSampleRate);
+    }
   }
-
   return status;
 }
 
-void  AudioThruEngine::Start()
+void AudioThruEngine::Start()
 {
   if (mRunning) return;
-  if (!mInputDevice.Valid() || !mOutputDevice.Valid()) {
-    return;
-  }
+  if (!mInputDevice.Valid() || !mOutputDeviceID.Valid()) return;
 
-  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
+  if (mInputDevice.mFormat.mSampleRate != mOutputDeviceID.mFormat.mSampleRate) {
     if (MatchSampleRate(false)) {
-      printf("Error - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
+      printf("Error - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDeviceID.mFormat.mSampleRate);
       return;
     }
   }
+//  mInputBuffer->Allocate(2, mInputDevice.mFormat.mBytesPerFrame, UInt32(kSecondsInRingBuffer * mInputDevice.mFormat.mSampleRate));
 
   mInputBuffer->Allocate(mInputDevice.mFormat.mBytesPerFrame, UInt32(kSecondsInRingBuffer * mInputDevice.mFormat.mSampleRate));
+
   mSampleRate = mInputDevice.mFormat.mSampleRate;
 
   mWorkBuf = new Byte[mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame];
   memset(mWorkBuf, 0, mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame);
 
   mRunning = true;
-
-#if USE_AUDIODEVICEREAD
-  UInt32 streamListSize;
-  verify_noerr (AudioDeviceGetPropertyInfo(gInputDevice, 0, true, kAudioDevicePropertyStreams, &streamListSize, NULL));
-  UInt32 nInputStreams = streamListSize / sizeof(AudioStreamID);
-
-  propsize = offsetof(AudioBufferList, mBuffers[nInputStreams]);
-  gInputIOBuffer = (AudioBufferList *)malloc(propsize);
-  verify_noerr (AudioDeviceGetProperty(gInputDevice, 0, true, kAudioDevicePropertyStreamConfiguration, &propsize, gInputIOBuffer));
-  gInputIOBuffer->mBuffers[0].mData = malloc(gInputIOBuffer->mBuffers[0].mDataByteSize);
-
-  verify_noerr (AudioDeviceSetProperty(gInputDevice, NULL, 0, true, kAudioDevicePropertyRegisterBufferList, propsize, gInputIOBuffer));
-#endif
 
   mInputProcState = kStarting;
   mOutputProcState = kStarting;
@@ -140,8 +104,8 @@ void  AudioThruEngine::Start()
 
   mOutputIOProc = OutputIOProc;
 
-  verify_noerr (AudioDeviceAddIOProc(mOutputDevice.mID, mOutputIOProc, this));
-  verify_noerr (AudioDeviceStart(mOutputDevice.mID, mOutputIOProc));
+  verify_noerr (AudioDeviceAddIOProc(mOutputDeviceID.mID, mOutputIOProc, this));
+  verify_noerr (AudioDeviceStart(mOutputDeviceID.mID, mOutputIOProc));
 
   while (mInputProcState != kRunning || mOutputProcState != kRunning)
     usleep(1000);
@@ -158,7 +122,7 @@ void  AudioThruEngine::ComputeThruOffset()
   }
 
   mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + /*2 * */ mInputDevice.mBufferSizeFrames +
-            mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
+            mOutputDeviceID.mSafetyOffset + mOutputDeviceID.mBufferSizeFrames) + mExtraLatencyFrames;
   mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
 }
 
@@ -170,11 +134,12 @@ bool  AudioThruEngine::Stop()
   mInputProcState = kStopRequested;
   mOutputProcState = kStopRequested;
 
-  while (mInputProcState != kOff || mOutputProcState != kOff)
+  while (mInputProcState != kOff || mOutputProcState != kOff){
     usleep(5000);
+  }
 
   AudioDeviceRemoveIOProc(mInputDevice.mID, InputIOProc);
-  AudioDeviceRemoveIOProc(mOutputDevice.mID, mOutputIOProc);
+  AudioDeviceRemoveIOProc(mOutputDeviceID.mID, mOutputIOProc);
 
   if (mWorkBuf) {
     delete[] mWorkBuf;
@@ -184,17 +149,13 @@ bool  AudioThruEngine::Stop()
   return true;
 }
 
-
-
-// Input IO Proc
-// Receiving input for 1 buffer + safety offset into the past
-OSStatus AudioThruEngine::InputIOProc (  AudioDeviceID      inDevice,
-                    const AudioTimeStamp*  inNow,
-                    const AudioBufferList*  inInputData,
-                    const AudioTimeStamp*  inInputTime,
-                    AudioBufferList*    outOutputData,
-                    const AudioTimeStamp*  inOutputTime,
-                    void*          inClientData)
+OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice,
+                                      const AudioTimeStamp *inNow,
+                                      const AudioBufferList *inInputData,
+                                      const AudioTimeStamp *inInputTime,
+                                      AudioBufferList *outOutputData,
+                                      const AudioTimeStamp *inOutputTime,
+                                      void *inClientData)
 {
   AudioThruEngine *This = (AudioThruEngine *)inClientData;
 
@@ -211,23 +172,25 @@ OSStatus AudioThruEngine::InputIOProc (  AudioDeviceID      inDevice,
   }
 
   This->mLastInputSampleCount = inInputTime->mSampleTime;
-  This->mInputBuffer->Store((const Byte *)inInputData->mBuffers[0].mData,
-                This->mInputDevice.mBufferSizeFrames,
-                UInt64(inInputTime->mSampleTime));
+  This->mInputBuffer->Store((const Byte *)inInputData->mBuffers[0].mData, This->mInputDevice.mBufferSizeFrames,UInt64(inInputTime->mSampleTime));
+//  This->mInputBuffer->Store(inInputData, This->mInputDevice.mBufferSizeFrames, UInt64(inInputTime->mSampleTime));
 
-//  This->ApplyLoad(This->mInputLoad);
   return noErr;
 }
 
-// Output IO Proc
-// Rendering output for 1 buffer + safety offset into the future
-OSStatus AudioThruEngine::OutputIOProc (AudioDeviceID inDevice,
-                      const AudioTimeStamp* inNow,
-                      const AudioBufferList* inInputData,
-                      const AudioTimeStamp* inInputTime,
-                      AudioBufferList* outOutputData,
-                      const AudioTimeStamp* inOutputTime,
-                      void* inClientData)
+inline void MakeBufferSilent(AudioBufferList * ioData)
+{
+	for(UInt32 i=0; i<ioData->mNumberBuffers;i++)
+		memset(ioData->mBuffers[i].mData, 0, ioData->mBuffers[i].mDataByteSize);
+}
+
+OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice,
+                                       const AudioTimeStamp *inNow,
+                                       const AudioBufferList *inInputData,
+                                       const AudioTimeStamp *inInputTime,
+                                       AudioBufferList *outOutputData,
+                                       const AudioTimeStamp *inOutputTime,
+                                       void *inClientData)
 {
   AudioThruEngine *This = (AudioThruEngine *)inClientData;
 
@@ -247,24 +210,14 @@ OSStatus AudioThruEngine::OutputIOProc (AudioDeviceID inDevice,
   }
 
   if (!This->mMuting && This->mThruing) {
-    //double delta = This->mInputBuffer->Fetch((Byte *)outOutputData->mBuffers[0].mData,
-    //            This->mOutputDevice.mBufferSizeFrames,
-    //            UInt64(inOutputTime->mSampleTime - This->mInToOutSampleOffset));
-    double delta = This->mInputBuffer->Fetch(This->mWorkBuf,
-            This->mInputDevice.mBufferSizeFrames,UInt64(inOutputTime->mSampleTime - This->mInToOutSampleOffset));
+    UInt64 nFrames = inOutputTime->mSampleTime - This->mInToOutSampleOffset;
+    UInt64 nFrames2 = (outOutputData->mBuffers[0].mDataByteSize);
 
 
-    // not the most efficient, but this should handle devices with multiple streams [i think]
-    // with identitical formats [we know soundflower input channels are always one stream]
+    double delta = This->mInputBuffer->Fetch(This->mWorkBuf, This->mInputDevice.mBufferSizeFrames,UInt64(inOutputTime->mSampleTime - This->mInToOutSampleOffset));
+
     UInt32 innchnls = This->mInputDevice.mFormat.mChannelsPerFrame;
 
-    // iSchemy's edit
-    //
-    // this solution will probably be a little bit less efficient
-    // but I wanted to retain the functionality of previous solution
-    // and only add new function
-    // Activity Monitor says it's not bad. 14.8MB and 3% CPU for me
-    // is IMHO insignificant
     UInt32* chanstart = new UInt32[64];
 
     for (UInt32 buf = 0; buf < outOutputData->mNumberBuffers; buf++)
@@ -272,9 +225,7 @@ OSStatus AudioThruEngine::OutputIOProc (AudioDeviceID inDevice,
       for (int i = 0; i < 64; i++)
         chanstart[i] = 0;
       UInt32 outnchnls = outOutputData->mBuffers[buf].mNumberChannels;
-      for (UInt32 chan = 0; chan <
-          ((This->CloneChannels() && innchnls==2) ? outnchnls : innchnls);
-          chan++)
+      for (UInt32 chan = 0; chan < innchnls; chan++)
       {
         UInt32 outChan = This->GetChannelMap(chan) - chanstart[chan];
         if (outChan >= 0 && outChan < outnchnls)
@@ -296,47 +247,17 @@ OSStatus AudioThruEngine::OutputIOProc (AudioDeviceID inDevice,
     }
 
     delete [] chanstart;
-
-    //
-    // end
-
     This->mThruTime = delta;
-
-    //This->ApplyLoad(This->mOutputLoad);
-
-#if USE_AUDIODEVICEREAD
-    AudioTimeStamp readTime;
-
-    readTime.mFlags = kAudioTimeStampSampleTimeValid;
-    readTime.mSampleTime = inNow->mSampleTime - gInputSafetyOffset - gOutputSampleCount;
-
-    verify_noerr(AudioDeviceRead(gInputDevice.mID, &readTime, gInputIOBuffer));
-    memcpy(outOutputData->mBuffers[0].mData, gInputIOBuffer->mBuffers[0].mData, outOutputData->mBuffers[0].mDataByteSize);
-#endif
-  } else
+  } else {
     This->mThruTime = 0.;
-
+  }
   return noErr;
 }
 
 UInt32 AudioThruEngine::GetOutputNchnls()
 {
-  if (mOutputDevice.mID != kAudioDeviceUnknown)
-    return mOutputDevice.CountChannels();//mFormat.mChannelsPerFrame;
-
+  if (mOutputDeviceID.mID != kAudioDeviceUnknown) {
+    return mOutputDeviceID.CountChannels();
+  }
   return 0;
 }
-
-#if 0
-void  AudioThruEngine::ApplyLoad(double load)
-{
-  double loadNanos = (load * mBufferSize / mSampleRate) /* seconds */ * 1000000000.;
-
-  UInt64 now = AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
-  UInt64 waitUntil = UInt64(now + loadNanos);
-
-  while (now < waitUntil) {
-    now = AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
-  }
-}
-#endif

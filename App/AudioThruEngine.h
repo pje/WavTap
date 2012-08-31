@@ -3,6 +3,7 @@
 
 #include "AudioDevice.h"
 
+class CARingBuffer;
 class AudioRingBuffer;
 
 class AudioThruEngine {
@@ -11,29 +12,24 @@ public:
   ~AudioThruEngine();
 
   void SetDevices(AudioDeviceID input, AudioDeviceID output);
-  void SetInputDevice(AudioDeviceID input);
-  void SetOutputDevice(AudioDeviceID output);
+  void InitInputDevice(AudioDeviceID input);
+  void InitOutputDevice(AudioDeviceID output);
   void Start();
   bool Stop();
   void Mute(bool mute = true) { mMuting = mute; }
   bool IsRunning() { return mRunning; }
   void EnableThru(bool enable) { mThruing = enable; }
   void SetBufferSize(UInt32 size);
-  void SetInputLoad(double load) { mInputLoad = load; }
-  void SetOutputLoad(double load) { mOutputLoad = load; }
-  void SetExtraLatency(SInt32 frames);
   double GetThruTime() { return mThruTime; }
   SInt32 GetThruLatency() { return mActualThruLatency; }
   UInt32 GetOutputNchnls();
-  AudioDeviceID GetOutputDevice() { return mOutputDevice.mID; }
+  AudioDeviceID GetOutputDevice() { return mOutputDeviceID.mID; }
   AudioDeviceID GetInputDevice() { return mInputDevice.mID; }
   OSStatus MatchSampleRate(bool useInputDevice);
 
   void SetChannelMap(int ch, int val) { mChannelMap[ch] = val; }   // valid values are 0 to nchnls-1;  -1 = off
   int GetChannelMap(int ch) { return mChannelMap[ch]; }
   Byte *mWorkBuf;
-  void SetCloneChannels(bool clone) { mCloneChannels = clone; }
-  bool CloneChannels() { return mCloneChannels; }
 
 protected:
   enum IOProcState {
@@ -60,7 +56,7 @@ protected:
                   void *inClientData);
 
   void ComputeThruOffset();
-  AudioDevice mInputDevice, mOutputDevice;
+  AudioDevice mInputDevice, mOutputDeviceID;
   bool mRunning;
   bool mMuting;
   bool mThruing;
@@ -71,12 +67,12 @@ protected:
   SInt32 mActualThruLatency;
   Float64 mSampleRate;
   Float64 mInToOutSampleOffset; // subtract from the output time to obtain input time
+//  CARingBuffer *mInputBuffer;
   AudioRingBuffer *mInputBuffer;
   double mInputLoad, mOutputLoad;
   double mThruTime;
   int mChannelMap[64];
   AudioDeviceIOProc mOutputIOProc;
-  bool mCloneChannels;
 };
 
 #endif // __AudioThruEngine_h__
