@@ -72,6 +72,8 @@ protected:
   double mInputLoad, mOutputLoad;
   double mThruTime;
   int mChannelMap[64];
+  AudioDeviceIOProcID mInputIOProcID;
+  AudioDeviceIOProcID mOutputIOProcID;
   AudioDeviceIOProc mOutputIOProc;
 };
 

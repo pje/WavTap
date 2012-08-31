@@ -5,12 +5,21 @@ AudioDeviceList::AudioDeviceList() { BuildList(); }
 AudioDeviceList::~AudioDeviceList() {}
 void  AudioDeviceList::BuildList()
 {
+  OSStatus err = noErr;
   mDevices.clear();
   UInt32 propsize;
-  verify_noerr(AudioHardwareGetPropertyInfo(kAudioHardwarePropertyDevices, &propsize, NULL));
-  int nDevices = propsize / sizeof(AudioDeviceID);
-  AudioDeviceID *devids = new AudioDeviceID[nDevices];
-  verify_noerr(AudioHardwareGetProperty(kAudioHardwarePropertyDevices, &propsize, devids));
+  AudioObjectPropertyAddress theAddress = {
+    kAudioHardwarePropertyDevices,
+    kAudioObjectPropertyScopeGlobal,
+    kAudioObjectPropertyElementMaster
+  };
+
+  err = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &theAddress, 0, NULL,&propsize);
+  int audioDeviceIDSize = sizeof(AudioDeviceID);
+  int nDevices = propsize / audioDeviceIDSize;
+  
+  AudioDeviceID *devids = (AudioDeviceID *)calloc(nDevices, sizeof(AudioDeviceID));
+  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
 
   for (int i = 0; i < nDevices; ++i) {
     int mInputs = 2;

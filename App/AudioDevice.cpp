@@ -67,14 +67,14 @@ void AudioDevice::SetBufferSize(UInt32 buffersize)
     0
   };
 
-  AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, size, &buffersize);
-  AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &size, &mBufferSizeFrames);
+  err = AudioObjectSetPropertyData(mID, &theAddress, 0, NULL, size, &buffersize);
+  err = AudioObjectGetPropertyData(mID, &theAddress, 0, NULL, &size, &mBufferSizeFrames);
 }
 
 int AudioDevice::CountChannels()
 {
 	OSStatus err = noErr;
-	UInt32 size; // TODO: ?
+	UInt32 size; // TODO: wat?
 	int result = 0;
 
   AudioObjectPropertyAddress theAddress = {

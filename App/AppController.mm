@@ -127,7 +127,7 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
 
 - (void)awakeFromNib
 {
-  [[NSApplication sharedApplication] setDelegate:self];
+  [[NSApplication sharedApplication] setDelegate:(id)self];
   [self doRegisterForSystemPower];
   [self rebuildDeviceList];
   AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
@@ -229,12 +229,12 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
                                    &mStashedVolume2
                                    );
 
-  AudioObjectPropertyAddress volSwapDefAddress = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    1
-  };
-
+//  AudioObjectPropertyAddress volSwapDefAddress = {
+//    kAudioDevicePropertyVolumeScalar,
+//    kAudioObjectPropertyScopeOutput,
+//    1
+//  };
+//
 //  Float32 max = 1.0;
 //
 //  err = AudioObjectSetPropertyData(
