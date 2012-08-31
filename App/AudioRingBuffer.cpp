@@ -8,14 +8,12 @@ AudioRingBuffer::AudioRingBuffer(UInt32 bytesPerFrame, UInt32 capacityFrames) :
 
 AudioRingBuffer::~AudioRingBuffer()
 {
-  if (mBuffer)
-    free(mBuffer);
+  if (mBuffer) free(mBuffer);
 }
 
 void  AudioRingBuffer::Allocate(UInt32 bytesPerFrame, UInt32 capacityFrames)
 {
-  if (mBuffer)
-    free(mBuffer);
+  if (mBuffer) free(mBuffer);
 
   mBytesPerFrame = bytesPerFrame;
   mCapacityFrames = capacityFrames;
