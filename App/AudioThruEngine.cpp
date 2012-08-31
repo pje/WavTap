@@ -1,13 +1,6 @@
 #include "AudioThruEngine.h"
 #include <unistd.h>
 
-#define USE_AUDIODEVICEREAD 0
-#if USE_AUDIODEVICEREAD
-AudioBufferList *gInputIOBuffer = NULL;
-#endif
-
-#define kSecondsInRingBuffer 2.
-
 AudioThruEngine::AudioThruEngine() :
   mWorkBuf(NULL),
   mRunning(false),
@@ -57,8 +50,7 @@ void  AudioThruEngine::ComputeThruOffset()
     return;
   }
 
-  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + /*2 * */ mInputDevice.mBufferSizeFrames +
-                              mOutputDeviceID.mSafetyOffset + mOutputDeviceID.mBufferSizeFrames) + mExtraLatencyFrames;
+  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDeviceID.mSafetyOffset + mOutputDeviceID.mBufferSizeFrames) + mExtraLatencyFrames;
   mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
 }
 
@@ -212,7 +204,6 @@ OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice,
     for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
       memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, outOutputData->mBuffers[i].mDataByteSize);
     }
-//    This->mThruTime = delta; // TODO
   } else {
     This->mThruTime = 0.;
   }
