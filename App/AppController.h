@@ -18,6 +18,7 @@
 - (IBAction)sampleRateChanged;
 - (IBAction)sampleRateChangedOutput;
 - (OSStatus)restoreSystemOutputDevice;
+- (OSStatus)restoreSystemOutputDeviceVolume;
 - (void)initConnections;
 - (void)toggleRecord;
 - (void)buildMenu;

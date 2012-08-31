@@ -11,14 +11,68 @@
 @implementation AppController
 
 AudioThruEngine *gThruEngine2 = NULL;
-UInt32 MENU_ITEM_TOGGLE_RECORD_TAG=1;
+UInt32 MENU_ITEM_TAG_TOGGLE_RECORD=1;
 io_connect_t  root_port;
 
-OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData)
+- (id)init
 {
-  AppController* inUserData = (__bridge AppController*)userData;
-  [inUserData toggleRecord];
-  return noErr;
+  mIsRecording = NO;
+  mOutputDeviceList = NULL;
+  mWavTapDeviceID = 0;
+  return self;
+}
+
+- (void)dealloc
+{
+  delete mOutputDeviceList;
+}
+
+- (void)awakeFromNib
+{
+  [[NSApplication sharedApplication] setDelegate:(id)self];
+  //  [self doRegisterForSystemPower];
+  [self rebuildDeviceList];
+  AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
+  for (AudioDeviceList::DeviceList::iterator i = list.begin(); i != list.end(); ++i) {
+    if (0 == strcmp("WavTap (2ch)", (*i).mName)) mWavTapDeviceID = (*i).mID;
+  }
+  [self initConnections];
+  [self bindHotKeys];
+  [self initStatusBar];
+  [self buildMenu];
+}
+
+- (void)initStatusBar
+{
+  mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+  [mSbItem setHighlightMode:YES];
+}
+
+- (void)buildMenu
+{
+  NSMenuItem *item;
+  mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
+
+  if (mWavTapDeviceID){
+    item = [mMenu addItemWithTitle:@"Record" action:@selector(toggleRecord) keyEquivalent:@""];
+    [item setTarget:self];
+    [item setTag:MENU_ITEM_TAG_TOGGLE_RECORD];
+    [self setToggleRecordHotKey:@" "];
+  } else {
+    item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
+    [item setTarget:self];
+  }
+
+  [mMenu addItem:[NSMenuItem separatorItem]];
+  [mSbItem setMenu:mMenu];
+
+  //  item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
+  //  [item setKeyEquivalentModifierMask:NSCommandKeyMask];
+  //  [item setTarget:self];
+
+  item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
+  [item setTarget:self];
 }
 
 void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageArgument)
@@ -42,6 +96,18 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
     }
 }
 
+- (void)doRegisterForSystemPower
+{
+  IONotificationPortRef notify;
+  io_object_t anIterator;
+  root_port = IORegisterForSystemPower((__bridge void *) self, &notify, MySleepCallBack, &anIterator);
+  if (!root_port) {
+    NSLog(@"IORegisterForSystemPower failed\n");
+  } else {
+    CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notify), kCFRunLoopCommonModes);
+  }
+}
+
 - (IBAction)sampleRateChanged
 {
   @autoreleasepool {
@@ -62,61 +128,12 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
   }
 }
 
-- (id)init
-{
-  mIsRecording = NO;
-  mOutputDeviceList = NULL;
-  mWavTapDeviceID = 0;
-  return self;
-}
-
-- (void)dealloc
-{
-  delete mOutputDeviceList;
-}
-
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
 
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
-}
-
-- (void)buildMenu
-{
-  NSMenuItem *item;
-  mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
-
-  if (mWavTapDeviceID){
-    item = [mMenu addItemWithTitle:@"Record" action:@selector(toggleRecord) keyEquivalent:@""];
-    [item setTarget:self];
-    [item setTag:MENU_ITEM_TOGGLE_RECORD_TAG];
-    [self setToggleRecordHotKey:@" "];
-  } else {
-    item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
-    [item setTarget:self];
-  }
-
-  [mMenu addItem:[NSMenuItem separatorItem]];
-  [mSbItem setMenu:mMenu];
-
-//  item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
-//  [item setKeyEquivalentModifierMask:NSCommandKeyMask];
-//  [item setTarget:self];
-//
-//  item = [mMenu addItemWithTitle:@"About..." action:@selector(showAboutWindow) keyEquivalent:@""];
-//  [item setTarget:self];
-
-  item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
-  [item setTarget:self];
-}
-
-- (void)initStatusBar
-{
-  mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
-  [mSbItem setHighlightMode:YES];
 }
 
 - (void)rebuildDeviceList
@@ -125,109 +142,62 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
   mOutputDeviceList = new AudioDeviceList;
 }
 
-- (void)awakeFromNib
-{
-  [[NSApplication sharedApplication] setDelegate:(id)self];
-  [self doRegisterForSystemPower];
-  [self rebuildDeviceList];
-  AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
-  for (AudioDeviceList::DeviceList::iterator i = list.begin(); i != list.end(); ++i) {
-    if (0 == strcmp("WavTap (2ch)", (*i).mName)) mWavTapDeviceID = (*i).mID;
-  }
-  [self initConnections];
-  [self bindHotKeys];
-  [self initStatusBar];
-  [self buildMenu];
-}
-
 - (void)initConnections
 {
   OSStatus err = noErr;
-  UInt32 size = sizeof(AudioDeviceID);
+  Float32 maxVolume = 1.0;
+  UInt32 size;
 
-  AudioObjectPropertyAddress devAddress = {
+  AudioObjectPropertyAddress devCurrDefAddress = {
     kAudioHardwarePropertyDefaultOutputDevice,
     kAudioObjectPropertyScopeGlobal,
     kAudioObjectPropertyElementMaster
   };
-
-  err = AudioObjectGetPropertyData(
-                                   kAudioObjectSystemObject,
-                                   &devAddress,
-                                   0,
-                                   NULL,
-                                   &size,
-                                   &mStashedAudioDeviceID
-                                   );
+  size = sizeof(AudioDeviceID);
+  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
 
   mOutputDeviceID = mStashedAudioDeviceID;
 
-  AudioObjectPropertyAddress volAddress = {
+  AudioObjectPropertyAddress volCurrDef1Address = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     1
   };
-
   size = sizeof(Float32);
-  err = AudioObjectGetPropertyData(
-                                   mStashedAudioDeviceID,
-                                   &volAddress,
-                                   0,
-                                   NULL,
-                                   &size,
-                                   &mStashedVolume
-                                   );
+  err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
 
-
-  AudioObjectPropertyAddress vol2Address = {
+  AudioObjectPropertyAddress volCurrDef2Address = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     2
   };
-
   size = sizeof(Float32);
-  err = AudioObjectGetPropertyData(
-                                   mStashedAudioDeviceID,
-                                   &vol2Address,
-                                   0,
-                                   NULL,
-                                   &size,
-                                   &mStashedVolume2
-                                   );
-
+  err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
 
   gThruEngine2 = new AudioThruEngine;
   gThruEngine2->InitInputDevice(mWavTapDeviceID);
   gThruEngine2->InitOutputDevice(mOutputDeviceID);
 
-  AudioObjectPropertyAddress volSwapWavAddress = {
+  AudioObjectPropertyAddress volSwapWav0Address = {
+    kAudioDevicePropertyVolumeScalar,
+    kAudioObjectPropertyScopeOutput,
+    0
+  };
+  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(Float32), &maxVolume);
+
+  AudioObjectPropertyAddress volSwapWav1Address = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     1
   };
-  err = AudioObjectSetPropertyData(
-                                   mWavTapDeviceID,
-                                   &volSwapWavAddress,
-                                   0,
-                                   NULL,
-                                   sizeof(Float32),
-                                   &mStashedVolume
-                                   );
+  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
 
   AudioObjectPropertyAddress volSwapWav2Address = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     2
   };
-
-  err = AudioObjectSetPropertyData(
-                                   mWavTapDeviceID,
-                                   &volSwapWav2Address,
-                                   0,
-                                   NULL,
-                                   sizeof(Float32),
-                                   &mStashedVolume2
-                                   );
+  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
 
 //  AudioObjectPropertyAddress volSwapDefAddress = {
 //    kAudioDevicePropertyVolumeScalar,
@@ -235,16 +205,7 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
 //    1
 //  };
 //
-//  Float32 max = 1.0;
-//
-//  err = AudioObjectSetPropertyData(
-//                                   mStashedAudioDeviceID,
-//                                   &volSwapDefAddress,
-//                                   0,
-//                                   NULL,
-//                                   sizeof(Float32),
-//                                   &max
-//                                   );
+//  err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDefAddress, 0, NULL, sizeof(Float32), &maxVolume);
 //
 //  AudioObjectPropertyAddress volSwapDef2Address = {
 //    kAudioDevicePropertyVolumeScalar,
@@ -252,84 +213,53 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
 //    2
 //  };
 //
-//  err = AudioObjectSetPropertyData(
-//                                   mStashedAudioDeviceID,
-//                                   &volSwapDef2Address,
-//                                   0,
-//                                   NULL,
-//                                   sizeof(Float32),
-//                                   &max
-//                                   );
+//  err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
 
   gThruEngine2->Start();
 
-  err = AudioObjectSetPropertyData(
-                                  kAudioObjectSystemObject,
-                                  &devAddress,
-                                  0,
-                                  NULL,
-                                  sizeof(AudioDeviceID),
-                                  &mWavTapDeviceID
-                                  );
+  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
 
 - (OSStatus)restoreSystemOutputDevice
 {
   OSStatus err = noErr;
+
   AudioObjectPropertyAddress devAddress = {
     kAudioHardwarePropertyDefaultOutputDevice,
     kAudioObjectPropertyScopeGlobal,
     kAudioObjectPropertyElementMaster
   };
-  err = AudioObjectSetPropertyData(
-                                   kAudioObjectSystemObject,
-                                   &devAddress,
-                                   0,
-                                   NULL,
-                                   sizeof(AudioDeviceID),
-                                   &mStashedAudioDeviceID
-                                   );
+  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devAddress, 0, NULL, sizeof(AudioDeviceID), &mStashedAudioDeviceID);
+
+  return err;
+}
+
+- (OSStatus)restoreSystemOutputDeviceVolume
+{
+  OSStatus err = noErr;
 
   AudioObjectPropertyAddress volAddress = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     1
   };
-  err = AudioObjectSetPropertyData(
-                                   kAudioObjectSystemObject,
-                                   &volAddress,
-                                   0,
-                                   NULL,
-                                   sizeof(Float32),
-                                   &mStashedVolume
-                                   );
+  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
 
   AudioObjectPropertyAddress vol2Address = {
     kAudioDevicePropertyVolumeScalar,
     kAudioObjectPropertyScopeOutput,
     2
   };
-  err = AudioObjectSetPropertyData(
-                                   kAudioObjectSystemObject,
-                                   &vol2Address,
-                                   0,
-                                   NULL,
-                                   sizeof(Float32),
-                                   &mStashedVolume2
-                                   );
+  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &vol2Address, 0, NULL, sizeof(Float32), &mStashedVolume2);
+
   return err;
 }
 
-- (void)doRegisterForSystemPower
+OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData)
 {
-//  IONotificationPortRef notify;
-//  io_object_t anIterator;
-//  root_port = IORegisterForSystemPower((__bridge void *) self, &notify, MySleepCallBack, &anIterator);
-//  if (!root_port) {
-//    NSLog(@"IORegisterForSystemPower failed\n");
-//  } else {
-//    CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notify), kCFRunLoopCommonModes);
-//  }
+  AppController* inUserData = (__bridge AppController*)userData;
+  [inUserData toggleRecord];
+  return noErr;
 }
 
 - (void)bindHotKeys
@@ -348,18 +278,9 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
   RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification
-{
-  [self recordStop];
-
-  if (gThruEngine2) {
-    gThruEngine2->Stop();
-  }
-}
-
 -(void)recordStart
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
@@ -371,7 +292,7 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
 
 -(void)recordStop
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TOGGLE_RECORD_TAG];
+  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
@@ -390,10 +311,20 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
   }
 }
 
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
+  [self recordStop];
+
+  if (gThruEngine2) {
+    gThruEngine2->Stop();
+  }
+}
+
 - (void)doQuit
 {
   [self recordStop];
-//  [self restoreSystemOutputDevice];
+  [self restoreSystemOutputDevice];
+//  [self restoreSystemOutputDeviceVolume];
   [NSApp terminate:nil];
 }
 
