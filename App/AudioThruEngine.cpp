@@ -56,7 +56,7 @@ void  AudioThruEngine::ComputeThruOffset()
     mInToOutSampleOffset = 0;
     return;
   }
-  
+
   mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + /*2 * */ mInputDevice.mBufferSizeFrames +
                               mOutputDeviceID.mSafetyOffset + mOutputDeviceID.mBufferSizeFrames) + mExtraLatencyFrames;
   mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
