@@ -155,21 +155,6 @@ bool  AudioThruEngine::Stop()
   return true;
 }
 
-//OSStatus AudioThruEngine::SimpleIOProc(AudioDeviceID           inDevice,
-//                                       const AudioTimeStamp*   inNow,
-//                                       const AudioBufferList*  inInputData,
-//                                       const AudioTimeStamp*   inInputTime,
-//                                       AudioBufferList*        outOutputData,
-//                                       const AudioTimeStamp*   inOutputTime,
-//                                       void*                   inClientData)
-//
-//{
-//
-//
-//
-//
-//}
-
 OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice,
                                       const AudioTimeStamp *inNow,
                                       const AudioBufferList *inInputData,
@@ -193,7 +178,11 @@ OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice,
   }
 
   This->mLastInputSampleCount = inInputTime->mSampleTime;
-  This->mInputBuffer->Store((const Byte *)inInputData->mBuffers[0].mData, This->mInputDevice.mBufferSizeFrames,UInt64(inInputTime->mSampleTime));
+  
+  UInt64 nFrames = This->mInputDevice.mBufferSizeFrames;
+  UInt64 startFrame =UInt64(inInputTime->mSampleTime);
+  
+  This->mInputBuffer->Store((const Byte *)inInputData->mBuffers[0].mData, nFrames, startFrame);
 
   return noErr;
 }
@@ -230,9 +219,10 @@ OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice,
   }
 
   if (!This->mMuting && This->mThruing) {
-    UInt64 nFrames = inOutputTime->mSampleTime - This->mInToOutSampleOffset;
+    UInt64 nFrames = This->mInputDevice.mBufferSizeFrames;
+    UInt64 startFrame = inOutputTime->mSampleTime - This->mInToOutSampleOffset;
 
-    double delta = This->mInputBuffer->Fetch(This->mWorkBuf, This->mInputDevice.mBufferSizeFrames,nFrames);
+    double delta = This->mInputBuffer->Fetch(This->mWorkBuf, nFrames, startFrame);
 
     UInt32 innchnls = This->mInputDevice.mFormat.mChannelsPerFrame;
     UInt32* chanstart = new UInt32[64];

@@ -40,20 +40,20 @@ protected:
   };
 
   static OSStatus InputIOProc (AudioDeviceID inDevice,
-                  const AudioTimeStamp *inNow,
-                  const AudioBufferList *inInputData,
-                  const AudioTimeStamp *inInputTime,
-                  AudioBufferList *outOutputData,
-                  const AudioTimeStamp *inOutputTime,
-                  void *inClientData);
+                               const AudioTimeStamp *inNow,
+                               const AudioBufferList *inInputData,
+                               const AudioTimeStamp *inInputTime,
+                               AudioBufferList *outOutputData,
+                               const AudioTimeStamp *inOutputTime,
+                               void *inClientData);
 
   static OSStatus OutputIOProc (AudioDeviceID inDevice,
-                  const AudioTimeStamp *inNow,
-                  const AudioBufferList *inInputData,
-                  const AudioTimeStamp *inInputTime,
-                  AudioBufferList *outOutputData,
-                  const AudioTimeStamp *inOutputTime,
-                  void *inClientData);
+                                const AudioTimeStamp *inNow,
+                                const AudioBufferList *inInputData,
+                                const AudioTimeStamp *inInputTime,
+                                AudioBufferList *outOutputData,
+                                const AudioTimeStamp *inOutputTime,
+                                void *inClientData);
 
   void ComputeThruOffset();
   AudioDevice mInputDevice, mOutputDeviceID;
