@@ -22,9 +22,6 @@ void  AudioThruEngine::InitInputDevice(AudioDeviceID input)
 {
   mInputDevice.Init(input, true);
   SetBufferSize(mBufferSize);
-
-  SetChannelMap(0, 0);
-  SetChannelMap(1, 1);
 }
 
 void  AudioThruEngine::InitOutputDevice(AudioDeviceID output)

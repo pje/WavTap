@@ -23,9 +23,6 @@ public:
   AudioDeviceID GetOutputDevice() { return mOutputDeviceID.mID; }
   AudioDeviceID GetInputDevice() { return mInputDevice.mID; }
   OSStatus MatchSampleRate(bool useInputDevice);
-
-  void SetChannelMap(int ch, int val) { mChannelMap[ch] = val; }   // valid values are 0 to nchnls-1;  -1 = off
-  int GetChannelMap(int ch) { return mChannelMap[ch]; }
   Byte *mWorkBuf;
 
 protected:
@@ -66,7 +63,6 @@ protected:
   Float64 mInToOutSampleOffset; // subtract from the output time to obtain input time
   double mInputLoad, mOutputLoad;
   double mThruTime;
-  int mChannelMap[64];
   AudioDeviceIOProcID mInputIOProcID;
   AudioDeviceIOProcID mOutputIOProcID;
   AudioDeviceIOProc mOutputIOProc;
