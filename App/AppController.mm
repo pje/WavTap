@@ -291,8 +291,10 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 
 -(void)launchRecordProcess
 {
-  NSArray *argv=[NSArray arrayWithObjects:nil];
+  mEngine->mOutputDevice.ReloadStreamFormat();
+  NSString *bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
   NSTask *task=[[NSTask alloc] init];
+  NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
   [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
   [task launch];
@@ -325,11 +327,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 
 -(void)toggleRecord
 {
-  if(mIsRecording){
-    [self recordStop];
-  } else {
-    [self recordStart];
-  }
+  (mIsRecording) ? [self recordStop] : [self recordStart];
 }
 
 - (void)cleanupOnBeforeQuit
