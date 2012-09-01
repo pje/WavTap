@@ -5,7 +5,6 @@
 
 @implementation AppController
 
-UInt32 MENU_ITEM_TAG_TOGGLE_RECORD=1;
 AudioThruEngine *mEngine = NULL;
 io_connect_t  root_port;
 
@@ -210,6 +209,7 @@ io_connect_t  root_port;
     kAudioObjectPropertyScopeOutput,
     1
   };
+
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
 
   AudioObjectPropertyAddress vol2Address = {
@@ -245,26 +245,36 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
 }
 
--(void)recordStart
+-(void)launchRecordProcess
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
   [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
   [task launch];
+}
+
+-(void)killRecordProcesses
+{
+  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSTask *task=[[NSTask alloc] init];
+  [task setArguments: argv];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
+  [task launch];
+}
+
+-(void)recordStart
+{
+  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+  [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
   mIsRecording = YES;
 }
 
 -(void)recordStop
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
-  NSArray *argv=[NSArray arrayWithObjects:nil];
-  NSTask *task=[[NSTask alloc] init];
-  [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
-  [task launch];
+  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+  [self killRecordProcesses];
   [item setTitle:@"Record"];
   mIsRecording = NO;
 }
@@ -283,7 +293,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   if(mIsRecording) [self recordStop];
   if(mEngine) mEngine->Stop();
   [self restoreSystemOutputDevice];
-//  [self restoreSystemOutputDeviceVolume];
+//  [self restoreSystemOutputDeviceVolume]; // TODO: preserve our eardrums
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
