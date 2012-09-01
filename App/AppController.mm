@@ -76,7 +76,7 @@ io_connect_t  root_port;
   [item setTarget:self];
 }
 
-- (IBAction)sampleRateChanged
+- (void)sampleRateChanged
 {
   @autoreleasepool {
     OSStatus err = noErr;
@@ -86,7 +86,7 @@ io_connect_t  root_port;
   }
 }
 
-- (IBAction)sampleRateChangedOutput
+- (void)sampleRateChangedOutput
 {
   @autoreleasepool {
     OSStatus err = noErr;
