@@ -34,7 +34,7 @@
 					<key>BlockSize</key>
 					<integer>8192</integer>
 					<key>Description</key>
-					<string>WavTap (2ch)</string>
+					<string>WavTap</string>
 					<key>Formats</key>
 					<array>
 						<dict>

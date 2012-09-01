@@ -33,7 +33,7 @@ io_connect_t  root_port;
   [self rebuildDeviceList];
   AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
   for (AudioDeviceList::DeviceList::iterator i = list.begin(); i != list.end(); ++i) {
-    if (0 == strcmp("WavTap (2ch)", (*i).mName)) mWavTapDeviceID = (*i).mID;
+    if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
   [self initConnections];
   [self registerPropertyListeners];

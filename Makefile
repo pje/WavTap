@@ -12,7 +12,7 @@ SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 
 build-kext:
 	cd $(KEXT_DIR)
-	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
+	xcodebuild -project $(KEXT_DIR)/WavTap.xcodeproj -target WavTapDriver -configuration $(CONFIG) clean build
 
 build-app:
 	cd $(APP_DIR)
@@ -59,4 +59,4 @@ clean: clean-app clean-kext
 
 uninstall: uninstall-command uninstall-app uninstall-kext
 
-install: build uninstall install-kext install-app launch-app launch-system-audio-setup
+install: build uninstall install-kext install-app launch-app
