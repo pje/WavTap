@@ -31,7 +31,7 @@ uninstall-kext:
 	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
 
 uninstall-app:
-	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill -9; fi
+	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill; fi
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
 uninstall-command:
