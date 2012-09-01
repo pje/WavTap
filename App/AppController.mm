@@ -1,12 +1,7 @@
 #import <Carbon/Carbon.h>
 #import <AudioUnit/AudioUnit.h>
-#import "AppController.h"
+#include "AppController.h"
 #include "AudioThruEngine.h"
-#include <mach/mach_port.h>
-#include <mach/mach_interface.h>
-#include <mach/mach_init.h>
-#include <IOKit/pwr_mgt/IOPMLib.h>
-#include <IOKit/IOMessage.h>
 
 @implementation AppController
 
