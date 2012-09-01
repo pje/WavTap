@@ -30,7 +30,6 @@ io_connect_t  root_port;
 - (void)awakeFromNib
 {
   [[NSApplication sharedApplication] setDelegate:(id)self];
-  //  [self doRegisterForSystemPower];
   [self rebuildDeviceList];
   AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
   for (AudioDeviceList::DeviceList::iterator i = list.begin(); i != list.end(); ++i) {
@@ -75,39 +74,6 @@ io_connect_t  root_port;
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
   [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"quit"]];
   [item setTarget:self];
-}
-
-void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * messageArgument)
-{
-  AppController *app = (__bridge AppController *)x;
-    switch ( messageType ) {
-      case kIOMessageSystemWillSleep:
-        [NSThread detachNewThreadSelector:@selector(suspend) toTarget:app withObject:nil];
-        IOAllowPowerChange(root_port, (long)messageArgument);
-        break;
-      case kIOMessageSystemWillNotSleep:
-        break;
-      case kIOMessageCanSystemSleep:
-        IOAllowPowerChange(root_port, (long)messageArgument);
-        break;
-      case kIOMessageSystemHasPoweredOn:
-        [NSTimer scheduledTimerWithTimeInterval:0.0 target:app selector:@selector(resume) userInfo:nil repeats:NO];
-        break;
-      default:
-        break;
-    }
-}
-
-- (void)doRegisterForSystemPower
-{
-  IONotificationPortRef notify;
-  io_object_t anIterator;
-  root_port = IORegisterForSystemPower((__bridge void *) self, &notify, MySleepCallBack, &anIterator);
-  if (!root_port) {
-    NSLog(@"IORegisterForSystemPower failed\n");
-  } else {
-    CFRunLoopAddSource(CFRunLoopGetCurrent(), IONotificationPortGetRunLoopSource(notify), kCFRunLoopCommonModes);
-  }
 }
 
 - (IBAction)sampleRateChanged
