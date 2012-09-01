@@ -11,6 +11,11 @@ io_connect_t  root_port;
 
 - (id)init
 {
+  mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys:
+                   @"toggleRecord", @1,
+                   @"preferences",  @2,
+                   @"quit",         @3,
+                   nil];
   mIsRecording = NO;
   mOutputDeviceList = NULL;
   mWavTapDeviceID = 0;
@@ -52,7 +57,7 @@ io_connect_t  root_port;
   if (mWavTapDeviceID){
     item = [mMenu addItemWithTitle:@"Record" action:@selector(toggleRecord) keyEquivalent:@""];
     [item setTarget:self];
-    [item setTag:MENU_ITEM_TAG_TOGGLE_RECORD];
+    [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
     [self setToggleRecordHotKey:@" "];
   } else {
     item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
@@ -64,9 +69,11 @@ io_connect_t  root_port;
 
   //  item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
   //  [item setKeyEquivalentModifierMask:NSCommandKeyMask];
+  //  [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"preferences"]];
   //  [item setTarget:self];
 
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
+  [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"quit"]];
   [item setTarget:self];
 }
 
@@ -125,8 +132,7 @@ void MySleepCallBack(void * x, io_service_t y, natural_t messageType, void * mes
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent
 {
-  NSMenuItem *item = [mMenu itemWithTag:MENU_ITEM_TAG_TOGGLE_RECORD];
-
+  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
 }

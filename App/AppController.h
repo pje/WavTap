@@ -10,6 +10,8 @@
 - (void)sampleRateChangedOutput;
 - (void)toggleRecord;
 @end
+
+NSDictionary *mMenuItemTags;
 EventHandlerUPP hotKeyFunction;
 BOOL menuItemVisible;
 BOOL mIsRecording;
