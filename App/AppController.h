@@ -1,13 +1,13 @@
 #import <Cocoa/Cocoa.h>
 #include "AudioDeviceList.h"
+#include "AudioThruEngine.h"
 
 @interface AppController : NSObject
 {
   NSStatusItem *mSbItem;
   NSMenu *mMenu;
+  AudioThruEngine *mEngine;
 }
-- (void)sampleRateChanged;
-- (void)sampleRateChangedOutput;
 - (void)toggleRecord;
 @end
 

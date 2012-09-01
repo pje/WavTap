@@ -1,69 +1,39 @@
 #include "AudioThruEngine.h"
+#include "AudioDevice.h"
 #include <unistd.h>
 
-AudioThruEngine::AudioThruEngine() :
-  mWorkBuf(NULL),
-  mRunning(false),
-  mMuting(false),
-  mThruing(true),
-  mBufferSize(512),
-  mExtraLatencyFrames(0)
-{
+AudioThruEngine::AudioThruEngine(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mBufferSize(512), mExtraLatencyFrames(0), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mRunning(false), mMuting(false), mThruing(true) {
+  mInputDevice.SetBufferSize(mBufferSize);
+  mOutputDevice.SetBufferSize(mBufferSize);
 }
 
-AudioThruEngine::~AudioThruEngine()
-{
-  Stop();
-  InitInputDevice(kAudioDeviceUnknown);
-  InitOutputDevice(kAudioDeviceUnknown);
-}
-
-void  AudioThruEngine::InitInputDevice(AudioDeviceID input)
-{
-  mInputDevice.Init(input, true);
-  SetBufferSize(mBufferSize);
-}
-
-void  AudioThruEngine::InitOutputDevice(AudioDeviceID output)
-{
-  mOutputDeviceID.Init(output, false);
-  SetBufferSize(mBufferSize);
-}
-
-void  AudioThruEngine::SetBufferSize(UInt32 size)
-{
-  bool wasRunning = Stop();
-  mBufferSize = size;
-  mInputDevice.SetBufferSize(size);
-  mOutputDeviceID.SetBufferSize(size);
-  if (wasRunning) Start();
-}
-
-void  AudioThruEngine::ComputeThruOffset()
-{
+void  AudioThruEngine::ComputeThruOffset() {
   if (!mRunning) {
     mActualThruLatency = 0;
     mInToOutSampleOffset = 0;
     return;
   }
 
-  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDeviceID.mSafetyOffset + mOutputDeviceID.mBufferSizeFrames) + mExtraLatencyFrames;
+  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
   mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
 }
 
-OSStatus AudioThruEngine::MatchSampleRate(bool useInputDevice)
-{
+OSStatus AudioThruEngine::MatchSampleRates(AudioObjectID changedDeviceID) {
   OSStatus status = kAudioHardwareNoError;
-  mInputDevice.UpdateFormat();
-  mOutputDeviceID.UpdateFormat();
-  if (mInputDevice.mFormat.mSampleRate != mOutputDeviceID.mFormat.mSampleRate)
+  mInputDevice.ReloadStreamFormat();
+  mOutputDevice.ReloadStreamFormat();
+  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate)
   {
-    if (useInputDevice) {
-      status = mOutputDeviceID.SetSampleRate(mInputDevice.mFormat.mSampleRate);
-    } else {
-      status = mInputDevice.SetSampleRate(mOutputDeviceID.mFormat.mSampleRate);
+    if (mInputDevice.mID == changedDeviceID) {
+      status = mOutputDevice.SetSampleRate(mInputDevice.mFormat.mSampleRate);
+    } else if (mOutputDevice.mID == changedDeviceID) {
+      status = mInputDevice.SetSampleRate(mOutputDevice.mFormat.mSampleRate);
+    }
+    else {
+      printf("Error in AudioThruEngine::MatchSampleRates() - unrelated device ID: %u \n", changedDeviceID);
     }
   }
+
   return status;
 }
 
@@ -74,23 +44,24 @@ inline void MakeBufferSilent(AudioBufferList * ioData)
   }
 }
 
-void AudioThruEngine::Start()
-{
+void AudioThruEngine::Start() {
   OSStatus err = noErr;
   if (mRunning) return;
-  if (!mInputDevice.Valid() || !mOutputDeviceID.Valid()) return;
+  if (!mInputDevice.Valid() || !mOutputDevice.Valid()) return;
 
-  if (mInputDevice.mFormat.mSampleRate != mOutputDeviceID.mFormat.mSampleRate) {
-    if (MatchSampleRate(false)) {
-      printf("Error - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDeviceID.mFormat.mSampleRate);
-      return;
-    }
+  MatchSampleRates(mOutputDevice.mID);
+
+  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
+    printf("Error in AudioThruEngine::Start() - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
+    return;
   }
 
   mSampleRate = mInputDevice.mFormat.mSampleRate;
 
   mWorkBuf = new Byte[mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame];
   memset(mWorkBuf, 0, mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame);
+
+  printf("Initializing mWorkBuf with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
 
   mRunning = true;
 
@@ -104,8 +75,8 @@ void AudioThruEngine::Start()
   mOutputIOProc = OutputIOProc;
 
   mOutputIOProcID = NULL;
-  err = AudioDeviceCreateIOProcID(mOutputDeviceID.mID, mOutputIOProc, this, &mOutputIOProcID);
-  err = AudioDeviceStart(mOutputDeviceID.mID, mOutputIOProcID);
+  err = AudioDeviceCreateIOProcID(mOutputDevice.mID, mOutputIOProc, this, &mOutputIOProcID);
+  err = AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
 
   while (mInputProcState != kRunning || mOutputProcState != kRunning) {
     usleep(1000);
@@ -114,8 +85,7 @@ void AudioThruEngine::Start()
   ComputeThruOffset();
 }
 
-bool AudioThruEngine::Stop()
-{
+bool AudioThruEngine::Stop() {
   OSStatus err = noErr;
   if (!mRunning) return false;
   mRunning = false;
@@ -130,8 +100,8 @@ bool AudioThruEngine::Stop()
   err = AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
   err = AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
 
-  err = AudioDeviceStop(mOutputDeviceID.mID, mOutputIOProcID);
-  err = AudioDeviceDestroyIOProcID(mOutputDeviceID.mID, mOutputIOProcID);
+  err = AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
+  err = AudioDeviceDestroyIOProcID(mOutputDevice.mID, mOutputIOProcID);
 
   if (mWorkBuf) {
     delete[] mWorkBuf;
@@ -141,14 +111,7 @@ bool AudioThruEngine::Stop()
   return true;
 }
 
-OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice,
-                                      const AudioTimeStamp *inNow,
-                                      const AudioBufferList *inInputData,
-                                      const AudioTimeStamp *inInputTime,
-                                      AudioBufferList *outOutputData,
-                                      const AudioTimeStamp *inOutputTime,
-                                      void *inClientData)
-{
+OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioThruEngine *This = (AudioThruEngine *)inClientData;
 
   switch (This->mInputProcState) {
@@ -172,14 +135,7 @@ OSStatus AudioThruEngine::InputIOProc(AudioDeviceID inDevice,
   return noErr;
 }
 
-OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice,
-                                       const AudioTimeStamp *inNow,
-                                       const AudioBufferList *inInputData,
-                                       const AudioTimeStamp *inInputTime,
-                                       AudioBufferList *outOutputData,
-                                       const AudioTimeStamp *inOutputTime,
-                                       void *inClientData)
-{
+OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioThruEngine *This = (AudioThruEngine *)inClientData;
 
   switch (This->mOutputProcState) {
@@ -207,10 +163,9 @@ OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice,
   return noErr;
 }
 
-UInt32 AudioThruEngine::GetOutputNchnls()
-{
-  if (mOutputDeviceID.mID != kAudioDeviceUnknown) {
-    return mOutputDeviceID.CountChannels();
+UInt32 AudioThruEngine::GetOutputNchnls() {
+  if (mOutputDevice.mID != kAudioDeviceUnknown) {
+    return mOutputDevice.CountChannels();
   }
   return 0;
 }

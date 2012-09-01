@@ -17,6 +17,7 @@ io_connect_t  root_port;
                    nil];
   mIsRecording = NO;
   mOutputDeviceList = NULL;
+  mOutputDeviceID = 0;
   mWavTapDeviceID = 0;
   return self;
 }
@@ -35,6 +36,7 @@ io_connect_t  root_port;
     if (0 == strcmp("WavTap (2ch)", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
   [self initConnections];
+  [self registerPropertyListeners];
   [self bindHotKeys];
   [self initStatusBar];
   [self buildMenu];
@@ -75,24 +77,68 @@ io_connect_t  root_port;
   [item setTarget:self];
 }
 
-- (void)sampleRateChanged
+OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData)
 {
-  @autoreleasepool {
-    OSStatus err = noErr;
-    mEngine->Mute(true);
-    err = mEngine->MatchSampleRate(true);
-    mEngine->Mute(false);
+  OSStatus err = noErr;
+  AppController *app = (AppController *)CFBridgingRelease(inClientData);
+  AudioObjectPropertyAddress addr;
+
+  for(int i = 0; i < inNumberAddresses; i++){
+    addr = inAddresses[i];
+    switch(addr.mSelector) {
+      case kAudioDevicePropertyAvailableNominalSampleRates:     { break; }
+      case kAudioDevicePropertyClockDomain:                     { break; }
+      case kAudioDevicePropertyConfigurationApplication:        { break; }
+      case kAudioDevicePropertyDeviceCanBeDefaultDevice:        { break; }
+      case kAudioDevicePropertyDeviceCanBeDefaultSystemDevice:  { break; }
+      case kAudioDevicePropertyDeviceIsAlive:                   { break; }
+      case kAudioDevicePropertyDeviceIsRunning:                 { break; }
+      case kAudioDevicePropertyDeviceUID:                       { break; }
+      case kAudioDevicePropertyIcon:                            { break; }
+      case kAudioDevicePropertyIsHidden:                        { break; }
+      case kAudioDevicePropertyLatency:                         { break; }
+      case kAudioDevicePropertyModelUID:                        { break; }
+      case kAudioDevicePropertyNominalSampleRate:{
+        app->mEngine->Stop();
+        err = app->mEngine->MatchSampleRates(inObjectID);
+        printf("(DeviceListenerProc) MatchSampleRates returned status code: %u \n", err);
+        app->mEngine->Start();
+        break;
+      }
+      case kAudioDevicePropertyPreferredChannelLayout:          { break; }
+      case kAudioDevicePropertyPreferredChannelsForStereo:      { break; }
+      case kAudioDevicePropertyRelatedDevices:                  { break; }
+      case kAudioDevicePropertySafetyOffset:                    { break; }
+      case kAudioDevicePropertyStreams:                         { break; }
+      case kAudioDevicePropertyTransportType:                   { break; }
+      case kAudioObjectPropertyControlList:                     { break; }
+    }
   }
+  return err;
 }
 
-- (void)sampleRateChangedOutput
+- (void)registerPropertyListeners
 {
-  @autoreleasepool {
-    OSStatus err = noErr;
-    mEngine->Mute(true);
-    err = mEngine->MatchSampleRate(false);
-    mEngine->Mute(false);
-  }
+  OSStatus err = noErr;
+
+  AudioObjectPropertyAddress addr = {
+    kAudioDevicePropertyNominalSampleRate,
+    kAudioObjectPropertyScopeGlobal,
+    kAudioObjectPropertyElementMaster
+  };
+  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
+
+//  addr.mElement = kAudioObjectPropertyScopeWildcard;
+//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
+//
+//  addr.mElement = kAudioObjectPropertyScopePlayThrough;
+//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
+//
+//  addr.mElement = kAudioObjectPropertyScopeInput;
+//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
+//
+//  addr.mElement = kAudioObjectPropertyScopeOutput;
+//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent
@@ -140,9 +186,7 @@ io_connect_t  root_port;
   size = sizeof(Float32);
   err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
 
-  mEngine = new AudioThruEngine;
-  mEngine->InitInputDevice(mWavTapDeviceID);
-  mEngine->InitOutputDevice(mOutputDeviceID);
+  mEngine = new AudioThruEngine(mWavTapDeviceID, mOutputDeviceID);
 
   AudioObjectPropertyAddress volSwapWav0Address = {
     kAudioDevicePropertyVolumeScalar,

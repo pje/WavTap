@@ -5,14 +5,11 @@
 
 class AudioThruEngine {
 public:
-  AudioThruEngine();
-  ~AudioThruEngine();
-
-  void SetDevices(AudioDeviceID input, AudioDeviceID output);
-  void InitInputDevice(AudioDeviceID input);
-  void InitOutputDevice(AudioDeviceID output);
+  AudioThruEngine(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID);
+  ~AudioThruEngine() {}
   void Start();
   bool Stop();
+  void SetDevices(AudioDeviceID input, AudioDeviceID output);
   void Mute(bool mute = true) { mMuting = mute; }
   bool IsRunning() { return mRunning; }
   void EnableThru(bool enable) { mThruing = enable; }
@@ -20,10 +17,13 @@ public:
   double GetThruTime() { return mThruTime; }
   SInt32 GetThruLatency() { return mActualThruLatency; }
   UInt32 GetOutputNchnls();
-  AudioDeviceID GetOutputDevice() { return mOutputDeviceID.mID; }
-  AudioDeviceID GetInputDevice() { return mInputDevice.mID; }
-  OSStatus MatchSampleRate(bool useInputDevice);
+  AudioDeviceID GetOutputDeviceID() { return mOutputDevice.mID; }
+  AudioDeviceID GetInputDeviceID() { return mInputDevice.mID; }
+  OSStatus MatchSampleRates(AudioObjectID changedDeviceID);
   Byte *mWorkBuf;
+  UInt32 mBufferSize;
+  SInt32 mExtraLatencyFrames;
+  AudioDevice mInputDevice, mOutputDevice;
 
 protected:
   enum IOProcState {
@@ -50,14 +50,11 @@ protected:
                                 void *inClientData);
 
   void ComputeThruOffset();
-  AudioDevice mInputDevice, mOutputDeviceID;
   bool mRunning;
   bool mMuting;
   bool mThruing;
   IOProcState mInputProcState, mOutputProcState;
   Float64 mLastInputSampleCount, mIODeltaSampleCount;
-  UInt32 mBufferSize;
-  SInt32 mExtraLatencyFrames;
   SInt32 mActualThruLatency;
   Float64 mSampleRate;
   Float64 mInToOutSampleOffset; // subtract from the output time to obtain input time
