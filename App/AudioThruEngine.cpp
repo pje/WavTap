@@ -6,7 +6,7 @@ AudioThruEngine::AudioThruEngine() :
   mRunning(false),
   mMuting(false),
   mThruing(true),
-  mBufferSize(1024),
+  mBufferSize(512),
   mExtraLatencyFrames(0)
 {
 }
