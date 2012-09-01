@@ -5,8 +5,8 @@
 
 @implementation AppController
 
-AudioThruEngine *gThruEngine2 = NULL;
 UInt32 MENU_ITEM_TAG_TOGGLE_RECORD=1;
+AudioThruEngine *mEngine = NULL;
 io_connect_t  root_port;
 
 - (id)init
@@ -80,9 +80,9 @@ io_connect_t  root_port;
 {
   @autoreleasepool {
     OSStatus err = noErr;
-    gThruEngine2->Mute(true);
-    err = gThruEngine2->MatchSampleRate(true);
-    gThruEngine2->Mute(false);
+    mEngine->Mute(true);
+    err = mEngine->MatchSampleRate(true);
+    mEngine->Mute(false);
   }
 }
 
@@ -90,9 +90,9 @@ io_connect_t  root_port;
 {
   @autoreleasepool {
     OSStatus err = noErr;
-    gThruEngine2->Mute(true);
-    err = gThruEngine2->MatchSampleRate(false);
-    gThruEngine2->Mute(false);
+    mEngine->Mute(true);
+    err = mEngine->MatchSampleRate(false);
+    mEngine->Mute(false);
   }
 }
 
@@ -141,9 +141,9 @@ io_connect_t  root_port;
   size = sizeof(Float32);
   err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
 
-  gThruEngine2 = new AudioThruEngine;
-  gThruEngine2->InitInputDevice(mWavTapDeviceID);
-  gThruEngine2->InitOutputDevice(mOutputDeviceID);
+  mEngine = new AudioThruEngine;
+  mEngine->InitInputDevice(mWavTapDeviceID);
+  mEngine->InitOutputDevice(mOutputDeviceID);
 
   AudioObjectPropertyAddress volSwapWav0Address = {
     kAudioDevicePropertyVolumeScalar,
@@ -182,7 +182,7 @@ io_connect_t  root_port;
 //
 //  err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
 
-  gThruEngine2->Start();
+  mEngine->Start();
 
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
@@ -281,7 +281,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 - (void)cleanupOnBeforeQuit
 {
   if(mIsRecording) [self recordStop];
-  if(gThruEngine2) gThruEngine2->Stop();
+  if(mEngine) mEngine->Stop();
   [self restoreSystemOutputDevice];
 //  [self restoreSystemOutputDeviceVolume];
 }
