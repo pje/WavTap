@@ -311,20 +311,22 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   }
 }
 
+- (void)cleanupOnBeforeQuit
+{
+  if(mIsRecording) [self recordStop];
+  if(gThruEngine2) gThruEngine2->Stop();
+  [self restoreSystemOutputDevice];
+//  [self restoreSystemOutputDeviceVolume];
+}
+
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-  [self recordStop];
-
-  if (gThruEngine2) {
-    gThruEngine2->Stop();
-  }
+  [self cleanupOnBeforeQuit];
 }
 
 - (void)doQuit
 {
-  [self recordStop];
-  [self restoreSystemOutputDevice];
-//  [self restoreSystemOutputDeviceVolume];
+  [self cleanupOnBeforeQuit];
   [NSApp terminate:nil];
 }
 
