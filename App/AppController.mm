@@ -296,7 +296,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   NSTask *task=[[NSTask alloc] init];
   NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_start"];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record.sh"];
   [task launch];
 }
 
@@ -305,7 +305,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   NSArray *argv=[NSArray arrayWithObjects:nil];
   NSTask *task=[[NSTask alloc] init];
   [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record_stop"];
+  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/kill_recorders.sh"];
   [task launch];
 }
 

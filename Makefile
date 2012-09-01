@@ -31,7 +31,7 @@ uninstall-kext:
 	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
 
 uninstall-app:
-	$(APP_DIR)/quit
+	$(APP_DIR)/quit.applescript
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
 uninstall-command:
