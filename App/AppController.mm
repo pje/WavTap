@@ -286,7 +286,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 //  [self restoreSystemOutputDeviceVolume];
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification
+- (void)applicationWillTerminate:(NSNotification *)notification
 {
   [self cleanupOnBeforeQuit];
 }
