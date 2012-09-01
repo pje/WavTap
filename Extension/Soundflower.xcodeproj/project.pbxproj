@@ -209,7 +209,7 @@
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = "";
-				MODULE_NAME = com.Cycling74.driver.Soundflower;
+				MODULE_NAME = com.wavtap.driver.Soundflower;
 				PRODUCT_NAME = WavTap;
 				SYMROOT = "$(PROJECT_DIR)/Build";
 				WARNING_CFLAGS = (
@@ -239,7 +239,7 @@
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = "";
-				MODULE_NAME = com.Cycling74.driver.Soundflower;
+				MODULE_NAME = com.wavtap.driver.Soundflower;
 				PRODUCT_NAME = WavTap;
 				SYMROOT = "$(PROJECT_DIR)/Build";
 				WARNING_CFLAGS = (

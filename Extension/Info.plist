@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.Cycling74.driver.WavTap</string>
+	<string>com.wavtap.driver.WavTap</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -74,11 +74,11 @@
 				</dict>
 			</array>
 			<key>CFBundleIdentifier</key>
-			<string>com.Cycling74.driver.WavTap</string>
+			<string>com.wavtap.driver.WavTap</string>
 			<key>IOClass</key>
-			<string>com_cycling74_driver_SoundflowerDevice</string>
+			<string>com_wavtap_driver_WavTapDevice</string>
 			<key>IOMatchCategory</key>
-			<string>com_cycling74_driver_SoundflowerDevice</string>
+			<string>com_wavtap_driver_WavTapDevice</string>
 			<key>IOProviderClass</key>
 			<string>IOResources</string>
 			<key>IOResourceMatch</key>

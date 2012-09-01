@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>appIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.WavTap</string>
+	<string>com.wavtap.WavTap</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
