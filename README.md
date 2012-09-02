@@ -2,7 +2,7 @@
 
 capture whatever your mac is playing—as simply as a screenshot
 
-![](https://skitch.com/patrickellis/etfd6/screenshot)
+![](https://img.skitch.com/20120902-maqsi6d787xi8day76ryiuuje.jpg)
 
 (this is alpha software. it's sorta stable, with caveats.)
 
