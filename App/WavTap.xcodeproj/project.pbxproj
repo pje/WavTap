@@ -27,6 +27,7 @@
 		3E63F79F15E91821005221AF /* record.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E82F12515E15B6900F16BCB /* sox in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12415E15B6900F16BCB /* sox */; };
 		3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */; };
+		3E97DF5B15F36A41006B2E7A /* menuIconInverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E97DF5A15F36A41006B2E7A /* menuIconInverse.tiff */; };
 		3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB6916E15E8E83A00F632B8 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 		3E63F79B15E91805005221AF /* kill_recorders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kill_recorders.sh; sourceTree = "<group>"; };
 		3E82F12415E15B6900F16BCB /* sox */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sox; sourceTree = "<group>"; };
 		3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
+		3E97DF5A15F36A41006B2E7A /* menuIconInverse.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIconInverse.tiff; sourceTree = "<group>"; };
 		3EB6916E15E8E83A00F632B8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */,
+				3E97DF5A15F36A41006B2E7A /* menuIconInverse.tiff */,
 				C9CFAC1E06EFA390001BE11F /* appIcon.icns */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				229B366F0EDC1DB500623222 /* Info.plist */,
@@ -245,6 +248,7 @@
 				3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */,
 				3E63F79C15E91805005221AF /* record.sh in Resources */,
 				3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */,
+				3E97DF5B15F36A41006B2E7A /* menuIconInverse.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

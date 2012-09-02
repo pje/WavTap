@@ -49,6 +49,16 @@ io_connect_t  root_port;
   [mSbItem setHighlightMode:YES];
 }
 
+- (void)menuWillOpen:(NSMenu *)menu
+{
+  [mSbItem setImage:[NSImage imageNamed:@"menuIconInverse"]];
+}
+
+- (void)menuDidClose:(NSMenu *)menu
+{
+  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+}
+
 - (void)buildMenu
 {
   NSMenuItem *item;
@@ -75,6 +85,8 @@ io_connect_t  root_port;
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
   [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"quit"]];
   [item setTarget:self];
+
+  [mMenu setDelegate:(id)self];
 }
 
 OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData)
@@ -292,7 +304,8 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 -(void)launchRecordProcess
 {
   mEngine->mOutputDevice.ReloadStreamFormat();
-  NSString *bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
+  NSString *bits = @"16"; // TODO: get physical format of output device's stream
+//  bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
   NSTask *task=[[NSTask alloc] init];
   NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
