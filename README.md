@@ -10,7 +10,7 @@ capture whatever your mac is playing—as simply as a screenshot
 
 run the [installer](https://github.com/downloads/pje/WavTap/WavTap.pkg).
 
-#### Nerd Corner
+### Nerd Corner
 
 `make uninstall` removes everything
 
