@@ -9,17 +9,17 @@
 	<key>CFBundleIconFile</key>
 	<string>appIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.cycling74.WavTap</string>
+	<string>com.wavtap.WavTap</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.3</string>
+	<string>0.0.4</string>
 	<key>CFBundleSignature</key>
 	<string>SFlB</string>
 	<key>CFBundleVersion</key>
-	<string>0.0.3</string>
+	<string>0.0.4</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
 	<key>NSMainNibFile</key>

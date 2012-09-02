@@ -13,14 +13,13 @@ public:
     AudioDeviceID mID;
   };
   typedef std::vector<Device> DeviceList;
-  AudioDeviceList(bool inputs);
+  AudioDeviceList();
   ~AudioDeviceList();
   DeviceList &GetList() { return mDevices; }
 
 protected:
   void BuildList();
   void EraseList();
-  bool mInputs;
   DeviceList mDevices;
 };
 

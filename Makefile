@@ -12,7 +12,7 @@ SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 
 build-kext:
 	cd $(KEXT_DIR)
-	xcodebuild -project $(KEXT_DIR)/Soundflower.xcodeproj -target SoundflowerDriver -configuration $(CONFIG) clean build
+	xcodebuild -project $(KEXT_DIR)/WavTap.xcodeproj -target WavTapDriver -configuration $(CONFIG) clean build
 
 build-app:
 	cd $(APP_DIR)
@@ -31,7 +31,7 @@ uninstall-kext:
 	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
 
 uninstall-app:
-	if [[ "$(shell ps aux | grep $(PRODUCT_NAME).app) | grep -v grep" ]]; then ps -axo pid,command,args | grep $(PRODUCT_NAME) | grep -v grep | awk '{ print $$1 }' | xargs kill -9; fi
+	$(APP_DIR)/quit.applescript
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
 uninstall-command:
@@ -59,4 +59,4 @@ clean: clean-app clean-kext
 
 uninstall: uninstall-command uninstall-app uninstall-kext
 
-install: build uninstall install-kext install-app launch-app launch-system-audio-setup
+install: build uninstall install-kext install-app launch-app
