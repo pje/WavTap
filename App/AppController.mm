@@ -2,6 +2,7 @@
 #import <AudioUnit/AudioUnit.h>
 #include "AppController.h"
 #include "AudioThruEngine.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation AppController
 
@@ -45,19 +46,17 @@ io_connect_t  root_port;
 - (void)initStatusBar
 {
   mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+
+  NSImage *image = [NSImage imageNamed:@"menuIcon"];
+  [image setTemplate:YES];
+  [mSbItem setImage:image];
+
+  NSImage *alternateImage = [NSImage imageNamed:@"menuIconInverse"];
+  [alternateImage setTemplate:YES];
+  [mSbItem setAlternateImage:alternateImage];
+
+  [mSbItem setToolTip: @"WavTap"];
   [mSbItem setHighlightMode:YES];
-}
-
-- (void)menuWillOpen:(NSMenu *)menu
-{
-  [mSbItem setImage:[NSImage imageNamed:@"menuIconInverse"]];
-}
-
-- (void)menuDidClose:(NSMenu *)menu
-{
-  NSString *iconName = (mIsRecording ? @"menuIconRecording" : @"menuIcon");
-  [mSbItem setImage:[NSImage imageNamed:iconName]];
 }
 
 - (void)buildMenu
@@ -337,7 +336,9 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self killRecordProcesses];
   [item setTitle:@"Record"];
-  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+  NSImage *image = [NSImage imageNamed:@"menuIcon"];
+  [image setTemplate:YES];
+  [mSbItem setImage:image];
   mIsRecording = NO;
 }
 
