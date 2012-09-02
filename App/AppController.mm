@@ -56,7 +56,8 @@ io_connect_t  root_port;
 
 - (void)menuDidClose:(NSMenu *)menu
 {
-  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
+  NSString *iconName = (mIsRecording ? @"menuIconRecording" : @"menuIcon");
+  [mSbItem setImage:[NSImage imageNamed:iconName]];
 }
 
 - (void)buildMenu
@@ -327,6 +328,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
+  [mSbItem setImage:[NSImage imageNamed:@"menuIconRecording"]];
   mIsRecording = YES;
 }
 
@@ -335,6 +337,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self killRecordProcesses];
   [item setTitle:@"Record"];
+  [mSbItem setImage:[NSImage imageNamed:@"menuIcon"]];
   mIsRecording = NO;
 }
 
