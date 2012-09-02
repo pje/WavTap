@@ -1,6 +1,6 @@
 ## WavTap
 
-capture whatever your mac is playing—as simply as a screenshot
+globally capture whatever your mac is playing—as simply as a screenshot
 
 ![](https://img.skitch.com/20120902-maqsi6d787xi8day76ryiuuje.jpg)
 
