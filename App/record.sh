@@ -6,7 +6,7 @@ output_file=~/Desktop/`date +%s`.$format
 if [[ -n "$1" ]]; then
 	bits="--bits $1"
 else
-	bits=""
+	bits="--bits 16"
 fi
 
 recorder_process='/Applications/WavTap.app/Contents/SharedSupport/sox'
