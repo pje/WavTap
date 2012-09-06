@@ -211,11 +211,6 @@ inline void writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes){
 void AudioThruEngine::saveHistoryBuffer(const char* fileName){
   int32_t availableBytes;
 
-//  struct tm tm;
-//  time_t epoch;
-//  strftime("%Y-%m-%d %H:%M:%S", &tm);
-//  epoch = mktime(&tm);
-
   UInt32 *buffer = (UInt32*)TPCircularBufferTail(this->mHistBuf, &availableBytes);
   UInt32 nFrames = availableBytes / (4 * 2);
 
@@ -252,7 +247,7 @@ void AudioThruEngine::saveHistoryBuffer(const char* fileName){
   outDesc.mChannelsPerFrame = 2;
   outDesc.mFramesPerPacket = 1;
   outDesc.mFormatFlags = kAudioFormatFlagsAreAllClear | kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
-  OSStatus result = AudioConverterNew(&inDesc, &outDesc, &con);
+  AudioConverterNew(&inDesc, &outDesc, &con);
   AudioConverterConvertComplexBuffer(con, nFrames, &srcBuffList, &dstBuffList);
 
   std::fstream file(fileName, std::ios::binary | std::ios::app | std::ios::out | std::ios::in);
@@ -314,7 +309,6 @@ OSStatus AudioThruEngine::OutputIOProc(AudioDeviceID inDevice, const AudioTimeSt
   if (!This->mMuting && This->mThruing) {
     for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
       UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
-      UInt32 nFrames = bytesToCopy / 8;
       memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
     }
   } else {
