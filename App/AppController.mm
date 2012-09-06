@@ -1,8 +1,11 @@
 #import <Carbon/Carbon.h>
 #import <AudioUnit/AudioUnit.h>
+#include <AudioToolbox/AudioFile.h>
 #include "AppController.h"
 #include "AudioThruEngine.h"
 #import <QuartzCore/QuartzCore.h>
+#include <iostream>
+#include <fstream>
 
 @implementation AppController
 
@@ -12,9 +15,10 @@ io_connect_t  root_port;
 - (id)init
 {
   mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys:
-                   @"toggleRecord", @1,
-                   @"preferences",  @2,
-                   @"quit",         @3,
+                   @"toggleRecord",   @1,
+                   @"historyRecord",  @2,
+                   @"preferences",    @3,
+                   @"quit",           @4,
                    nil];
   mIsRecording = NO;
   mOutputDeviceList = NULL;
@@ -69,6 +73,10 @@ io_connect_t  root_port;
     [item setTarget:self];
     [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
     [self setToggleRecordHotKey:@" "];
+
+    item = [mMenu addItemWithTitle:@"Save History Buffer" action:@selector(historyRecord) keyEquivalent:@""];
+    [item setTarget:self];
+    [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"historyRecord"]];
   } else {
     item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
     [item setTarget:self];
@@ -88,6 +96,8 @@ io_connect_t  root_port;
 
   [mMenu setDelegate:(id)self];
 }
+
+
 
 OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData)
 {
@@ -345,6 +355,25 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 -(void)toggleRecord
 {
   (mIsRecording) ? [self recordStop] : [self recordStart];
+}
+
+-(void)historyRecord
+{
+  mEngine->Stop();
+
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+  NSString *dirname = [NSString stringWithFormat:@"%@", documentsDirectory];
+  NSDateFormatter *formatter;
+  NSString *timestamp;
+  formatter = [[NSDateFormatter alloc] init];
+  [formatter setDateFormat:@"ddMMyy"];
+  timestamp = [formatter stringFromDate:[NSDate date]];
+  NSString *absoluteFileName = [NSString stringWithFormat:@"%@/memory_%@.%@", dirname, timestamp, @"wav"];
+  const char *fileNameCharBuffer = [absoluteFileName UTF8String];
+
+  mEngine->saveHistoryBuffer(fileNameCharBuffer);
+  mEngine->Start();
 }
 
 - (void)cleanupOnBeforeQuit

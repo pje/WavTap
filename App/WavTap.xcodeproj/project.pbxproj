@@ -21,6 +21,11 @@
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
+		3E48E0DE15F402E100A49308 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E48E0DA15F402E100A49308 /* TPCircularBuffer.c */; };
+		3E48E0DF15F402E100A49308 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E48E0DB15F402E100A49308 /* TPCircularBuffer.h */; };
+		3E48E0E015F402E100A49308 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E48E0DC15F402E100A49308 /* TPCircularBuffer+AudioBufferList.c */; };
+		3E48E0E115F402E100A49308 /* TPCircularBuffer+AudioBufferList.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E48E0DD15F402E100A49308 /* TPCircularBuffer+AudioBufferList.h */; };
+		3E48E0E415F40FFD00A49308 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */; };
 		3E63F79C15E91805005221AF /* record.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79E15E9181D005221AF /* kill_recorders.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
@@ -56,6 +61,11 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3E48E0DA15F402E100A49308 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = TPCircularBuffer.c; path = "../../Desktop/michaeltyson-TPCircularBuffer-999ed01/TPCircularBuffer.c"; sourceTree = "<group>"; };
+		3E48E0DB15F402E100A49308 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TPCircularBuffer.h; path = "../../Desktop/michaeltyson-TPCircularBuffer-999ed01/TPCircularBuffer.h"; sourceTree = "<group>"; };
+		3E48E0DC15F402E100A49308 /* TPCircularBuffer+AudioBufferList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "TPCircularBuffer+AudioBufferList.c"; path = "../../Desktop/michaeltyson-TPCircularBuffer-999ed01/TPCircularBuffer+AudioBufferList.c"; sourceTree = "<group>"; };
+		3E48E0DD15F402E100A49308 /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TPCircularBuffer+AudioBufferList.h"; path = "../../Desktop/michaeltyson-TPCircularBuffer-999ed01/TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
+		3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		3E63F79A15E91805005221AF /* record.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record.sh; sourceTree = "<group>"; };
 		3E63F79B15E91805005221AF /* kill_recorders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kill_recorders.sh; sourceTree = "<group>"; };
 		3E6C579315F3A51A00AFB422 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Quartz.framework; sourceTree = DEVELOPER_DIR; };
@@ -74,7 +84,7 @@
 		F591DDB2031157A901FEEC38 /* AudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioDevice.h; sourceTree = "<group>"; };
 		F591DDB3031157A901FEEC38 /* AudioDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDevice.cpp; sourceTree = "<group>"; };
 		F591DDB60311589801FEEC38 /* AudioThruEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioThruEngine.h; sourceTree = "<group>"; };
-		F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AudioThruEngine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AudioThruEngine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E48E0E415F40FFD00A49308 /* AudioToolbox.framework in Frameworks */,
 				3E6C579415F3A51A00AFB422 /* Quartz.framework in Frameworks */,
 				3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */,
 				222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */,
@@ -138,6 +149,11 @@
 		29B97314FDCFA39411CA2CEA /* AudioThru */ = {
 			isa = PBXGroup;
 			children = (
+				3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */,
+				3E48E0DA15F402E100A49308 /* TPCircularBuffer.c */,
+				3E48E0DB15F402E100A49308 /* TPCircularBuffer.h */,
+				3E48E0DC15F402E100A49308 /* TPCircularBuffer+AudioBufferList.c */,
+				3E48E0DD15F402E100A49308 /* TPCircularBuffer+AudioBufferList.h */,
 				3E6C579315F3A51A00AFB422 /* Quartz.framework */,
 				3E63F79A15E91805005221AF /* record.sh */,
 				3E63F79B15E91805005221AF /* kill_recorders.sh */,
@@ -195,6 +211,8 @@
 				222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */,
 				222FE3350EBB6D9900FD13FC /* AudioThruEngine.h in Headers */,
 				222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */,
+				3E48E0DF15F402E100A49308 /* TPCircularBuffer.h in Headers */,
+				3E48E0E115F402E100A49308 /* TPCircularBuffer+AudioBufferList.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +290,8 @@
 				222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */,
 				222FE3450EBB6D9900FD13FC /* AudioThruEngine.cpp in Sources */,
 				222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */,
+				3E48E0DE15F402E100A49308 /* TPCircularBuffer.c in Sources */,
+				3E48E0E015F402E100A49308 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

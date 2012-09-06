@@ -15,6 +15,7 @@ NSDictionary *mMenuItemTags;
 EventHandlerUPP hotKeyFunction;
 BOOL menuItemVisible;
 BOOL mIsRecording;
+BOOL mHistoryRecordIsStopping;
 Float32 mStashedVolume;
 Float32 mStashedVolume2;
 AudioDeviceID mStashedAudioDeviceID;

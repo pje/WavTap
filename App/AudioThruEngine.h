@@ -2,6 +2,7 @@
 #define __AudioThruEngine_h__
 
 #include "AudioDevice.h"
+#include "TPCircularBuffer.h"
 
 class AudioThruEngine {
 public:
@@ -20,10 +21,14 @@ public:
   AudioDeviceID GetOutputDeviceID() { return mOutputDevice.mID; }
   AudioDeviceID GetInputDeviceID() { return mInputDevice.mID; }
   OSStatus MatchSampleRates(AudioObjectID changedDeviceID);
+  void saveHistoryBuffer(const char* fileName);
   Byte *mWorkBuf;
+  TPCircularBuffer *mHistBuf;
+  UInt32 mHistoryBufferMaxByteSize;
   UInt32 mBufferSize;
   SInt32 mExtraLatencyFrames;
   AudioDevice mInputDevice, mOutputDevice;
+  bool mFirstRun;
 
 protected:
   enum IOProcState {
@@ -63,6 +68,7 @@ protected:
   AudioDeviceIOProcID mInputIOProcID;
   AudioDeviceIOProcID mOutputIOProcID;
   AudioDeviceIOProc mOutputIOProc;
+  UInt32 mHistoryBufferByteSize;
 };
 
 #endif // __AudioThruEngine_h__
