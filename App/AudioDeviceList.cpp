@@ -17,7 +17,7 @@ void  AudioDeviceList::BuildList()
   err = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &theAddress, 0, NULL,&propsize);
   int audioDeviceIDSize = sizeof(AudioDeviceID);
   int nDevices = propsize / audioDeviceIDSize;
-  
+
   AudioDeviceID *devids = (AudioDeviceID *)calloc(nDevices, sizeof(AudioDeviceID));
   err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
 
