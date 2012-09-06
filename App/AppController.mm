@@ -149,18 +149,6 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
     kAudioObjectPropertyElementMaster
   };
   err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
-
-//  addr.mElement = kAudioObjectPropertyScopeWildcard;
-//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
-//
-//  addr.mElement = kAudioObjectPropertyScopePlayThrough;
-//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
-//
-//  addr.mElement = kAudioObjectPropertyScopeInput;
-//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
-//
-//  addr.mElement = kAudioObjectPropertyScopeOutput;
-//  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent
