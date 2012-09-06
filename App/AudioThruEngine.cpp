@@ -253,7 +253,7 @@ void AudioThruEngine::saveHistoryBuffer(const char* fileName){
   std::fstream file(fileName, std::ios::binary | std::ios::app | std::ios::out | std::ios::in);
   file.write((char *)dstBuffList.mBuffers[0].mData, dstBuffList.mBuffers[0].mDataByteSize);
   file.close();
-  
+
   delete[] dstBuff;
   dstBuff = 0;
 }
