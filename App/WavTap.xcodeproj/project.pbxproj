@@ -419,7 +419,7 @@
 				222FE2FA0EBB5DD500FD13FC /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Deployment;
 		};
 		222FE34C0EBB6D9900FD13FC /* Build configuration list for PBXNativeTarget "WavTap" */ = {
 			isa = XCConfigurationList;
@@ -428,7 +428,7 @@
 				222FE34E0EBB6D9900FD13FC /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Development;
+			defaultConfigurationName = Deployment;
 		};
 /* End XCConfigurationList section */
 	};
