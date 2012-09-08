@@ -9,8 +9,6 @@ public:
   OSStatus SetBufferSize(UInt32 size);
   OSStatus SetSampleRate(Float64 sr);
   OSStatus ReloadStreamFormat();
-  bool Valid() { return mID != kAudioDeviceUnknown; }
-  int CountChannels();
   char *GetName(char *buf, UInt32 maxlen);
   AudioDeviceID mID;
   bool mIsInput;
@@ -19,4 +17,4 @@ public:
   AudioStreamBasicDescription mFormat;
 };
 
-#endif // __AudioDevice_h__
+#endif

@@ -8,17 +8,10 @@
 
 @implementation AppController
 
-io_connect_t  root_port;
 //AudioTee *mEngine = NULL;
 
-- (id)init
-{
-  mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys:
-                   @"toggleRecord",   @1,
-                   @"historyRecord",  @2,
-                   @"preferences",    @3,
-                   @"quit",           @4,
-                   nil];
+- (id)init {
+  mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys: @"toggleRecord", @1, @"historyRecord", @2, @"preferences", @3, @"quit", @4, nil ];
   mIsRecording = NO;
   mOutputDeviceList = NULL;
   mOutputDeviceID = 0;
@@ -26,13 +19,11 @@ io_connect_t  root_port;
   return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
   delete mOutputDeviceList;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
   [[NSApplication sharedApplication] setDelegate:(id)self];
   [self rebuildDeviceList];
   AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
@@ -46,33 +37,26 @@ io_connect_t  root_port;
   [self buildMenu];
 }
 
-- (void)initStatusBar
-{
+- (void)initStatusBar {
   mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-
   NSImage *image = [NSImage imageNamed:@"menuIcon"];
   [image setTemplate:YES];
   [mSbItem setImage:image];
-
   NSImage *alternateImage = [NSImage imageNamed:@"menuIconInverse"];
   [alternateImage setTemplate:YES];
   [mSbItem setAlternateImage:alternateImage];
-
   [mSbItem setToolTip: @"WavTap"];
   [mSbItem setHighlightMode:YES];
 }
 
-- (void)buildMenu
-{
+- (void)buildMenu {
   NSMenuItem *item;
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
-
   if (mWavTapDeviceID){
     item = [mMenu addItemWithTitle:@"Record" action:@selector(toggleRecord) keyEquivalent:@""];
     [item setTarget:self];
     [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
     [self setToggleRecordHotKey:@" "];
-
     item = [mMenu addItemWithTitle:@"Save History Buffer" action:@selector(historyRecord) keyEquivalent:@""];
     [item setTarget:self];
     [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"historyRecord"]];
@@ -80,30 +64,22 @@ io_connect_t  root_port;
     item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
     [item setTarget:self];
   }
-
   [mMenu addItem:[NSMenuItem separatorItem]];
   [mSbItem setMenu:mMenu];
-
-  //  item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
-  //  [item setKeyEquivalentModifierMask:NSCommandKeyMask];
-  //  [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"preferences"]];
-  //  [item setTarget:self];
-
+//item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
+//[item setKeyEquivalentModifierMask:NSCommandKeyMask];
+//[item setTag:(NSInteger)[mMenuItemTags objectForKey:@"preferences"]];
+//[item setTarget:self];
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
   [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"quit"]];
   [item setTarget:self];
-
   [mMenu setDelegate:(id)self];
 }
 
-
-
-OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData)
-{
+OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData) {
   OSStatus err = noErr;
   AppController *app = (AppController *)CFBridgingRelease(inClientData);
   AudioObjectPropertyAddress addr;
-
   for(int i = 0; i < inNumberAddresses; i++){
     addr = inAddresses[i];
     switch(addr.mSelector) {
@@ -138,158 +114,80 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
   return err;
 }
 
-- (void)registerPropertyListeners
-{
+- (void)registerPropertyListeners {
   OSStatus err = noErr;
-
-  AudioObjectPropertyAddress addr = {
-    kAudioDevicePropertyNominalSampleRate,
-    kAudioObjectPropertyScopeGlobal,
-    kAudioObjectPropertyElementMaster
-  };
-  err = AudioObjectAddPropertyListener(mEngine->GetOutputDeviceID(), &addr, DeviceListenerProc, (__bridge void *)self);
+  AudioObjectPropertyAddress addr = { kAudioDevicePropertyNominalSampleRate, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
+  err = AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
-- (void)setToggleRecordHotKey:(NSString*)keyEquivalent
-{
+- (void)setToggleRecordHotKey:(NSString*)keyEquivalent {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
 }
 
-- (void)rebuildDeviceList
-{
+- (void)rebuildDeviceList {
   if (mOutputDeviceList) delete mOutputDeviceList;
   mOutputDeviceList = new AudioDeviceList;
 }
 
-- (void)initConnections
-{
+- (void)initConnections {
   OSStatus err = noErr;
   Float32 maxVolume = 1.0;
   UInt32 size;
-
-  AudioObjectPropertyAddress devCurrDefAddress = {
-    kAudioHardwarePropertyDefaultOutputDevice,
-    kAudioObjectPropertyScopeGlobal,
-    kAudioObjectPropertyElementMaster
-  };
+  AudioObjectPropertyAddress devCurrDefAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
   size = sizeof(AudioDeviceID);
   err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
-
   mOutputDeviceID = mStashedAudioDeviceID;
-
-  AudioObjectPropertyAddress volCurrDef1Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    1
-  };
+  AudioObjectPropertyAddress volCurrDef1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
   size = sizeof(Float32);
   err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
-
-  AudioObjectPropertyAddress volCurrDef2Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    2
-  };
+  AudioObjectPropertyAddress volCurrDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   size = sizeof(Float32);
   err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
-
-  mEngine = new AudioThruEngine(mWavTapDeviceID, mOutputDeviceID);
-
-  AudioObjectPropertyAddress volSwapWav0Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    0
-  };
+  mEngine = new AudioTee(mWavTapDeviceID, mOutputDeviceID);
+  AudioObjectPropertyAddress volSwapWav0Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 0 };
   err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(Float32), &maxVolume);
-
-  AudioObjectPropertyAddress volSwapWav1Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    1
-  };
+  AudioObjectPropertyAddress volSwapWav1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
   err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
-
-  AudioObjectPropertyAddress volSwapWav2Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    2
-  };
+  AudioObjectPropertyAddress volSwapWav2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
-
-//  AudioObjectPropertyAddress volSwapDefAddress = {
-//    kAudioDevicePropertyVolumeScalar,
-//    kAudioObjectPropertyScopeOutput,
-//    1
-//  };
-//
-//  err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDefAddress, 0, NULL, sizeof(Float32), &maxVolume);
-//
-//  AudioObjectPropertyAddress volSwapDef2Address = {
-//    kAudioDevicePropertyVolumeScalar,
-//    kAudioObjectPropertyScopeOutput,
-//    2
-//  };
-//
-//  err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
-
+//AudioObjectPropertyAddress volSwapDefAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
+//err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDefAddress, 0, NULL, sizeof(Float32), &maxVolume);
+//AudioObjectPropertyAddress volSwapDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
+//err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
   mEngine->Start();
-
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
 
-- (OSStatus)restoreSystemOutputDevice
-{
-  OSStatus err = noErr;
-
-  AudioObjectPropertyAddress devAddress = {
-    kAudioHardwarePropertyDefaultOutputDevice,
-    kAudioObjectPropertyScopeGlobal,
-    kAudioObjectPropertyElementMaster
-  };
+- (OSStatus)restoreSystemOutputDevice {
+  OSStatus err = noErr; 
+  AudioObjectPropertyAddress devAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devAddress, 0, NULL, sizeof(AudioDeviceID), &mStashedAudioDeviceID);
-
   return err;
 }
 
-- (OSStatus)restoreSystemOutputDeviceVolume
-{
+- (OSStatus)restoreSystemOutputDeviceVolume {
   OSStatus err = noErr;
-
-  AudioObjectPropertyAddress volAddress = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    1
-  };
-
+  AudioObjectPropertyAddress volAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
-
-  AudioObjectPropertyAddress vol2Address = {
-    kAudioDevicePropertyVolumeScalar,
-    kAudioObjectPropertyScopeOutput,
-    2
-  };
+  AudioObjectPropertyAddress vol2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &vol2Address, 0, NULL, sizeof(Float32), &mStashedVolume2);
-
   return err;
 }
 
-OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData)
-{
+OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData) {
   AppController* inUserData = (__bridge AppController*)userData;
   [inUserData toggleRecord];
   return noErr;
 }
 
-- (void)bindHotKeys
-{
+- (void)bindHotKeys {
   hotKeyFunction = NewEventHandlerUPP(myHotKeyHandler);
   EventTypeSpec eventType;
   eventType.eventClass = kEventClassKeyboard;
   eventType.eventKind = kEventHotKeyReleased;
   InstallApplicationEventHandler(hotKeyFunction, 1, &eventType, (void *) CFBridgingRetain(self), NULL);
-
   UInt32 keyCode = 49;
   EventHotKeyRef theRef = NULL;
   EventHotKeyID keyID;
@@ -298,29 +196,34 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
 }
 
--(void)launchRecordProcess
-{
-  mEngine->mOutputDevice.ReloadStreamFormat();
-  NSString *bits = @"16"; // TODO: get physical format of output device's stream
-//  bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
+-(void)launchRecordProcess {  
+  NSString *sharedSupportPath = [[NSBundle bundleForClass:AppController.class] sharedSupportPath];
+  NSString *scriptName = @"record";
+  NSString *scriptExtension = @"sh";
+  NSString *scriptAbsPath = [NSString stringWithFormat:@"%@/%@.%@", sharedSupportPath, scriptName, scriptExtension];
+//mEngine->mOutputDevice.ReloadStreamFormat();
+//NSString *bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
+  NSString *bits = @"16";
   NSTask *task=[[NSTask alloc] init];
   NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/record.sh"];
+  [task setLaunchPath:scriptAbsPath];
   [task launch];
 }
 
--(void)killRecordProcesses
-{
-  NSArray *argv=[NSArray arrayWithObjects:nil];
+-(void)killRecordProcesses {
+  NSString *sharedSupportPath = [[NSBundle bundleForClass:AppController.class] sharedSupportPath];
+  NSString *scriptName = @"kill_recorders";
+  NSString *scriptExtension = @"sh";
+  NSString *scriptAbsolutePath = [NSString stringWithFormat:@"%@/%@.%@", sharedSupportPath, scriptName, scriptExtension];
   NSTask *task=[[NSTask alloc] init];
+  NSArray *argv=[NSArray arrayWithObjects:nil];
   [task setArguments: argv];
-  [task setLaunchPath:@"/Applications/WavTap.app/Contents/SharedSupport/kill_recorders.sh"];
+  [task setLaunchPath:scriptAbsolutePath];
   [task launch];
 }
 
--(void)recordStart
-{
+-(void)recordStart {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
@@ -328,8 +231,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   mIsRecording = YES;
 }
 
--(void)recordStop
-{
+-(void)recordStop {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self killRecordProcesses];
   [item setTitle:@"Record"];
@@ -339,15 +241,12 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   mIsRecording = NO;
 }
 
--(void)toggleRecord
-{
+-(void)toggleRecord {
   (mIsRecording) ? [self recordStop] : [self recordStart];
 }
 
--(void)historyRecord
-{
+-(void)historyRecord {
   mEngine->Stop();
-
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
   NSString *dirname = [NSString stringWithFormat:@"%@", documentsDirectory];
@@ -358,26 +257,22 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   timestamp = [formatter stringFromDate:[NSDate date]];
   NSString *absoluteFileName = [NSString stringWithFormat:@"%@/memory_%@.%@", dirname, timestamp, @"wav"];
   const char *fileNameCharBuffer = [absoluteFileName UTF8String];
-
   mEngine->saveHistoryBuffer(fileNameCharBuffer);
   mEngine->Start();
 }
 
-- (void)cleanupOnBeforeQuit
-{
+- (void)cleanupOnBeforeQuit {
   if(mIsRecording) [self recordStop];
   if(mEngine) mEngine->Stop();
   [self restoreSystemOutputDevice];
-//  [self restoreSystemOutputDeviceVolume]; // TODO: preserve our eardrums
+//[self restoreSystemOutputDeviceVolume]; // TODO: preserve our eardrums
 }
 
-- (void)applicationWillTerminate:(NSNotification *)notification
-{
+- (void)applicationWillTerminate:(NSNotification *)notification {
   [self cleanupOnBeforeQuit];
 }
 
-- (void)doQuit
-{
+- (void)doQuit {
   [self cleanupOnBeforeQuit];
   [NSApp terminate:nil];
 }

@@ -2,12 +2,13 @@
 #include "AudioDeviceList.h"
 #include "AudioTee.h"
 
-@interface AppController : NSObject
-{
+@interface
+AppController : NSObject {
   NSStatusItem *mSbItem;
   NSMenu *mMenu;
   AudioTee *mEngine;
 }
+
 - (void)toggleRecord;
 @end
 
