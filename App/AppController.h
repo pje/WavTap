@@ -9,10 +9,12 @@ AppController : NSObject {
 }
 
 - (void)toggleRecord;
+- (void)historyRecord;
 @end
 
 NSDictionary *mMenuItemTags;
-EventHandlerUPP hotKeyFunction;
+EventHandlerUPP recordHotKeyFunction;
+EventHandlerUPP historyRecordHotKeyFunction;
 bool menuItemVisible;
 bool mIsRecording;
 bool mHistoryRecordIsStopping;

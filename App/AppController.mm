@@ -70,11 +70,12 @@
   NSMenuItem *item;
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
   if (mWavTapDeviceID){
-    item = [mMenu addItemWithTitle:@"Record" action:@selector(toggleRecord) keyEquivalent:@""];
+    item = [mMenu addItemWithTitle:@"Start Recording" action:@selector(toggleRecord) keyEquivalent:@""];
     [item setTarget:self];
     [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
     [self setToggleRecordHotKey:@" "];
-    item = [mMenu addItemWithTitle:@"Save History Buffer" action:@selector(historyRecord) keyEquivalent:@""];
+    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", mEngine->mSecondsInHistoryBuffer];
+    item = [mMenu addItemWithTitle:historyRecordMenuItemTitle action:@selector(historyRecord) keyEquivalent:@""];
     [item setTarget:self];
     [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"historyRecord"]];
   } else {
@@ -173,7 +174,7 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 }
 
 - (OSStatus)restoreSystemOutputDevice {
-  OSStatus err = noErr; 
+  OSStatus err = noErr;
   AudioObjectPropertyAddress devAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devAddress, 0, NULL, sizeof(AudioDeviceID), &mStashedAudioDeviceID);
   return err;
@@ -188,27 +189,44 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
   return err;
 }
 
-OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData) {
+OSStatus recordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData) {
   AppController* inUserData = (__bridge AppController*)userData;
   [inUserData toggleRecord];
   return noErr;
 }
 
-- (void)bindHotKeys {
-  hotKeyFunction = NewEventHandlerUPP(myHotKeyHandler);
-  EventTypeSpec eventType;
-  eventType.eventClass = kEventClassKeyboard;
-  eventType.eventKind = kEventHotKeyReleased;
-  InstallApplicationEventHandler(hotKeyFunction, 1, &eventType, (void *) CFBridgingRetain(self), NULL);
-  UInt32 keyCode = 49;
-  EventHotKeyRef theRef = NULL;
-  EventHotKeyID keyID;
-  keyID.signature = 'FOO ';
-  keyID.id = 1;
-  RegisterEventHotKey(keyCode, cmdKey+controlKey, keyID, GetApplicationEventTarget(), 0, &theRef);
+OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData) {
+  AppController* inUserData = (__bridge AppController*)userData;
+  [inUserData historyRecord];
+  return noErr;
 }
 
--(void)launchRecordProcess {  
+- (void)bindHotKeys {
+  recordHotKeyFunction = NewEventHandlerUPP(recordHotKeyHandler);
+  EventTypeSpec eventType0;
+  eventType0.eventClass = kEventClassKeyboard;
+  eventType0.eventKind = kEventHotKeyReleased;
+  InstallApplicationEventHandler(recordHotKeyFunction, 1, &eventType0, (void *)CFBridgingRetain(self), NULL);
+  EventHotKeyRef theRef0;
+  EventHotKeyID keyID0;
+  keyID0.signature = 'a';
+  keyID0.id = 0;
+  RegisterEventHotKey(49, cmdKey+controlKey, keyID0, GetApplicationEventTarget(), 0, &theRef0);
+
+//  historyRecordHotKeyFunction = NewEventHandlerUPP(historyRecordHotKeyHandler);
+//  EventTypeSpec eventType1;
+//  eventType1.eventClass = kEventClassKeyboard;
+//  eventType1.eventKind = kEventHotKeyReleased;
+//  InstallApplicationEventHandler(historyRecordHotKeyFunction, 1, &eventType1, (void *)CFBridgingRetain(self), NULL);
+//  UInt32 keyCode1 = 36;
+//  EventHotKeyRef theRef1;
+//  EventHotKeyID keyID1;
+//  keyID1.signature = 'b';
+//  keyID1.id = 1;
+//  RegisterEventHotKey(keyCode1, cmdKey+controlKey, keyID1, GetApplicationEventTarget(), 1, &theRef1);
+}
+
+-(void)launchRecordProcess {
   NSString *sharedSupportPath = [[NSBundle bundleForClass:AppController.class] sharedSupportPath];
   NSString *scriptName = @"record";
   NSString *scriptExtension = @"sh";
@@ -246,7 +264,7 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
 -(void)recordStop {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self killRecordProcesses];
-  [item setTitle:@"Record"];
+  [item setTitle:@"Start Recording"];
   NSImage *image = [NSImage imageNamed:@"menuIcon"];
   [image setTemplate:YES];
   [mSbItem setImage:image];
@@ -261,15 +279,15 @@ OSStatus myHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void
   mEngine->Stop();
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
-  NSString *dirname = [NSString stringWithFormat:@"%@", documentsDirectory];
-  NSDateFormatter *formatter;
-  NSString *timestamp;
-  formatter = [[NSDateFormatter alloc] init];
-  [formatter setDateFormat:@"ddMMyy"];
-  timestamp = [formatter stringFromDate:[NSDate date]];
-  NSString *absoluteFileName = [NSString stringWithFormat:@"%@/memory_%@.%@", dirname, timestamp, @"wav"];
-  const char *fileNameCharBuffer = [absoluteFileName UTF8String];
-  mEngine->saveHistoryBuffer(fileNameCharBuffer);
+  NSString *destDirname = [NSString stringWithFormat:@"%@", documentsDirectory];
+  NSDate *date = [NSDate date];
+  long time1 = (long) [date timeIntervalSince1970];
+  long time0 = (long) time1 - mEngine->mSecondsInHistoryBuffer;
+  NSString *fileName = [NSString stringWithFormat:@"%@-%@", [NSString stringWithFormat:@"%ld", time0], [NSString stringWithFormat:@"%ld", time1]];
+  NSString *fileExt = @"wav";
+  NSString *relativeFilePath = [NSString stringWithFormat:@"%@.%@", fileName, fileExt];
+  NSString *absoluteFilePath = [NSString stringWithFormat:@"%@/%@", destDirname, relativeFilePath];
+  mEngine->saveHistoryBuffer([absoluteFilePath UTF8String]);
   mEngine->Start();
 }
 
