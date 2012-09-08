@@ -7,16 +7,16 @@ APP_DIR=$(ROOT)/App
 KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
-CONFIG=Development
+BUILD_TYPE=Deployment
 SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 
 build-kext:
 	cd $(KEXT_DIR)
-	xcodebuild -project $(KEXT_DIR)/WavTap.xcodeproj -target WavTapDriver -configuration $(CONFIG) clean build
+	xcodebuild -project $(KEXT_DIR)/WavTap.xcodeproj -target WavTapDriver -configuration $(BUILD_TYPE) clean build
 
 build-app:
 	cd $(APP_DIR)
-	xcodebuild -project $(APP_DIR)/WavTap.xcodeproj -target WavTap -configuration ${CONFIG} clean build
+	xcodebuild -project $(APP_DIR)/WavTap.xcodeproj -target WavTap -configuration ${BUILD_TYPE} clean build
 
 clean-kext:
 	rm -rf $(KEXT_DIR)/Build
