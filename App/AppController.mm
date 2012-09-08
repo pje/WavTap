@@ -2,15 +2,15 @@
 #import <AudioUnit/AudioUnit.h>
 #include <AudioToolbox/AudioFile.h>
 #include "AppController.h"
-#include "AudioThruEngine.h"
 #import <QuartzCore/QuartzCore.h>
 #include <iostream>
 #include <fstream>
+#include "AudioTee.h"
 
 @implementation AppController
 
-AudioThruEngine *mEngine = NULL;
 io_connect_t  root_port;
+//AudioTee *mEngine = NULL;
 
 - (id)init
 {

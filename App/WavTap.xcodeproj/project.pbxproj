@@ -9,14 +9,12 @@
 /* Begin PBXBuildFile section */
 		222FE3330EBB6D9900FD13FC /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DD850310A6BE01FEEC38 /* AppController.h */; };
 		222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB2031157A901FEEC38 /* AudioDevice.h */; };
-		222FE3350EBB6D9900FD13FC /* AudioThruEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB60311589801FEEC38 /* AudioThruEngine.h */; };
 		222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */ = {isa = PBXBuildFile; fileRef = F573070B03117CCD01FEEC38 /* AudioDeviceList.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F591DD860310A6BE01FEEC38 /* AppController.mm */; };
 		222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDB3031157A901FEEC38 /* AudioDevice.cpp */; };
-		222FE3450EBB6D9900FD13FC /* AudioThruEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */; };
 		222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */; };
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
@@ -27,6 +25,8 @@
 		3E2AECB115FA7F2C00FBCCA2 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E2AECAC15FA7F2C00FBCCA2 /* TPCircularBuffer.c */; };
 		3E2AECB215FA7F2C00FBCCA2 /* TPCircularBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E2AECAD15FA7F2C00FBCCA2 /* TPCircularBuffer.h */; };
 		3E48E0E415F40FFD00A49308 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */; };
+		3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */; };
+		3E4C6C4A15FBAE56005F0518 /* AudioTee.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E4C6C4815FBAE56005F0518 /* AudioTee.h */; };
 		3E63F79C15E91805005221AF /* record.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79E15E9181D005221AF /* kill_recorders.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
@@ -68,6 +68,8 @@
 		3E2AECAC15FA7F2C00FBCCA2 /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
 		3E2AECAD15FA7F2C00FBCCA2 /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
 		3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioTee.cpp; sourceTree = "<group>"; };
+		3E4C6C4815FBAE56005F0518 /* AudioTee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioTee.h; sourceTree = "<group>"; };
 		3E63F79A15E91805005221AF /* record.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record.sh; sourceTree = "<group>"; };
 		3E63F79B15E91805005221AF /* kill_recorders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kill_recorders.sh; sourceTree = "<group>"; };
 		3E6C579315F3A51A00AFB422 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Quartz.framework; sourceTree = DEVELOPER_DIR; };
@@ -85,8 +87,6 @@
 		F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		F591DDB2031157A901FEEC38 /* AudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioDevice.h; sourceTree = "<group>"; };
 		F591DDB3031157A901FEEC38 /* AudioDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDevice.cpp; sourceTree = "<group>"; };
-		F591DDB60311589801FEEC38 /* AudioThruEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioThruEngine.h; sourceTree = "<group>"; };
-		F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = AudioThruEngine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,10 +111,10 @@
 			children = (
 				F591DD850310A6BE01FEEC38 /* AppController.h */,
 				F591DD860310A6BE01FEEC38 /* AppController.mm */,
+				3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */,
+				3E4C6C4815FBAE56005F0518 /* AudioTee.h */,
 				F591DDB2031157A901FEEC38 /* AudioDevice.h */,
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
-				F591DDB60311589801FEEC38 /* AudioThruEngine.h */,
-				F591DDB70311589801FEEC38 /* AudioThruEngine.cpp */,
 				F573070B03117CCD01FEEC38 /* AudioDeviceList.h */,
 				F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */,
 			);
@@ -245,10 +245,10 @@
 			files = (
 				222FE3330EBB6D9900FD13FC /* AppController.h in Headers */,
 				222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */,
-				222FE3350EBB6D9900FD13FC /* AudioThruEngine.h in Headers */,
 				222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */,
 				3E2AECB015FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.h in Headers */,
 				3E2AECB215FA7F2C00FBCCA2 /* TPCircularBuffer.h in Headers */,
+				3E4C6C4A15FBAE56005F0518 /* AudioTee.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -325,10 +325,10 @@
 				222FE3410EBB6D9900FD13FC /* main.m in Sources */,
 				222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */,
 				222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */,
-				222FE3450EBB6D9900FD13FC /* AudioThruEngine.cpp in Sources */,
 				222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */,
 				3E2AECAF15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				3E2AECB115FA7F2C00FBCCA2 /* TPCircularBuffer.c in Sources */,
+				3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

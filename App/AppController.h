@@ -1,12 +1,12 @@
 #import <Cocoa/Cocoa.h>
 #include "AudioDeviceList.h"
-#include "AudioThruEngine.h"
+#include "AudioTee.h"
 
 @interface AppController : NSObject
 {
   NSStatusItem *mSbItem;
   NSMenu *mMenu;
-  AudioThruEngine *mEngine;
+  AudioTee *mEngine;
 }
 - (void)toggleRecord;
 @end
