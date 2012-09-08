@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <Carbon/Carbon.h>
 #include <AudioToolbox/AudioFile.h>
 #include <AudioUnit/AudioUnit.h>
@@ -8,26 +9,42 @@
 
 @implementation AppController
 
-//AudioTee *mEngine = NULL;
-
 - (id)init {
   mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys: @"toggleRecord", @1, @"historyRecord", @2, @"preferences", @3, @"quit", @4, nil ];
   mIsRecording = NO;
-  mOutputDeviceList = NULL;
+  mDevices = new AudioDeviceList();
   mOutputDeviceID = 0;
   mWavTapDeviceID = 0;
   return self;
 }
 
-- (void)dealloc {
-  delete mOutputDeviceList;
+- (void)reBuildDeviceList{
+  if (mDevices) mDevices->clear();
+  OSStatus err = noErr;
+  UInt32 propsize;
+  AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
+  err = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &theAddress, 0, NULL,&propsize);
+  int audioDeviceIDSize = sizeof(AudioDeviceID);
+  int nDevices = propsize / audioDeviceIDSize;
+  AudioDeviceID *devids = (AudioDeviceID *)calloc(nDevices, sizeof(AudioDeviceID));
+  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
+  for (int i = 0; i < nDevices; ++i) {
+    int mInputs = 2;
+    AudioDevice dev(devids[i], mInputs);
+    {
+      Device d;
+      d.mID = devids[i];
+      dev.GetName(d.mName, sizeof(d.mName));
+      mDevices->push_back(d);
+    }
+  }
+  delete[] devids;
 }
 
 - (void)awakeFromNib {
   [[NSApplication sharedApplication] setDelegate:(id)self];
-  [self rebuildDeviceList];
-  AudioDeviceList::DeviceList &list = mOutputDeviceList->GetList();
-  for (AudioDeviceList::DeviceList::iterator i = list.begin(); i != list.end(); ++i) {
+  [self reBuildDeviceList];
+  for (AudioDeviceList::iterator i = mDevices->begin(); i != mDevices->end(); ++i) {
     if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
   [self initConnections];
@@ -124,11 +141,6 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
-}
-
-- (void)rebuildDeviceList {
-  if (mOutputDeviceList) delete mOutputDeviceList;
-  mOutputDeviceList = new AudioDeviceList;
 }
 
 - (void)initConnections {

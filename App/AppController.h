@@ -1,5 +1,4 @@
 #include <Cocoa/Cocoa.h>
-#include "AudioDeviceList.h"
 #include "AudioTee.h"
 
 @interface
@@ -22,4 +21,9 @@ Float32 mStashedVolume2;
 AudioDeviceID mStashedAudioDeviceID;
 AudioDeviceID mWavTapDeviceID;
 AudioDeviceID mOutputDeviceID;
-AudioDeviceList *mOutputDeviceList;
+struct Device {
+  char mName[64];
+  AudioDeviceID mID;
+};
+typedef std::vector<Device> AudioDeviceList;
+AudioDeviceList *mDevices;

@@ -9,13 +9,11 @@
 /* Begin PBXBuildFile section */
 		222FE3330EBB6D9900FD13FC /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DD850310A6BE01FEEC38 /* AppController.h */; };
 		222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB2031157A901FEEC38 /* AudioDevice.h */; };
-		222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */ = {isa = PBXBuildFile; fileRef = F573070B03117CCD01FEEC38 /* AudioDeviceList.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = F591DD860310A6BE01FEEC38 /* AppController.mm */; };
 		222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F591DDB3031157A901FEEC38 /* AudioDevice.cpp */; };
-		222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */; };
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
@@ -80,8 +78,6 @@
 		3EB6916E15E8E83A00F632B8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
-		F573070B03117CCD01FEEC38 /* AudioDeviceList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioDeviceList.h; sourceTree = "<group>"; };
-		F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDeviceList.cpp; sourceTree = "<group>"; };
 		F591DD850310A6BE01FEEC38 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		F591DD860310A6BE01FEEC38 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = AppController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
@@ -115,8 +111,6 @@
 				3E4C6C4815FBAE56005F0518 /* AudioTee.h */,
 				F591DDB2031157A901FEEC38 /* AudioDevice.h */,
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
-				F573070B03117CCD01FEEC38 /* AudioDeviceList.h */,
-				F573070C03117CCD01FEEC38 /* AudioDeviceList.cpp */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -245,7 +239,6 @@
 			files = (
 				222FE3330EBB6D9900FD13FC /* AppController.h in Headers */,
 				222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */,
-				222FE3360EBB6D9900FD13FC /* AudioDeviceList.h in Headers */,
 				3E2AECB015FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.h in Headers */,
 				3E2AECB215FA7F2C00FBCCA2 /* TPCircularBuffer.h in Headers */,
 				3E4C6C4A15FBAE56005F0518 /* AudioTee.h in Headers */,
@@ -325,7 +318,6 @@
 				222FE3410EBB6D9900FD13FC /* main.m in Sources */,
 				222FE3420EBB6D9900FD13FC /* AppController.mm in Sources */,
 				222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */,
-				222FE3460EBB6D9900FD13FC /* AudioDeviceList.cpp in Sources */,
 				3E2AECAF15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				3E2AECB115FA7F2C00FBCCA2 /* TPCircularBuffer.c in Sources */,
 				3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */,
