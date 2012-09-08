@@ -127,6 +127,10 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
       case kAudioDevicePropertyStreams:                         { break; }
       case kAudioDevicePropertyTransportType:                   { break; }
       case kAudioObjectPropertyControlList:                     { break; }
+      case kAudioDeviceProcessorOverload:{
+        printf("kAudioDeviceProcessorOverload detected!");
+        break;
+      }
     }
   }
   return err;
@@ -135,6 +139,10 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 - (void)registerPropertyListeners {
   OSStatus err = noErr;
   AudioObjectPropertyAddress addr = { kAudioDevicePropertyNominalSampleRate, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
+  err = AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
+  addr.mElement = kAudioDeviceProcessorOverload;
+  addr.mScope = kAudioObjectPropertyScopeWildcard;
+  err = AudioObjectAddPropertyListener(mEngine->mInputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
   err = AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
