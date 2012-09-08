@@ -1,4 +1,4 @@
-#import <Cocoa/Cocoa.h>
+#include <Cocoa/Cocoa.h>
 #include "AudioDeviceList.h"
 #include "AudioTee.h"
 

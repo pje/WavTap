@@ -1,10 +1,9 @@
-#import <Carbon/Carbon.h>
-#import <AudioUnit/AudioUnit.h>
-#include <AudioToolbox/AudioFile.h>
-#include "AppController.h"
-#import <QuartzCore/QuartzCore.h>
 #include <iostream>
 #include <fstream>
+#include <Carbon/Carbon.h>
+#include <AudioToolbox/AudioFile.h>
+#include <AudioUnit/AudioUnit.h>
+#include "AppController.h"
 #include "AudioTee.h"
 
 @implementation AppController
