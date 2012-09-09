@@ -154,7 +154,7 @@ bool WavTapEngine::init(OSDictionary *properties)
     if (number) {
         numBlocks = number->unsigned32BitValue();
     }
-	else {
+    else {
         numBlocks = NUM_BLOCKS;
     }
 
@@ -162,13 +162,13 @@ bool WavTapEngine::init(OSDictionary *properties)
     if (number) {
         blockSize = number->unsigned32BitValue();
     }
-	else {
+    else {
         blockSize = BLOCK_SIZE;
     }
 
     inputStream = outputStream = NULL;
     duringHardwareInit = FALSE;
-	mLastValidSampleFrame = 0;
+    mLastValidSampleFrame = 0;
     result = true;
 
 Done:
@@ -207,7 +207,7 @@ bool WavTapEngine::initHardware(IOService *provider)
     blockTimeoutNS *= 1000000000;
     blockTimeoutNS /= initialSampleRate.whole;
 
-	setSampleRate(&initialSampleRate);
+    setSampleRate(&initialSampleRate);
 
     // Set the number of sample frames in each buffer
     setNumSampleFramesPerBuffer(blockSize * numBlocks);
@@ -238,9 +238,9 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
     bool			result = false;
     OSNumber*		number = NULL;
     UInt32			numStreams;
-	UInt32			streamNum;
+    UInt32			streamNum;
     OSArray*		formatArray = NULL;
-	OSArray*		sampleRateArray = NULL;
+    OSArray*		sampleRateArray = NULL;
     UInt32			startingChannelID = 1;
     OSString*		desc;
 
@@ -251,18 +251,18 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
     number = OSDynamicCast(OSNumber, getProperty(NUM_STREAMS_KEY));
     if (number)
         numStreams = number->unsigned32BitValue();
-	else
+    else
         numStreams = NUM_STREAMS;
 
     formatArray = OSDynamicCast(OSArray, getProperty(FORMATS_KEY));
     if (formatArray == NULL) {
-		IOLog("SF formatArray is NULL\n");
+        IOLog("SF formatArray is NULL\n");
         goto Done;
     }
 
     sampleRateArray = OSDynamicCast(OSArray, getProperty(SAMPLE_RATES_KEY));
     if (sampleRateArray == NULL) {
-		IOLog("SF sampleRateArray is NULL\n");
+        IOLog("SF sampleRateArray is NULL\n");
         goto Done;
     }
 
@@ -270,14 +270,14 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         UInt32					maxBitWidth = 0;
         UInt32					maxNumChannels = 0;
         OSCollectionIterator*	formatIterator = NULL;
-		OSCollectionIterator*	sampleRateIterator = NULL;
+        OSCollectionIterator*	sampleRateIterator = NULL;
         OSDictionary*			formatDict;
         IOAudioSampleRate		sampleRate;
         IOAudioStreamFormat		initialFormat;
         bool					initialFormatSet;
         UInt32					channelID;
         char					outputStreamName[64];
-		char					inputStreamName[64];
+        char					inputStreamName[64];
 
         initialFormatSet = false;
 
@@ -286,34 +286,33 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
 
         inputStream = new IOAudioStream;
         if (inputStream == NULL) {
-			IOLog("SF could not create new input IOAudioStream\n");
+            IOLog("SF could not create new input IOAudioStream\n");
             goto Error;
         }
 
         outputStream = new IOAudioStream;
         if (outputStream == NULL) {
-			IOLog("SF could not create new output IOAudioStream\n");
-			goto Error;
+          IOLog("SF could not create new output IOAudioStream\n");
+          goto Error;
         }
 
         snprintf(inputStreamName, 64, "WavTap Input Stream #%u", (unsigned int)streamNum + 1);
         snprintf(outputStreamName, 64, "WavTap Output Stream #%u", (unsigned int)streamNum + 1);
 
-        if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) ||
-            !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
-			IOLog("SF could not init one of the streams with audio engine. \n");
+        if (!inputStream->initWithAudioEngine(this, kIOAudioStreamDirectionInput, startingChannelID, inputStreamName) || !outputStream->initWithAudioEngine(this, kIOAudioStreamDirectionOutput, startingChannelID, outputStreamName)) {
+            IOLog("SF could not init one of the streams with audio engine. \n");
             goto Error;
         }
 
         formatIterator = OSCollectionIterator::withCollection(formatArray);
         if (!formatIterator) {
-			IOLog("SF NULL formatIterator\n");
+            IOLog("SF NULL formatIterator\n");
             goto Error;
         }
 
         sampleRateIterator = OSCollectionIterator::withCollection(sampleRateArray);
         if (!sampleRateIterator) {
-			IOLog("SF NULL sampleRateIterator\n");
+            IOLog("SF NULL sampleRateIterator\n");
             goto Error;
         }
 
@@ -322,13 +321,13 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             IOAudioStreamFormat format;
 
             if (OSDynamicCast(OSDictionary, formatDict) == NULL) {
-				IOLog("SF error casting formatDict\n");
+                IOLog("SF error casting formatDict\n");
                 goto Error;
             }
 
             if (IOAudioStream::createFormatFromDictionary(formatDict, &format) == NULL) {
-				IOLog("SF error in createFormatFromDictionary()\n");
-				goto Error;
+              IOLog("SF error in createFormatFromDictionary()\n");
+              goto Error;
             }
 
             if (!initialFormatSet) {
@@ -338,14 +337,14 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             sampleRateIterator->reset();
             while ((number = (OSNumber *)sampleRateIterator->getNextObject())) {
                 if (!OSDynamicCast(OSNumber, number)) {
-					IOLog("SF error iterating sample rates\n");
+                    IOLog("SF error iterating sample rates\n");
                     goto Error;
                 }
 
                 sampleRate.whole = number->unsigned32BitValue();
 
                 inputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
-				outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
+                outputStream->addAvailableFormat(&format, &sampleRate, &sampleRate);
 
                 if (format.fNumChannels > maxNumChannels) {
                     maxNumChannels = format.fNumChannels;
@@ -380,12 +379,12 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         }
 
         inputStream->setFormat(&initialFormat);
-		inputStream->setSampleBuffer(mBuffer, mBufferSize);
+        inputStream->setSampleBuffer(mBuffer, mBufferSize);
         addAudioStream(inputStream);
         inputStream->release();
 
         outputStream->setFormat(&initialFormat);
-		outputStream->setSampleBuffer(mBuffer, mBufferSize);
+        outputStream->setSampleBuffer(mBuffer, mBufferSize);
         addAudioStream(outputStream);
         outputStream->release();
 
@@ -525,10 +524,10 @@ IOReturn WavTapEngine::performFormatChange(IOAudioStream *audioStream, const IOA
 void WavTapEngine::ourTimerFired(OSObject *target, IOTimerEventSource *sender)
 {
     if (target) {
-        WavTapEngine	*audioEngine = OSDynamicCast(WavTapEngine, target);
-		UInt64				thisTimeNS;
-		uint64_t			time;
-		SInt64				diff;
+      WavTapEngine	*audioEngine = OSDynamicCast(WavTapEngine, target);
+      UInt64				thisTimeNS;
+      uint64_t			time;
+      SInt64				diff;
 
         if (audioEngine) {
 			// make sure we have a client, and thus new data so we don't keep on
@@ -619,7 +618,7 @@ IOReturn WavTapEngine::convertInputSamples(const void *sampleBuf, void *destBuf,
 {
     UInt32				frameSize = streamFormat->fNumChannels * sizeof(float);
     UInt32				offset = firstSampleFrame * frameSize;
-	WavTapDevice*	device = (WavTapDevice*)audioDevice;
+    WavTapDevice*	device = (WavTapDevice*)audioDevice;
 
 #if 0
 	//IOLog("WavTapEngine[%p]::convertInputSamples() -- channelCount:%u \n", this, (uint)streamFormat->fNumChannels);
