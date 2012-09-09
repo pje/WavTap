@@ -284,7 +284,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 -(void)historyRecord {
-  mEngine->Stop();
+//  mEngine->Stop();
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
   NSString *documentsDirectory = [paths objectAtIndex:0];
   NSString *destDirname = [NSString stringWithFormat:@"%@", documentsDirectory];
@@ -296,7 +296,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSString *relativeFilePath = [NSString stringWithFormat:@"%@.%@", fileName, fileExt];
   NSString *absoluteFilePath = [NSString stringWithFormat:@"%@/%@", destDirname, relativeFilePath];
   mEngine->saveHistoryBuffer([absoluteFilePath UTF8String]);
-  mEngine->Start();
+//  mEngine->Start();
 }
 
 - (void)cleanupOnBeforeQuit {

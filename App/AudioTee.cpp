@@ -66,8 +66,6 @@ void AudioTee::Start() {
   printf("Initializing hHistBuf with byte capacity %u\n", mHistoryBufferMaxByteSize);
   printf("Initializing mWorkBuf with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
   mRunning = true;
-  mInputProcState = kStarting;
-  mOutputProcState = kStarting;
   mInputIOProcID = NULL;
   err = AudioDeviceCreateIOProcID(mInputDevice.mID, InputIOProc, this, &mInputIOProcID);
   err = AudioDeviceStart(mInputDevice.mID, mInputIOProcID);
@@ -75,9 +73,6 @@ void AudioTee::Start() {
   mOutputIOProcID = NULL;
   err = AudioDeviceCreateIOProcID(mOutputDevice.mID, mOutputIOProc, this, &mOutputIOProcID);
   err = AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
-  while (mInputProcState != kRunning || mOutputProcState != kRunning) {
-    usleep(1000);
-  }
   ComputeThruOffset();
 }
 
@@ -85,11 +80,7 @@ bool AudioTee::Stop() {
   OSStatus err = noErr;
   if (!mRunning) return false;
   mRunning = false;
-  mInputProcState = kStopRequested;
-  mOutputProcState = kStopRequested;
-  while (mInputProcState != kOff || mOutputProcState != kOff){
-    usleep(5000);
-  }
+  usleep(5000);
   err = AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
   err = AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
   err = AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
@@ -220,17 +211,6 @@ void AudioTee::saveHistoryBuffer(const char* fileName){
 
 OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  switch (This->mInputProcState) {
-  case kStarting:
-    This->mInputProcState = kRunning;
-    break;
-  case kStopRequested:
-    AudioDeviceStop(inDevice, InputIOProc);
-    This->mInputProcState = kOff;
-    return noErr;
-  default:
-    break;
-  }
   This->mLastInputSampleCount = inInputTime->mSampleTime;
   for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
     memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
@@ -246,20 +226,6 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
 
 OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  switch (This->mOutputProcState) {
-  case kStarting:
-    if (This->mInputProcState == kRunning) {
-      This->mOutputProcState = kRunning;
-      This->mIODeltaSampleCount = inOutputTime->mSampleTime - This->mLastInputSampleCount;
-    }
-    return noErr;
-  case kStopRequested:
-    AudioDeviceStop(inDevice, This->mOutputIOProc);
-    This->mOutputProcState = kOff;
-    return noErr;
-  default:
-    break;
-  }
   if (!This->mMuting && This->mThruing) {
     for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
       UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;

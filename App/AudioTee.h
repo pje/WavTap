@@ -25,7 +25,7 @@ public:
   bool mThruing;
 protected:
   static OSStatus InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
-  static OSStatus OutputIOProc (AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
+  static OSStatus OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
   void ComputeThruOffset();
   Float64 mSampleRate;
   AudioDeviceIOProcID mInputIOProcID;
@@ -37,13 +37,6 @@ protected:
   Float64 mInToOutSampleOffset;
   double mInputLoad, mOutputLoad;
   double mThruTime;
-  enum IOProcState {
-    kOff,
-    kStarting,
-    kRunning,
-    kStopRequested
-  };
-  IOProcState mInputProcState, mOutputProcState;
 };
 
 #endif
