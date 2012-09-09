@@ -67,7 +67,7 @@ bool WavTapDevice::createAudioEngines()
 		return true;
 	}
 
-    while (audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject()) {
+    while ((audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject())) {
 		WavTapEngine*	audioEngine = NULL;
 
         if (OSDynamicCast(OSDictionary, audioEngineDict) == NULL)

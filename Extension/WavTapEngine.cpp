@@ -318,7 +318,7 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
         }
 
         formatIterator->reset();
-        while (formatDict = (OSDictionary *)formatIterator->getNextObject()) {
+        while ((formatDict = (OSDictionary *)formatIterator->getNextObject())) {
             IOAudioStreamFormat format;
 
             if (OSDynamicCast(OSDictionary, formatDict) == NULL) {
@@ -336,7 +336,7 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate)
             }
 
             sampleRateIterator->reset();
-            while (number = (OSNumber *)sampleRateIterator->getNextObject()) {
+            while ((number = (OSNumber *)sampleRateIterator->getNextObject())) {
                 if (!OSDynamicCast(OSNumber, number)) {
 					IOLog("SF error iterating sample rates\n");
                     goto Error;
