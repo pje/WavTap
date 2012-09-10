@@ -39,8 +39,6 @@
 		3E63F79F15E91821005221AF /* record.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E82F12515E15B6900F16BCB /* sox in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12415E15B6900F16BCB /* sox */; };
 		3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */; };
-		3E97DF5B15F36A41006B2E7A /* menuIconInverse.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E97DF5A15F36A41006B2E7A /* menuIconInverse.tiff */; };
-		3E97DF6015F378E8006B2E7A /* menuIconRecording.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E97DF5F15F378E8006B2E7A /* menuIconRecording.tiff */; };
 		3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB6916E15E8E83A00F632B8 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -314,8 +312,6 @@
 				3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */,
 				3E63F79C15E91805005221AF /* record.sh in Resources */,
 				3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */,
-				3E97DF5B15F36A41006B2E7A /* menuIconInverse.tiff in Resources */,
-				3E97DF6015F378E8006B2E7A /* menuIconRecording.tiff in Resources */,
 				3E2AECAE15FA7F2C00FBCCA2 /* README.markdown in Resources */,
 				3E248CC415FE5D6100EA16C0 /* menuIcon0.tiff in Resources */,
 				3E248CC515FE5D6100EA16C0 /* menuIcon1.tiff in Resources */,
