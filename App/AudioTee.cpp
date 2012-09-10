@@ -4,10 +4,11 @@
 #include <AudioToolbox/AudioFile.h>
 #include <AudioToolbox/AudioConverter.h>
 #include <TPCircularBuffer.h>
+#include <CARingBuffer.h>
 #include "AudioTee.h"
 #include "AudioDevice.h"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(30), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mExtraLatencyFrames(0), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mFirstRun(true), mRunning(false), mMuting(false), mThruing(true), mHistoryBufferByteSize(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(10), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mExtraLatencyFrames(0), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mFirstRun(true), mRunning(false), mMuting(false), mThruing(true), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);
 }
@@ -40,13 +41,6 @@ OSStatus AudioTee::MatchSampleRates(AudioObjectID changedDeviceID) {
   return status;
 }
 
-inline void MakeBufferSilent(AudioBufferList * ioData)
-{
-	for(UInt32 i=0; i<ioData->mNumberBuffers; i++){
-		memset(ioData->mBuffers[i].mData, 0, ioData->mBuffers[i].mDataByteSize);
-  }
-}
-
 void AudioTee::Start() {
   OSStatus err = noErr;
   if (mRunning) return;
@@ -59,10 +53,12 @@ void AudioTee::Start() {
   mSampleRate = mInputDevice.mFormat.mSampleRate;
   mWorkBuf = new Byte[mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame];
   memset(mWorkBuf, 0, mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame);
-  mHistBuf = new TPCircularBuffer();
+//  mHistBuf = new TPCircularBuffer();
   UInt32 framesInHistoryBuffer = mInputDevice.mFormat.mSampleRate * mSecondsInHistoryBuffer;
   mHistoryBufferMaxByteSize = mInputDevice.mFormat.mBytesPerFrame * framesInHistoryBuffer;
-  TPCircularBufferInit(mHistBuf, mHistoryBufferMaxByteSize);
+//  TPCircularBufferInit(mHistBuf, mHistoryBufferMaxByteSize);
+  mHistBuf = new CARingBuffer();
+  mHistBuf->Allocate(2, mInputDevice.mFormat.mBytesPerFrame, framesInHistoryBuffer);
   printf("Initializing hHistBuf with byte capacity %u\n", mHistoryBufferMaxByteSize);
   printf("Initializing mWorkBuf with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
   mRunning = true;
@@ -171,12 +167,20 @@ inline void writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes){
 
 void AudioTee::saveHistoryBuffer(const char* fileName){
   int32_t availableBytes;
-  UInt32 *buffer = (UInt32*)TPCircularBufferTail(this->mHistBuf, &availableBytes);
+//  UInt32 *buffer = (UInt32*)TPCircularBufferTail(this->mHistBuf, &availableBytes);
+  AudioBuffer *buffer = new AudioBuffer();
+  buffer->mDataByteSize = mHistoryBufferByteSize;
+  buffer->mData = new UInt32[buffer->mDataByteSize];
+  AudioBufferList *abl = new AudioBufferList();
+  abl->mNumberBuffers = 1;
+  abl->mBuffers[0] = *buffer;
+  availableBytes = mHistoryBufferByteSize;
   UInt32 nFrames = availableBytes / (4 * 2);
+  mHistBuf->Fetch(abl, nFrames, 0);
   writeWavFileHeaders(fileName, availableBytes, 44100, 16);
-  UInt32 *srcBuff = buffer;
+  UInt32 *srcBuff = (UInt32*)buffer->mData;
   SInt16 *dstBuff = new SInt16[nFrames * 2];
-  TPCircularBufferConsume(this->mHistBuf, availableBytes);
+//  TPCircularBufferConsume(this->mHistBuf, availableBytes);
   AudioBuffer srcConvertBuff;
   srcConvertBuff.mNumberChannels = 2;
   srcConvertBuff.mDataByteSize = availableBytes;
@@ -214,12 +218,21 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
   This->mLastInputSampleCount = inInputTime->mSampleTime;
   for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
     memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
-    TPCircularBufferProduceBytes(This->mHistBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
+//    TPCircularBufferProduceBytes(This->mHistBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
+    AudioBuffer ab;
+    AudioBufferList abl;
+    ab.mDataByteSize = inInputData->mBuffers[i].mDataByteSize;
+    ab.mData = This->mWorkBuf;
+    abl.mBuffers[0] = ab;
+    abl.mNumberBuffers = 1;
+    
+    This->mHistBuf->Store(&abl, (inInputData->mBuffers[i].mDataByteSize / inInputData->mBuffers[i].mNumberChannels) / sizeof(UInt32), This->mHistoryBufferHeadOffsetFrameNumber);
     if(This->mHistoryBufferByteSize < (This->mHistoryBufferMaxByteSize - inInputData->mBuffers[i].mDataByteSize)){
       This->mHistoryBufferByteSize += inInputData->mBuffers[i].mDataByteSize;
     } else {
       This->mHistoryBufferByteSize = This->mHistoryBufferMaxByteSize;
     }
+    This->mHistoryBufferHeadOffsetFrameNumber = ((This->mHistoryBufferHeadOffsetFrameNumber + (inInputData->mBuffers[i].mDataByteSize / 8)) % (This->mHistoryBufferMaxByteSize / 8));
   }
   return noErr;
 }

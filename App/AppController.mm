@@ -10,7 +10,9 @@
 @implementation AppController
 
 - (id)init {
-  mMenuItemTags = [[NSDictionary alloc] initWithObjectsAndKeys: @"toggleRecord", @1, @"historyRecord", @2, @"preferences", @3, @"quit", @4, nil ];
+  mTagForToggleRecord = 1;
+  mTagForHistoryRecord = 2;
+  mTagForQuit = 3;
   mIsRecording = NO;
   mDevices = new AudioDeviceList();
   mOutputDeviceID = 0;
@@ -18,6 +20,7 @@
   currentFrame = 0;
   totalFrames = 8;
   animTimer = NULL;
+  timeElapsed = 0;
   return self;
 }
 
@@ -69,18 +72,30 @@
   [mSbItem setHighlightMode:YES];
 }
 
+- (void)onSecondPassed:(NSTimer*)timer {
+  if(timeElapsed++ < mEngine->mSecondsInHistoryBuffer){
+    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", timeElapsed];
+    NSInteger tagKey = mTagForHistoryRecord;
+    NSMenuItem *item = [mMenu itemWithTag:(NSInteger)tagKey];
+    [item setTitle:historyRecordMenuItemTitle];
+  } else {
+    [timeElapsedTimer invalidate];
+  }
+}
+
 - (void)buildMenu {
   NSMenuItem *item;
   mMenu = [[NSMenu alloc] initWithTitle:@"Main Menu"];
   if (mWavTapDeviceID){
     item = [mMenu addItemWithTitle:@"Start Recording" action:@selector(toggleRecord) keyEquivalent:@""];
     [item setTarget:self];
-    [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+    [item setTag:(NSInteger)mTagForToggleRecord];
     [self setToggleRecordHotKey:@" "];
-    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", mEngine->mSecondsInHistoryBuffer];
+    NSString *historyRecordMenuItemTitle = @"Save Last 0 Secs";
     item = [mMenu addItemWithTitle:historyRecordMenuItemTitle action:@selector(historyRecord) keyEquivalent:@""];
     [item setTarget:self];
-    [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"historyRecord"]];
+    [item setTag:(NSInteger)mTagForHistoryRecord];
+    timeElapsedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onSecondPassed:) userInfo:nil repeats:YES];
   } else {
     item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
     [item setTarget:self];
@@ -92,7 +107,7 @@
 //[item setTag:(NSInteger)[mMenuItemTags objectForKey:@"preferences"]];
 //[item setTarget:self];
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
-  [item setTag:(NSInteger)[mMenuItemTags objectForKey:@"quit"]];
+  [item setTag:(NSInteger)mTagForQuit];
   [item setTarget:self];
   [mMenu setDelegate:(id)self];
 }
@@ -150,7 +165,7 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 }
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent {
-  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+  NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [item setKeyEquivalentModifierMask: NSControlKeyMask | NSCommandKeyMask];
   [item setKeyEquivalent:keyEquivalent];
 }
@@ -282,7 +297,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 -(void)recordStart {
-  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+  NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
   [self startAnimating];
@@ -290,7 +305,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 -(void)recordStop {
-  NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
+  NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self killRecordProcesses];
   [self stopAnimating];
   [item setTitle:@"Start Recording"];

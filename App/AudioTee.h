@@ -2,6 +2,7 @@
 #define __AudioTee_h__
 #include "AudioDevice.h"
 #include "TPCircularBuffer.h"
+#include "CARingBuffer.h"
 
 class AudioTee {
 public:
@@ -13,7 +14,8 @@ public:
   void saveHistoryBuffer(const char* fileName);
   Byte *mWorkBuf;
   UInt32 mSecondsInHistoryBuffer;
-  TPCircularBuffer *mHistBuf;
+//  TPCircularBuffer *mHistBuf;
+  CARingBuffer *mHistBuf;
   UInt32 mHistoryBufferMaxByteSize;
   UInt32 mBufferSize;
   SInt32 mExtraLatencyFrames;
@@ -32,11 +34,13 @@ protected:
   AudioDeviceIOProcID mOutputIOProcID;
   AudioDeviceIOProc mOutputIOProc;
   UInt32 mHistoryBufferByteSize;
+  UInt32 mHistoryBufferHeadOffsetFrameNumber;
   Float64 mLastInputSampleCount, mIODeltaSampleCount;
   SInt32 mActualThruLatency;
   Float64 mInToOutSampleOffset;
   double mInputLoad, mOutputLoad;
   double mThruTime;
+  
 };
 
 #endif

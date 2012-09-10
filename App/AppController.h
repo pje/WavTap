@@ -12,7 +12,9 @@ AppController : NSObject {
 - (void)historyRecord;
 @end
 
-NSDictionary *mMenuItemTags;
+UInt32 mTagForToggleRecord;
+UInt32 mTagForHistoryRecord;
+UInt32 mTagForQuit;
 EventHandlerUPP recordHotKeyFunction;
 EventHandlerUPP historyRecordHotKeyFunction;
 bool menuItemVisible;
@@ -32,3 +34,5 @@ AudioDeviceList *mDevices;
 UInt32 currentFrame;
 UInt32 totalFrames;
 NSTimer *animTimer;
+UInt32 timeElapsed;
+NSTimer *timeElapsedTimer;
