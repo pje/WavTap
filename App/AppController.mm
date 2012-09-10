@@ -15,6 +15,9 @@
   mDevices = new AudioDeviceList();
   mOutputDeviceID = 0;
   mWavTapDeviceID = 0;
+  currentFrame = 0;
+  totalFrames = 8;
+  animTimer = NULL;
   return self;
 }
 
@@ -261,21 +264,36 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   [task launch];
 }
 
+- (void)startAnimating
+{
+  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/18.0 target:self selector:@selector(updateImage:) userInfo:nil repeats:YES];
+}
+
+- (void)stopAnimating
+{
+  [animTimer invalidate];
+}
+
+- (void)updateImage:(NSTimer*)timer
+{
+  NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"menuIcon%d", (currentFrame++ % totalFrames)]];
+  [image setTemplate:YES];
+  [mSbItem setImage:image];
+}
+
 -(void)recordStart {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
-  [mSbItem setImage:[NSImage imageNamed:@"menuIconRecording"]];
+  [self startAnimating];
   mIsRecording = YES;
 }
 
 -(void)recordStop {
   NSMenuItem *item = [mMenu itemWithTag:(NSInteger)[mMenuItemTags objectForKey:@"toggleRecord"]];
   [self killRecordProcesses];
+  [self stopAnimating];
   [item setTitle:@"Start Recording"];
-  NSImage *image = [NSImage imageNamed:@"menuIcon"];
-  [image setTemplate:YES];
-  [mSbItem setImage:image];
   mIsRecording = NO;
 }
 

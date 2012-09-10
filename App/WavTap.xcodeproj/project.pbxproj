@@ -17,6 +17,14 @@
 		222FE3490EBB6D9900FD13FC /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		222FE34A0EBB6D9900FD13FC /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */; };
 		222FE34B0EBB6D9900FD13FC /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E9CD2F08E78DA30024DA5B /* IOKit.framework */; };
+		3E248CC415FE5D6100EA16C0 /* menuIcon0.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CBC15FE5D6100EA16C0 /* menuIcon0.tiff */; };
+		3E248CC515FE5D6100EA16C0 /* menuIcon1.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CBD15FE5D6100EA16C0 /* menuIcon1.tiff */; };
+		3E248CC615FE5D6100EA16C0 /* menuIcon2.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CBE15FE5D6100EA16C0 /* menuIcon2.tiff */; };
+		3E248CC715FE5D6100EA16C0 /* menuIcon3.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CBF15FE5D6100EA16C0 /* menuIcon3.tiff */; };
+		3E248CC815FE5D6100EA16C0 /* menuIcon4.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CC015FE5D6100EA16C0 /* menuIcon4.tiff */; };
+		3E248CC915FE5D6100EA16C0 /* menuIcon5.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CC115FE5D6100EA16C0 /* menuIcon5.tiff */; };
+		3E248CCA15FE5D6100EA16C0 /* menuIcon6.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CC215FE5D6100EA16C0 /* menuIcon6.tiff */; };
+		3E248CCB15FE5D6100EA16C0 /* menuIcon7.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CC315FE5D6100EA16C0 /* menuIcon7.tiff */; };
 		3E2AECAE15FA7F2C00FBCCA2 /* README.markdown in Resources */ = {isa = PBXBuildFile; fileRef = 3E2AECA915FA7F2C00FBCCA2 /* README.markdown */; };
 		3E2AECAF15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = 3E2AECAA15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.c */; };
 		3E2AECB015FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E2AECAB15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.h */; };
@@ -59,6 +67,14 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3E248CBC15FE5D6100EA16C0 /* menuIcon0.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon0.tiff; sourceTree = "<group>"; };
+		3E248CBD15FE5D6100EA16C0 /* menuIcon1.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon1.tiff; sourceTree = "<group>"; };
+		3E248CBE15FE5D6100EA16C0 /* menuIcon2.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon2.tiff; sourceTree = "<group>"; };
+		3E248CBF15FE5D6100EA16C0 /* menuIcon3.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon3.tiff; sourceTree = "<group>"; };
+		3E248CC015FE5D6100EA16C0 /* menuIcon4.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon4.tiff; sourceTree = "<group>"; };
+		3E248CC115FE5D6100EA16C0 /* menuIcon5.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon5.tiff; sourceTree = "<group>"; };
+		3E248CC215FE5D6100EA16C0 /* menuIcon6.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon6.tiff; sourceTree = "<group>"; };
+		3E248CC315FE5D6100EA16C0 /* menuIcon7.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon7.tiff; sourceTree = "<group>"; };
 		3E2AECA915FA7F2C00FBCCA2 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		3E2AECAA15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "TPCircularBuffer+AudioBufferList.c"; sourceTree = "<group>"; };
 		3E2AECAB15FA7F2C00FBCCA2 /* TPCircularBuffer+AudioBufferList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TPCircularBuffer+AudioBufferList.h"; sourceTree = "<group>"; };
@@ -164,6 +180,14 @@
 			isa = PBXGroup;
 			children = (
 				3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */,
+				3E248CBC15FE5D6100EA16C0 /* menuIcon0.tiff */,
+				3E248CBD15FE5D6100EA16C0 /* menuIcon1.tiff */,
+				3E248CBE15FE5D6100EA16C0 /* menuIcon2.tiff */,
+				3E248CBF15FE5D6100EA16C0 /* menuIcon3.tiff */,
+				3E248CC015FE5D6100EA16C0 /* menuIcon4.tiff */,
+				3E248CC115FE5D6100EA16C0 /* menuIcon5.tiff */,
+				3E248CC215FE5D6100EA16C0 /* menuIcon6.tiff */,
+				3E248CC315FE5D6100EA16C0 /* menuIcon7.tiff */,
 				3E97DF5A15F36A41006B2E7A /* menuIconInverse.tiff */,
 				3E97DF5F15F378E8006B2E7A /* menuIconRecording.tiff */,
 				C9CFAC1E06EFA390001BE11F /* appIcon.icns */,
@@ -293,6 +317,14 @@
 				3E97DF5B15F36A41006B2E7A /* menuIconInverse.tiff in Resources */,
 				3E97DF6015F378E8006B2E7A /* menuIconRecording.tiff in Resources */,
 				3E2AECAE15FA7F2C00FBCCA2 /* README.markdown in Resources */,
+				3E248CC415FE5D6100EA16C0 /* menuIcon0.tiff in Resources */,
+				3E248CC515FE5D6100EA16C0 /* menuIcon1.tiff in Resources */,
+				3E248CC615FE5D6100EA16C0 /* menuIcon2.tiff in Resources */,
+				3E248CC715FE5D6100EA16C0 /* menuIcon3.tiff in Resources */,
+				3E248CC815FE5D6100EA16C0 /* menuIcon4.tiff in Resources */,
+				3E248CC915FE5D6100EA16C0 /* menuIcon5.tiff in Resources */,
+				3E248CCA15FE5D6100EA16C0 /* menuIcon6.tiff in Resources */,
+				3E248CCB15FE5D6100EA16C0 /* menuIcon7.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -29,3 +29,6 @@ struct Device {
 };
 typedef std::vector<Device> AudioDeviceList;
 AudioDeviceList *mDevices;
+UInt32 currentFrame;
+UInt32 totalFrames;
+NSTimer *animTimer;
