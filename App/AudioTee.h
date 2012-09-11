@@ -11,7 +11,7 @@ public:
   void Start();
   bool Stop();
   OSStatus MatchSampleRates(AudioObjectID changedDeviceID);
-  void saveHistoryBuffer(const char* fileName);
+  void saveHistoryBuffer(const char* fileName, UInt32 secondsRequested);
   Byte *mWorkBuf;
   UInt32 mSecondsInHistoryBuffer;
 //  TPCircularBuffer *mHistBuf;

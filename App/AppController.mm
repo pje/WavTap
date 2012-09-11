@@ -327,7 +327,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSString *fileExt = @"wav";
   NSString *relativeFilePath = [NSString stringWithFormat:@"%@.%@", fileName, fileExt];
   NSString *absoluteFilePath = [NSString stringWithFormat:@"%@/%@", destDirname, relativeFilePath];
-  mEngine->saveHistoryBuffer([absoluteFilePath UTF8String]);
+  mEngine->saveHistoryBuffer([absoluteFilePath UTF8String], mEngine->mSecondsInHistoryBuffer);
 }
 
 - (void)cleanupOnBeforeQuit {
