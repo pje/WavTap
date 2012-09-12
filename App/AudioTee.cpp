@@ -42,7 +42,6 @@ OSStatus AudioTee::MatchSampleRates(AudioObjectID changedDeviceID) {
 }
 
 void AudioTee::Start() {
-  OSStatus err = noErr;
   if (mRunning) return;
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
   MatchSampleRates(mOutputDevice.mID);
@@ -64,24 +63,23 @@ void AudioTee::Start() {
   printf("Initializing work buffer with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
   mRunning = true;
   mInputIOProcID = NULL;
-  err = AudioDeviceCreateIOProcID(mInputDevice.mID, InputIOProc, this, &mInputIOProcID);
-  err = AudioDeviceStart(mInputDevice.mID, mInputIOProcID);
+  AudioDeviceCreateIOProcID(mInputDevice.mID, InputIOProc, this, &mInputIOProcID);
+  AudioDeviceStart(mInputDevice.mID, mInputIOProcID);
   mOutputIOProc = OutputIOProc;
   mOutputIOProcID = NULL;
-  err = AudioDeviceCreateIOProcID(mOutputDevice.mID, mOutputIOProc, this, &mOutputIOProcID);
-  err = AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
+  AudioDeviceCreateIOProcID(mOutputDevice.mID, mOutputIOProc, this, &mOutputIOProcID);
+  AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
   ComputeThruOffset();
 }
 
 bool AudioTee::Stop() {
-  OSStatus err = noErr;
   if (!mRunning) return false;
   mRunning = false;
   usleep(5000);
-  err = AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
-  err = AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
-  err = AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
-  err = AudioDeviceDestroyIOProcID(mOutputDevice.mID, mOutputIOProcID);
+  AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
+  AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
+  AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
+  AudioDeviceDestroyIOProcID(mOutputDevice.mID, mOutputIOProcID);
   if (mWorkBuf) {
     delete[] mWorkBuf;
     mWorkBuf = NULL;
@@ -211,6 +209,8 @@ void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   file.write((char *)dstBuffList.mBuffers[0].mData, dstBuffList.mBuffers[0].mDataByteSize);
   file.close();
   delete[] dstBuff;
+  delete buffer;
+  delete abl;
   dstBuff = 0;
 }
 

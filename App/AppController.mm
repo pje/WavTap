@@ -26,14 +26,13 @@
 
 - (void)reBuildDeviceList{
   if (mDevices) mDevices->clear();
-  OSStatus err = noErr;
   UInt32 propsize;
   AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-  err = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &theAddress, 0, NULL,&propsize);
+  AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &theAddress, 0, NULL,&propsize);
   int audioDeviceIDSize = sizeof(AudioDeviceID);
   int nDevices = propsize / audioDeviceIDSize;
-  AudioDeviceID *devids = (AudioDeviceID *)calloc(nDevices, sizeof(AudioDeviceID));
-  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
+  AudioDeviceID *devids = new AudioDeviceID[nDevices];
+  AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
   for (int i = 0; i < nDevices; ++i) {
     int mInputs = 2;
     AudioDevice dev(devids[i], mInputs);
@@ -155,13 +154,12 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 }
 
 - (void)registerPropertyListeners {
-  OSStatus err = noErr;
   AudioObjectPropertyAddress addr = { kAudioDevicePropertyNominalSampleRate, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-  err = AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
+  AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
   addr.mElement = kAudioDeviceProcessorOverload;
   addr.mScope = kAudioObjectPropertyScopeWildcard;
-  err = AudioObjectAddPropertyListener(mEngine->mInputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
-  err = AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
+  AudioObjectAddPropertyListener(mEngine->mInputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
+  AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent {
@@ -171,32 +169,31 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 }
 
 - (void)initConnections {
-  OSStatus err = noErr;
   Float32 maxVolume = 1.0;
   UInt32 size;
   AudioObjectPropertyAddress devCurrDefAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
   size = sizeof(AudioDeviceID);
-  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
+  AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
   mOutputDeviceID = mStashedAudioDeviceID;
   AudioObjectPropertyAddress volCurrDef1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
   size = sizeof(Float32);
-  err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
+  AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
   AudioObjectPropertyAddress volCurrDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   size = sizeof(Float32);
-  err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
+  AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
   mEngine = new AudioTee(mWavTapDeviceID, mOutputDeviceID);
   AudioObjectPropertyAddress volSwapWav0Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 0 };
-  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(Float32), &maxVolume);
+  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(Float32), &maxVolume);
   AudioObjectPropertyAddress volSwapWav1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
-  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
+  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
   AudioObjectPropertyAddress volSwapWav2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
-  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
+  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
 //AudioObjectPropertyAddress volSwapDefAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
 //err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDefAddress, 0, NULL, sizeof(Float32), &maxVolume);
 //AudioObjectPropertyAddress volSwapDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
 //err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
   mEngine->Start();
-  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
+  AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
 
 - (OSStatus)restoreSystemOutputDevice {
@@ -209,7 +206,7 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 - (OSStatus)restoreSystemOutputDeviceVolume {
   OSStatus err = noErr;
   AudioObjectPropertyAddress volAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
-  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
+  AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
   AudioObjectPropertyAddress vol2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &vol2Address, 0, NULL, sizeof(Float32), &mStashedVolume2);
   return err;

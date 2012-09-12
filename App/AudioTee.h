@@ -1,7 +1,6 @@
 #ifndef __AudioTee_h__
 #define __AudioTee_h__
 #include "AudioDevice.h"
-#include "TPCircularBuffer.h"
 #include "CARingBuffer.h"
 
 class AudioTee {
@@ -14,7 +13,6 @@ public:
   void saveHistoryBuffer(const char* fileName, UInt32 secondsRequested);
   Byte *mWorkBuf;
   UInt32 mSecondsInHistoryBuffer;
-//  TPCircularBuffer *mHistBuf;
   CARingBuffer *mHistBuf;
   UInt32 mHistoryBufferMaxByteSize;
   UInt32 mBufferSize;
