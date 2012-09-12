@@ -2,7 +2,7 @@
 
 globally capture whatever your mac is playing—as simply as a screenshot
 
-![](https://img.skitch.com/20120913-xty35shg1yq5p6npsc6wmtxu7d.jpg)
+![](https://raw.github.com/pje/WavTap/master/screenshot.png)
 
 (this is alpha software. it's sorta stable, with caveats.)
 
