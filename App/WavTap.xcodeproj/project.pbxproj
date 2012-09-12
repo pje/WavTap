@@ -32,6 +32,8 @@
 		3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79E15E9181D005221AF /* kill_recorders.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79F15E91821005221AF /* record.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
+		3E6E9610160123AF006D07F8 /* WavFileUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */; };
+		3E6E9611160123AF006D07F8 /* WavFileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6E960F160123AF006D07F8 /* WavFileUtils.h */; };
 		3E7B1B1215FEA6B90030310F /* CAAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A4F15FEA6B90030310F /* CAAtomic.h */; };
 		3E7B1B2A15FEA6B90030310F /* CAAutoDisposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A6715FEA6B90030310F /* CAAutoDisposer.h */; };
 		3E7B1B2B15FEA6B90030310F /* CABitOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A6815FEA6B90030310F /* CABitOperations.h */; };
@@ -78,6 +80,8 @@
 		3E4C6C4815FBAE56005F0518 /* AudioTee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioTee.h; sourceTree = "<group>"; };
 		3E63F79A15E91805005221AF /* record.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record.sh; sourceTree = "<group>"; };
 		3E63F79B15E91805005221AF /* kill_recorders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kill_recorders.sh; sourceTree = "<group>"; };
+		3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavFileUtils.cpp; sourceTree = "<group>"; };
+		3E6E960F160123AF006D07F8 /* WavFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavFileUtils.h; sourceTree = "<group>"; };
 		3E7B1A4F15FEA6B90030310F /* CAAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAtomic.h; sourceTree = "<group>"; };
 		3E7B1A6715FEA6B90030310F /* CAAutoDisposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAutoDisposer.h; sourceTree = "<group>"; };
 		3E7B1A6815FEA6B90030310F /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
@@ -120,6 +124,8 @@
 				3E4C6C4815FBAE56005F0518 /* AudioTee.h */,
 				F591DDB2031157A901FEEC38 /* AudioDevice.h */,
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
+				3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */,
+				3E6E960F160123AF006D07F8 /* WavFileUtils.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -233,6 +239,7 @@
 				3E7B1B2A15FEA6B90030310F /* CAAutoDisposer.h in Headers */,
 				3E7B1B2B15FEA6B90030310F /* CABitOperations.h in Headers */,
 				3E7B1B6C15FEA6B90030310F /* CARingBuffer.h in Headers */,
+				3E6E9611160123AF006D07F8 /* WavFileUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +323,7 @@
 				222FE3440EBB6D9900FD13FC /* AudioDevice.cpp in Sources */,
 				3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */,
 				3E7B1B6B15FEA6B90030310F /* CARingBuffer.cpp in Sources */,
+				3E6E9610160123AF006D07F8 /* WavFileUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
