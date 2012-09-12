@@ -24,7 +24,7 @@
   return self;
 }
 
-- (void)reBuildDeviceList{
+- (void)rebuildDeviceList{
   if (mDevices) mDevices->clear();
   UInt32 propsize;
   AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
@@ -46,7 +46,7 @@
 
 - (void)awakeFromNib {
   [[NSApplication sharedApplication] setDelegate:(id)self];
-  [self reBuildDeviceList];
+  [self rebuildDeviceList];
   for (AudioDeviceList::iterator i = mDevices->begin(); i != mDevices->end(); ++i) {
     if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }

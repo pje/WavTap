@@ -92,7 +92,7 @@ inline void writeWavFileHeaders(const char* fileName, UInt32 numAudioBytes, UInt
   UInt32 totalDataLen = numAudioBytes + 44;
   long byteRate = sampleRate * 16.0 * 2/8;
   UInt32 headerSize = 44;
-  Byte *header = (Byte*)malloc(headerSize);
+  Byte *header = new Byte[headerSize];
   header[ 0] = 'R';
   header[ 1] = 'I';
   header[ 2] = 'F';
@@ -140,13 +140,13 @@ inline void writeWavFileHeaders(const char* fileName, UInt32 numAudioBytes, UInt
   file.seekp(0);
   file.write((char *)header, headerSize);
   file.close();
-  free(header);
+  delete[] header;
 }
 
 inline void writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes){
   std::fstream file(fileName, std::ios::binary | std::ios::out | std::ios::in);
   UInt32 totalDataLen = numAudioBytes + 44;
-  Byte *header = (Byte*)malloc(4);
+  Byte *header = new Byte[4];
   header[0] = (Byte) (totalDataLen & 0xff);
   header[1] = (Byte) ((totalDataLen >> 8) & 0xff);
   header[2] = (Byte) ((totalDataLen >> 16) & 0xff);
@@ -160,15 +160,13 @@ inline void writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes){
   file.seekp(40, std::ios::beg);
   file.write((char *)header, 4);
   file.close();
-  free(header);
-  header = 0;
+  delete[] header;
 }
 
 void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   UInt32 numberOfBytesWeWant = secondsRequested * mInputDevice.mFormat.mSampleRate * (4 * 2);
   int32_t numberOfBytesToRequest = std::min(numberOfBytesWeWant, mHistoryBufferByteSize);
   AudioBuffer *buffer = new AudioBuffer();
-
   buffer->mDataByteSize = numberOfBytesToRequest;
   buffer->mData = new UInt32[buffer->mDataByteSize];
   AudioBufferList *abl = new AudioBufferList();
@@ -225,7 +223,6 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
     ab.mData = This->mWorkBuf;
     abl.mBuffers[0] = ab;
     abl.mNumberBuffers = 1;
-
     This->mHistBuf->Store(&abl, (inInputData->mBuffers[i].mDataByteSize / inInputData->mBuffers[i].mNumberChannels) / sizeof(UInt32), This->mHistoryBufferHeadOffsetFrameNumber);
     if(This->mHistoryBufferByteSize < (This->mHistoryBufferMaxByteSize - inInputData->mBuffers[i].mDataByteSize)){
       This->mHistoryBufferByteSize += inInputData->mBuffers[i].mDataByteSize;
