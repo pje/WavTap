@@ -276,7 +276,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 - (void)startAnimatingStatusBarIcon {
-  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/18.0 target:self selector:@selector(updateStatusBarIcon:) userInfo:nil repeats:YES];
+  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/16.0 target:self selector:@selector(updateStatusBarIcon:) userInfo:nil repeats:YES];
 }
 
 - (void)stopAnimatingStatusBarIcon {
