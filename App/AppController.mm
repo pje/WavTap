@@ -36,12 +36,10 @@
   for (int i = 0; i < nDevices; ++i) {
     int mInputs = 2;
     AudioDevice dev(devids[i], mInputs);
-    {
-      Device d;
-      d.mID = devids[i];
-      dev.GetName(d.mName, sizeof(d.mName));
-      mDevices->push_back(d);
-    }
+    Device d;
+    d.mID = devids[i];
+    dev.GetName(d.mName, sizeof(d.mName));
+    mDevices->push_back(d);
   }
   delete[] devids;
 }
@@ -101,10 +99,6 @@
   }
   [mMenu addItem:[NSMenuItem separatorItem]];
   [mSbItem setMenu:mMenu];
-//item = [mMenu addItemWithTitle:@"Preferences..." action:@selector(showPreferencesWindow) keyEquivalent:@","];
-//[item setKeyEquivalentModifierMask:NSCommandKeyMask];
-//[item setTag:(NSInteger)[mMenuItemTags objectForKey:@"preferences"]];
-//[item setTarget:self];
   item = [mMenu addItemWithTitle:@"Quit" action:@selector(doQuit) keyEquivalent:@""];
   [item setTag:(NSInteger)mTagForQuit];
   [item setTarget:self];
@@ -187,10 +181,6 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
   AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
   AudioObjectPropertyAddress volSwapWav2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
-//AudioObjectPropertyAddress volSwapDefAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
-//err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDefAddress, 0, NULL, sizeof(Float32), &maxVolume);
-//AudioObjectPropertyAddress volSwapDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
-//err = AudioObjectSetPropertyData(mStashedAudioDeviceID, &volSwapDef2Address, 0, NULL, sizeof(Float32), &maxVolume);
   mEngine->Start();
   AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
@@ -234,18 +224,6 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   keyID0.signature = 'a';
   keyID0.id = 0;
   RegisterEventHotKey(49, cmdKey+controlKey, keyID0, GetApplicationEventTarget(), 0, &theRef0);
-
-//  historyRecordHotKeyFunction = NewEventHandlerUPP(historyRecordHotKeyHandler);
-//  EventTypeSpec eventType1;
-//  eventType1.eventClass = kEventClassKeyboard;
-//  eventType1.eventKind = kEventHotKeyReleased;
-//  InstallApplicationEventHandler(historyRecordHotKeyFunction, 1, &eventType1, (void *)CFBridgingRetain(self), NULL);
-//  UInt32 keyCode1 = 36;
-//  EventHotKeyRef theRef1;
-//  EventHotKeyID keyID1;
-//  keyID1.signature = 'b';
-//  keyID1.id = 1;
-//  RegisterEventHotKey(keyCode1, cmdKey+controlKey, keyID1, GetApplicationEventTarget(), 1, &theRef1);
 }
 
 -(void)launchRecordProcess {
@@ -253,14 +231,20 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSString *scriptName = @"record";
   NSString *scriptExtension = @"sh";
   NSString *scriptAbsPath = [NSString stringWithFormat:@"%@/%@.%@", sharedSupportPath, scriptName, scriptExtension];
-//mEngine->mOutputDevice.ReloadStreamFormat();
-//NSString *bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.mFormat.mBitsPerChannel];
-  NSString *bits = @"16";
+  NSString *bits = [NSString stringWithFormat:@"%d", [self getOutputDevicePhysicalBitDepth]];
   NSTask *task=[[NSTask alloc] init];
   NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
   [task setLaunchPath:scriptAbsPath];
   [task launch];
+}
+
+-(UInt32)getOutputDevicePhysicalBitDepth {
+  AudioStreamBasicDescription asbd;
+  UInt32 size = sizeof(asbd);
+  AudioObjectPropertyAddress devOutputStreamPhysicalFormat = { kAudioStreamPropertyPhysicalFormat, kAudioObjectPropertyScopeOutput, kAudioObjectPropertyElementMaster };
+  AudioObjectGetPropertyData(mEngine->mOutputDevice.mID, &devOutputStreamPhysicalFormat, 0, NULL, &size, &asbd);
+  return asbd.mBitsPerChannel;
 }
 
 -(void)killRecordProcesses {
@@ -310,9 +294,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 -(void)historyRecord {
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES);
-  NSString *documentsDirectory = [paths objectAtIndex:0];
-  NSString *destDirname = [NSString stringWithFormat:@"%@", documentsDirectory];
+  NSString *destDirname = [NSString stringWithFormat:@"%@", [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) objectAtIndex:0]];
   NSDate *date = [NSDate date];
   long time1 = (long) [date timeIntervalSince1970];
   long time0 = (long) time1 - mEngine->mSecondsInHistoryBuffer;
@@ -327,7 +309,6 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   if(mIsRecording) [self recordStop];
   if(mEngine) mEngine->Stop();
   [self restoreSystemOutputDevice];
-//[self restoreSystemOutputDeviceVolume]; // TODO: preserve our eardrums
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
