@@ -183,7 +183,7 @@
 					i386,
 					ppc,
 				);
-				INFOPLIST_FILE = "Info-WavTapDriver.plist";
+				INFOPLIST_FILE = Info.plist;
 				SYMROOT = "";
 			};
 			name = Deployment;
