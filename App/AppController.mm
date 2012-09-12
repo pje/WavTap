@@ -32,7 +32,6 @@
   int audioDeviceIDSize = sizeof(AudioDeviceID);
   int nDevices = propsize / audioDeviceIDSize;
   AudioDeviceID *devids = new AudioDeviceID[nDevices];
-
   AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
   for (int i = 0; i < nDevices; ++i) {
     int mInputs = 2;
