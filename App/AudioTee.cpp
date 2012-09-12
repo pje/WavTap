@@ -168,7 +168,7 @@ void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   UInt32 numberOfBytesWeWant = secondsRequested * mInputDevice.mFormat.mSampleRate * (4 * 2);
   int32_t numberOfBytesToRequest = std::min(numberOfBytesWeWant, mHistoryBufferByteSize);
   AudioBuffer *buffer = new AudioBuffer();
-  
+
   buffer->mDataByteSize = numberOfBytesToRequest;
   buffer->mData = new UInt32[buffer->mDataByteSize];
   AudioBufferList *abl = new AudioBufferList();
@@ -225,7 +225,7 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
     ab.mData = This->mWorkBuf;
     abl.mBuffers[0] = ab;
     abl.mNumberBuffers = 1;
-    
+
     This->mHistBuf->Store(&abl, (inInputData->mBuffers[i].mDataByteSize / inInputData->mBuffers[i].mNumberChannels) / sizeof(UInt32), This->mHistoryBufferHeadOffsetFrameNumber);
     if(This->mHistoryBufferByteSize < (This->mHistoryBufferMaxByteSize - inInputData->mBuffers[i].mDataByteSize)){
       This->mHistoryBufferByteSize += inInputData->mBuffers[i].mDataByteSize;
