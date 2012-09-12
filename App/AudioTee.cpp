@@ -14,34 +14,6 @@ AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : 
   mOutputDevice.SetBufferSize(mBufferSize);
 }
 
-void  AudioTee::ComputeThruOffset() {
-  if (!mRunning) {
-    mActualThruLatency = 0;
-    mInToOutSampleOffset = 0;
-    return;
-  }
-  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
-  mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
-}
-
-OSStatus AudioTee::MatchSampleRates(AudioObjectID changedDeviceID) {
-  OSStatus status = kAudioHardwareNoError;
-  mInputDevice.ReloadStreamFormat();
-  mOutputDevice.ReloadStreamFormat();
-  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate)
-  {
-    if (mInputDevice.mID == changedDeviceID) {
-      status = mOutputDevice.SetSampleRate(mInputDevice.mFormat.mSampleRate);
-    } else if (mOutputDevice.mID == changedDeviceID) {
-      status = mInputDevice.SetSampleRate(mOutputDevice.mFormat.mSampleRate);
-    }
-    else {
-      printf("Error in AudioTee::MatchSampleRates() - unrelated device ID: %u \n", changedDeviceID);
-    }
-  }
-  return status;
-}
-
 void AudioTee::Start() {
   if (mRunning) return;
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
@@ -85,8 +57,39 @@ bool AudioTee::Stop() {
   return true;
 }
 
+OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
+  AudioTee *This = (AudioTee *)inClientData;
+  This->mLastInputSampleCount = inInputTime->mSampleTime;
+  for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
+    memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
+    AudioBuffer ab;
+    AudioBufferList abl;
+    ab.mDataByteSize = inInputData->mBuffers[i].mDataByteSize;
+    ab.mData = This->mWorkBuf;
+    abl.mBuffers[0] = ab;
+    abl.mNumberBuffers = 1;
+    This->mHistBuf->Store(&abl, (inInputData->mBuffers[i].mDataByteSize / inInputData->mBuffers[i].mNumberChannels) / sizeof(UInt32), This->mHistoryBufferHeadOffsetFrameNumber);
+    if(This->mHistoryBufferByteSize < (This->mHistoryBufferMaxByteSize - inInputData->mBuffers[i].mDataByteSize)){
+      This->mHistoryBufferByteSize += inInputData->mBuffers[i].mDataByteSize;
+    } else {
+      This->mHistoryBufferByteSize = This->mHistoryBufferMaxByteSize;
+    }
+    This->mHistoryBufferHeadOffsetFrameNumber = ((This->mHistoryBufferHeadOffsetFrameNumber + (inInputData->mBuffers[i].mDataByteSize / 8)) % (This->mHistoryBufferMaxByteSize / 8));
+  }
+  return noErr;
 }
 
+OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
+  AudioTee *This = (AudioTee *)inClientData;
+  if (!This->mMuting && This->mThruing) {
+    for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
+      UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
+      memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
+    }
+  } else {
+    This->mThruTime = 0.;
+  }
+  return noErr;
 }
 
 void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
@@ -138,37 +141,30 @@ void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   dstBuff = 0;
 }
 
-OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
-  AudioTee *This = (AudioTee *)inClientData;
-  This->mLastInputSampleCount = inInputTime->mSampleTime;
-  for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
-    memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
-    AudioBuffer ab;
-    AudioBufferList abl;
-    ab.mDataByteSize = inInputData->mBuffers[i].mDataByteSize;
-    ab.mData = This->mWorkBuf;
-    abl.mBuffers[0] = ab;
-    abl.mNumberBuffers = 1;
-    This->mHistBuf->Store(&abl, (inInputData->mBuffers[i].mDataByteSize / inInputData->mBuffers[i].mNumberChannels) / sizeof(UInt32), This->mHistoryBufferHeadOffsetFrameNumber);
-    if(This->mHistoryBufferByteSize < (This->mHistoryBufferMaxByteSize - inInputData->mBuffers[i].mDataByteSize)){
-      This->mHistoryBufferByteSize += inInputData->mBuffers[i].mDataByteSize;
-    } else {
-      This->mHistoryBufferByteSize = This->mHistoryBufferMaxByteSize;
-    }
-    This->mHistoryBufferHeadOffsetFrameNumber = ((This->mHistoryBufferHeadOffsetFrameNumber + (inInputData->mBuffers[i].mDataByteSize / 8)) % (This->mHistoryBufferMaxByteSize / 8));
+void AudioTee::ComputeThruOffset() {
+  if (!mRunning) {
+    mActualThruLatency = 0;
+    mInToOutSampleOffset = 0;
+    return;
   }
-  return noErr;
+  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
+  mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
 }
 
-OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
-  AudioTee *This = (AudioTee *)inClientData;
-  if (!This->mMuting && This->mThruing) {
-    for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
-      UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
-      memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
+OSStatus AudioTee::MatchSampleRates(AudioObjectID changedDeviceID) {
+  OSStatus status = kAudioHardwareNoError;
+  mInputDevice.ReloadStreamFormat();
+  mOutputDevice.ReloadStreamFormat();
+  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate)
+  {
+    if (mInputDevice.mID == changedDeviceID) {
+      status = mOutputDevice.SetSampleRate(mInputDevice.mFormat.mSampleRate);
+    } else if (mOutputDevice.mID == changedDeviceID) {
+      status = mInputDevice.SetSampleRate(mOutputDevice.mFormat.mSampleRate);
     }
-  } else {
-    This->mThruTime = 0.;
+    else {
+      printf("Error in AudioTee::MatchSampleRates() - unrelated device ID: %u \n", changedDeviceID);
+    }
   }
-  return noErr;
+  return status;
 }
