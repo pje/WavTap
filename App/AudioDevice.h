@@ -10,6 +10,7 @@ public:
   OSStatus SetSampleRate(Float64 sr);
   OSStatus ReloadStreamFormat();
   char *GetName(char *buf, UInt32 maxlen);
+  UInt32 getStreamPhysicalBitDepth(bool isInput);
   AudioDeviceID mID;
   bool mIsInput;
   UInt32 mSafetyOffset;

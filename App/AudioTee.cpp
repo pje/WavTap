@@ -17,7 +17,6 @@ AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : 
 void AudioTee::Start() {
   if (mRunning) return;
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
-  MatchSampleRates(mOutputDevice.mID);
   if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
     printf("Error in AudioTee::Start() - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
     return;
@@ -39,7 +38,6 @@ void AudioTee::Start() {
   mOutputIOProcID = NULL;
   AudioDeviceCreateIOProcID(mOutputDevice.mID, mOutputIOProc, this, &mOutputIOProcID);
   AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
-  ComputeThruOffset();
 }
 
 bool AudioTee::Stop() {
@@ -104,67 +102,8 @@ void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   numberOfBytesToRequest = buffer->mDataByteSize;
   UInt32 nFrames = numberOfBytesToRequest / (4 * 2);
   mHistBuf->Fetch(abl, nFrames, mHistoryBufferHeadOffsetFrameNumber);
-  WavFileUtils::writeWavFileHeaders(fileName, numberOfBytesToRequest, 44100, 16);
-  UInt32 *srcBuff = (UInt32*)buffer->mData;
-  SInt16 *dstBuff = new SInt16[nFrames * 2];
-  AudioBuffer srcConvertBuff;
-  srcConvertBuff.mNumberChannels = 2;
-  srcConvertBuff.mDataByteSize = numberOfBytesToRequest;
-  srcConvertBuff.mData = srcBuff;
-  AudioBuffer dstConvertBuff;
-  dstConvertBuff.mNumberChannels = 2;
-  dstConvertBuff.mDataByteSize = ((nFrames * 2) * sizeof(SInt16));
-  dstConvertBuff.mData = dstBuff;
-  AudioBufferList srcBuffList;
-  srcBuffList.mNumberBuffers = 1;
-  AudioBufferList dstBuffList;
-  dstBuffList.mNumberBuffers = 1;
-  srcBuffList.mBuffers[0] = srcConvertBuff;
-  dstBuffList.mBuffers[0] = dstConvertBuff;
-  AudioConverterRef con;
-  AudioStreamBasicDescription inDesc = this->mOutputDevice.mFormat;
-  AudioStreamBasicDescription outDesc = this->mOutputDevice.mFormat;
-  outDesc.mBitsPerChannel = sizeof(SInt16) * 8;
-  outDesc.mBytesPerFrame = sizeof(SInt16) * 2;
-  outDesc.mBytesPerPacket = sizeof(SInt16) * 2;
-  outDesc.mChannelsPerFrame = 2;
-  outDesc.mFramesPerPacket = 1;
-  outDesc.mFormatFlags = kAudioFormatFlagsAreAllClear | kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
-  AudioConverterNew(&inDesc, &outDesc, &con);
-  AudioConverterConvertComplexBuffer(con, nFrames, &srcBuffList, &dstBuffList);
-  std::fstream file(fileName, std::ios::binary | std::ios::app | std::ios::out | std::ios::in);
-  file.write((char *)dstBuffList.mBuffers[0].mData, dstBuffList.mBuffers[0].mDataByteSize);
-  file.close();
-  delete[] dstBuff;
+  WavFileUtils::writeWavFileHeaders(fileName, numberOfBytesToRequest, mOutputDevice.mFormat.mSampleRate, 16);
+  WavFileUtils::writeBytesToFile(fileName, (UInt32*)abl->mBuffers[0].mData, numberOfBytesToRequest, nFrames, this->mOutputDevice.mFormat);
   delete buffer;
   delete abl;
-  dstBuff = 0;
-}
-
-void AudioTee::ComputeThruOffset() {
-  if (!mRunning) {
-    mActualThruLatency = 0;
-    mInToOutSampleOffset = 0;
-    return;
-  }
-  mActualThruLatency = SInt32(mInputDevice.mSafetyOffset + mInputDevice.mBufferSizeFrames + mOutputDevice.mSafetyOffset + mOutputDevice.mBufferSizeFrames) + mExtraLatencyFrames;
-  mInToOutSampleOffset = mActualThruLatency + mIODeltaSampleCount;
-}
-
-OSStatus AudioTee::MatchSampleRates(AudioObjectID changedDeviceID) {
-  OSStatus status = kAudioHardwareNoError;
-  mInputDevice.ReloadStreamFormat();
-  mOutputDevice.ReloadStreamFormat();
-  if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate)
-  {
-    if (mInputDevice.mID == changedDeviceID) {
-      status = mOutputDevice.SetSampleRate(mInputDevice.mFormat.mSampleRate);
-    } else if (mOutputDevice.mID == changedDeviceID) {
-      status = mInputDevice.SetSampleRate(mOutputDevice.mFormat.mSampleRate);
-    }
-    else {
-      printf("Error in AudioTee::MatchSampleRates() - unrelated device ID: %u \n", changedDeviceID);
-    }
-  }
-  return status;
 }

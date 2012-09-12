@@ -32,13 +32,16 @@
   int audioDeviceIDSize = sizeof(AudioDeviceID);
   int nDevices = propsize / audioDeviceIDSize;
   AudioDeviceID *devids = new AudioDeviceID[nDevices];
+
   AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
   for (int i = 0; i < nDevices; ++i) {
     int mInputs = 2;
     AudioDevice dev(devids[i], mInputs);
     Device d;
     d.mID = devids[i];
-    dev.GetName(d.mName, sizeof(d.mName));
+    propsize = sizeof(d.mName);
+    AudioObjectPropertyAddress addr = { kAudioDevicePropertyDeviceName, (dev.mIsInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput), 0 };
+    AudioObjectGetPropertyData(dev.mID, &addr, 0, NULL,  &propsize, &d.mName);
     mDevices->push_back(d);
   }
   delete[] devids;
@@ -126,7 +129,6 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
       case kAudioDevicePropertyModelUID:                        { break; }
       case kAudioDevicePropertyNominalSampleRate:{
         app->mEngine->Stop();
-        err = app->mEngine->MatchSampleRates(inObjectID);
         printf("(DeviceListenerProc) MatchSampleRates returned status code: %u \n", err);
         app->mEngine->Start();
         break;
@@ -231,20 +233,12 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSString *scriptName = @"record";
   NSString *scriptExtension = @"sh";
   NSString *scriptAbsPath = [NSString stringWithFormat:@"%@/%@.%@", sharedSupportPath, scriptName, scriptExtension];
-  NSString *bits = [NSString stringWithFormat:@"%d", [self getOutputDevicePhysicalBitDepth]];
+  NSString *bits = [NSString stringWithFormat:@"%d", mEngine->mOutputDevice.getStreamPhysicalBitDepth(false)];
   NSTask *task=[[NSTask alloc] init];
   NSArray *argv=[NSArray arrayWithObject:bits];
   [task setArguments: argv];
   [task setLaunchPath:scriptAbsPath];
   [task launch];
-}
-
--(UInt32)getOutputDevicePhysicalBitDepth {
-  AudioStreamBasicDescription asbd;
-  UInt32 size = sizeof(asbd);
-  AudioObjectPropertyAddress devOutputStreamPhysicalFormat = { kAudioStreamPropertyPhysicalFormat, kAudioObjectPropertyScopeOutput, kAudioObjectPropertyElementMaster };
-  AudioObjectGetPropertyData(mEngine->mOutputDevice.mID, &devOutputStreamPhysicalFormat, 0, NULL, &size, &asbd);
-  return asbd.mBitsPerChannel;
 }
 
 -(void)killRecordProcesses {

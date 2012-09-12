@@ -43,8 +43,10 @@ OSStatus AudioDevice::SetBufferSize(UInt32 buffersize) {
   return err;
 }
 
-char *AudioDevice::GetName(char *buf, UInt32 maxlen) {
-  AudioObjectPropertyAddress addr = { kAudioDevicePropertyDeviceName, (mIsInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput), 0 };
-  AudioObjectGetPropertyData(mID, &addr, 0, NULL,  &maxlen, buf);
-	return buf;
+UInt32 AudioDevice::getStreamPhysicalBitDepth(bool isInput) {
+  AudioStreamBasicDescription asbd;
+  UInt32 size = sizeof(asbd);
+  AudioObjectPropertyAddress addr = { kAudioStreamPropertyPhysicalFormat, (isInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput), kAudioObjectPropertyElementMaster };
+  AudioObjectGetPropertyData(mID, &addr, 0, NULL, &size, &asbd);
+  return asbd.mBitsPerChannel;
 }

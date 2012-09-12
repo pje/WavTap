@@ -2,8 +2,9 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include <AudioToolbox/AudioConverter.h>
 
-void WavFileUtils::writeWavFileHeaders(const char* fileName, UInt32 numAudioBytes, UInt32 sampleRate, UInt32 bitsPerSample){
+void WavFileUtils::writeWavFileHeaders(const char* fileName, UInt32 numAudioBytes, UInt32 sampleRate, UInt32 bitDepth) {
   std::ofstream file(fileName, std::ios::binary);
   uint32_t totalDataLen = numAudioBytes + 44;
   long byteRate = sampleRate * 16.0 * 2/8;
@@ -43,7 +44,7 @@ void WavFileUtils::writeWavFileHeaders(const char* fileName, UInt32 numAudioByte
   header[31] = (Byte) ((byteRate >> 24) & 0xff);
   header[32] = (Byte) (2 * 8 / 8);  // block align
   header[33] = 0;
-  header[34] = bitsPerSample;
+  header[34] = bitDepth;
   header[35] = 0;
   header[36] = 'd';
   header[37] = 'a';
@@ -59,7 +60,7 @@ void WavFileUtils::writeWavFileHeaders(const char* fileName, UInt32 numAudioByte
   delete[] header;
 }
 
-void WavFileUtils::writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes){
+void WavFileUtils::writeWavFileSizeHeaders(const char* fileName, UInt32 numAudioBytes) {
   std::fstream file(fileName, std::ios::binary | std::ios::out | std::ios::in);
   int32_t totalDataLen = numAudioBytes + 44;
   Byte *header = new Byte[4];
@@ -78,3 +79,37 @@ void WavFileUtils::writeWavFileSizeHeaders(const char* fileName, UInt32 numAudio
   file.close();
   delete[] header;
 }
+
+void WavFileUtils::writeBytesToFile(const char *fileName, UInt32 *bytes, UInt32 numAudioBytes, UInt32 nFrames, AudioStreamBasicDescription desc) {
+  UInt32 *srcBuff = bytes;
+  SInt16 *dstBuff = new SInt16[nFrames * 2];
+  AudioBuffer srcConvertBuff;
+  srcConvertBuff.mNumberChannels = 2;
+  srcConvertBuff.mDataByteSize = numAudioBytes;
+  srcConvertBuff.mData = srcBuff;
+  AudioBuffer dstConvertBuff;
+  dstConvertBuff.mNumberChannels = 2;
+  dstConvertBuff.mDataByteSize = ((nFrames * 2) * sizeof(SInt16));
+  dstConvertBuff.mData = dstBuff;
+  AudioBufferList srcBuffList;
+  srcBuffList.mNumberBuffers = 1;
+  AudioBufferList dstBuffList;
+  dstBuffList.mNumberBuffers = 1;
+  srcBuffList.mBuffers[0] = srcConvertBuff;
+  dstBuffList.mBuffers[0] = dstConvertBuff;
+  AudioConverterRef con;
+  AudioStreamBasicDescription inDesc = desc;
+  AudioStreamBasicDescription outDesc = desc;
+  outDesc.mBitsPerChannel = sizeof(SInt16) * 8;
+  outDesc.mBytesPerFrame = sizeof(SInt16) * 2;
+  outDesc.mBytesPerPacket = sizeof(SInt16) * 2;
+  outDesc.mChannelsPerFrame = 2;
+  outDesc.mFramesPerPacket = 1;
+  outDesc.mFormatFlags = kAudioFormatFlagsAreAllClear | kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
+  AudioConverterNew(&inDesc, &outDesc, &con);
+  AudioConverterConvertComplexBuffer(con, nFrames, &srcBuffList, &dstBuffList);
+  std::fstream file(fileName, std::ios::binary | std::ios::app | std::ios::out | std::ios::in);
+  file.write((char *)dstBuffList.mBuffers[0].mData, dstBuffList.mBuffers[0].mDataByteSize);
+  file.close();
+  delete[] dstBuff;
+};
