@@ -20,7 +20,7 @@
   currentFrame = 0;
   totalFrames = 8;
   animTimer = NULL;
-  timeElapsed = 0;
+  mTimeSinceLaunch = 0;
   return self;
 }
 
@@ -72,8 +72,8 @@
 }
 
 - (void)onSecondPassed:(NSTimer*)timer {
-  if(timeElapsed++ < mEngine->mSecondsInHistoryBuffer){
-    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", timeElapsed];
+  if(mTimeSinceLaunch++ < mEngine->mSecondsInHistoryBuffer){
+    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", mTimeSinceLaunch];
     NSInteger tagKey = mTagForHistoryRecord;
     NSMenuItem *item = [mMenu itemWithTag:(NSInteger)tagKey];
     [item setTitle:historyRecordMenuItemTitle];
@@ -170,9 +170,8 @@ OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses,
 
 - (void)initConnections {
   Float32 maxVolume = 1.0;
-  UInt32 size;
+  UInt32 size = sizeof(AudioDeviceID);
   AudioObjectPropertyAddress devCurrDefAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-  size = sizeof(AudioDeviceID);
   AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
   mOutputDeviceID = mStashedAudioDeviceID;
   AudioObjectPropertyAddress volCurrDef1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
@@ -276,18 +275,15 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   [task launch];
 }
 
-- (void)startAnimating
-{
-  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/18.0 target:self selector:@selector(updateImage:) userInfo:nil repeats:YES];
+- (void)startAnimatingStatusBarIcon {
+  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/18.0 target:self selector:@selector(updateStatusBarIcon:) userInfo:nil repeats:YES];
 }
 
-- (void)stopAnimating
-{
+- (void)stopAnimatingStatusBarIcon {
   [animTimer invalidate];
 }
 
-- (void)updateImage:(NSTimer*)timer
-{
+- (void)updateStatusBarIcon:(NSTimer*)timer {
   NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"menuIcon%d", (currentFrame++ % totalFrames)]];
   [image setTemplate:YES];
   [mSbItem setImage:image];
@@ -297,14 +293,14 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
-  [self startAnimating];
+  [self startAnimatingStatusBarIcon];
   mIsRecording = YES;
 }
 
 -(void)recordStop {
   NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self killRecordProcesses];
-  [self stopAnimating];
+  [self stopAnimatingStatusBarIcon];
   [item setTitle:@"Start Recording"];
   mIsRecording = NO;
 }

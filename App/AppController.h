@@ -34,5 +34,5 @@ AudioDeviceList *mDevices;
 UInt32 currentFrame;
 UInt32 totalFrames;
 NSTimer *animTimer;
-UInt32 timeElapsed;
+UInt32 mTimeSinceLaunch;
 NSTimer *timeElapsedTimer;
