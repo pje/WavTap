@@ -37,8 +37,7 @@ protected:
   SInt32 mActualThruLatency;
   Float64 mInToOutSampleOffset;
   double mInputLoad, mOutputLoad;
-  double mThruTime;
-  
+  double mThruTime;  
 };
 
 #endif
