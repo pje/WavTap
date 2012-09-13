@@ -8,7 +8,7 @@ globally capture whatever your mac is playing—as simply as a screenshot
 
 #### Installation
 
-run the [installer](https://github.com/downloads/pje/WavTap/WavTap%200.1.0.pkg).
+run the [installer](https://github.com/downloads/pje/WavTap/WavTap%200.2.0.pkg).
 
 ### Nerd Corner
 
