@@ -9,7 +9,7 @@
 #include "AudioDevice.h"
 #include "WavFileUtils.h"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(20), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);
 }
@@ -64,7 +64,8 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
     } else {
       This->mHistoryBufferByteSize = This->mHistoryBufferMaxByteSize;
     }
-    This->mHistoryBufferHeadOffsetFrameNumber = ((This->mHistoryBufferHeadOffsetFrameNumber + (inInputData->mBuffers[i].mDataByteSize / 8)) % (This->mHistoryBufferMaxByteSize / 8));
+    UInt32 frameSize = sizeof(UInt32) * inInputData->mBuffers[i].mNumberChannels;
+    This->mHistoryBufferHeadOffsetFrameNumber = ((This->mHistoryBufferHeadOffsetFrameNumber + (inInputData->mBuffers[i].mDataByteSize / frameSize)) % (This->mHistoryBufferMaxByteSize / frameSize));
   }
   return noErr;
 }
@@ -79,7 +80,8 @@ OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *in
 }
 
 void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
-  UInt32 numberOfBytesWeWant = secondsRequested * mInputDevice.mFormat.mSampleRate * (4 * 2);
+  UInt32 frameSize = sizeof(UInt32) * 2;
+  UInt32 numberOfBytesWeWant = secondsRequested * mInputDevice.mFormat.mSampleRate * frameSize;
   int32_t numberOfBytesToRequest = std::min(numberOfBytesWeWant, mHistoryBufferByteSize);
   AudioBuffer *buffer = new AudioBuffer();
   buffer->mDataByteSize = numberOfBytesToRequest;
@@ -88,7 +90,7 @@ void AudioTee::saveHistoryBuffer(const char* fileName, UInt32 secondsRequested){
   abl->mNumberBuffers = 1;
   abl->mBuffers[0] = *buffer;
   numberOfBytesToRequest = buffer->mDataByteSize;
-  UInt32 nFrames = numberOfBytesToRequest / (4 * 2);
+  UInt32 nFrames = numberOfBytesToRequest / frameSize;
   mHistBuf->Fetch(abl, nFrames, mHistoryBufferHeadOffsetFrameNumber);
   WavFileUtils::writeWavFileHeaders(fileName, numberOfBytesToRequest, mOutputDevice.mFormat.mSampleRate, 16);
   WavFileUtils::writeBytesToFile(fileName, (UInt32*)abl->mBuffers[0].mData, numberOfBytesToRequest, nFrames, this->mOutputDevice.mFormat);

@@ -10,14 +10,14 @@ public:
   void Start();
   void Stop();
   void saveHistoryBuffer(const char* fileName, UInt32 secondsRequested);
-  Byte *mWorkBuf;
+  AudioDevice mInputDevice;
+  AudioDevice mOutputDevice;
   UInt32 mSecondsInHistoryBuffer;
+protected:
+  Byte *mWorkBuf;
   CARingBuffer *mHistBuf;
   UInt32 mHistoryBufferMaxByteSize;
   UInt32 mBufferSize;
-  AudioDevice mInputDevice;
-  AudioDevice mOutputDevice;
-protected:
   static OSStatus InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
   static OSStatus OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
   AudioDeviceIOProcID mInputIOProcID;
