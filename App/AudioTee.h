@@ -8,7 +8,7 @@ public:
   AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID);
   ~AudioTee() {}
   void Start();
-  bool Stop();
+  void Stop();
   void saveHistoryBuffer(const char* fileName, UInt32 secondsRequested);
   Byte *mWorkBuf;
   UInt32 mSecondsInHistoryBuffer;

@@ -37,7 +37,7 @@ void AudioTee::Start() {
   AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
 }
 
-bool AudioTee::Stop() {
+void AudioTee::Stop() {
   AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
   AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
   AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
@@ -46,7 +46,6 @@ bool AudioTee::Stop() {
     delete[] mWorkBuf;
     mWorkBuf = NULL;
   }
-  return true;
 }
 
 OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
