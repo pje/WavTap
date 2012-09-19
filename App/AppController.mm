@@ -53,7 +53,6 @@
     if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
   [self initConnections];
-  [self registerPropertyListeners];
   [self bindHotKeys];
   [self initStatusBar];
   [self buildMenu];
@@ -105,56 +104,6 @@
   [item setTag:(NSInteger)mTagForQuit];
   [item setTarget:self];
   [mMenu setDelegate:(id)self];
-}
-
-OSStatus DeviceListenerProc (AudioObjectID inObjectID, UInt32 inNumberAddresses, const AudioObjectPropertyAddress inAddresses[], void*inClientData) {
-  OSStatus err = noErr;
-  AppController *app = (AppController *)CFBridgingRelease(inClientData);
-  AudioObjectPropertyAddress addr;
-  for(int i = 0; i < inNumberAddresses; i++){
-    addr = inAddresses[i];
-    switch(addr.mSelector) {
-      case kAudioDevicePropertyAvailableNominalSampleRates:     { break; }
-      case kAudioDevicePropertyClockDomain:                     { break; }
-      case kAudioDevicePropertyConfigurationApplication:        { break; }
-      case kAudioDevicePropertyDeviceCanBeDefaultDevice:        { break; }
-      case kAudioDevicePropertyDeviceCanBeDefaultSystemDevice:  { break; }
-      case kAudioDevicePropertyDeviceIsAlive:                   { break; }
-      case kAudioDevicePropertyDeviceIsRunning:                 { break; }
-      case kAudioDevicePropertyDeviceUID:                       { break; }
-      case kAudioDevicePropertyIcon:                            { break; }
-      case kAudioDevicePropertyIsHidden:                        { break; }
-      case kAudioDevicePropertyLatency:                         { break; }
-      case kAudioDevicePropertyModelUID:                        { break; }
-      case kAudioDevicePropertyNominalSampleRate:{
-        app->mEngine->Stop();
-        printf("(DeviceListenerProc) MatchSampleRates returned status code: %u \n", err);
-        app->mEngine->Start();
-        break;
-      }
-      case kAudioDevicePropertyPreferredChannelLayout:          { break; }
-      case kAudioDevicePropertyPreferredChannelsForStereo:      { break; }
-      case kAudioDevicePropertyRelatedDevices:                  { break; }
-      case kAudioDevicePropertySafetyOffset:                    { break; }
-      case kAudioDevicePropertyStreams:                         { break; }
-      case kAudioDevicePropertyTransportType:                   { break; }
-      case kAudioObjectPropertyControlList:                     { break; }
-      case kAudioDeviceProcessorOverload:{
-        printf("kAudioDeviceProcessorOverload detected!");
-        break;
-      }
-    }
-  }
-  return err;
-}
-
-- (void)registerPropertyListeners {
-  AudioObjectPropertyAddress addr = { kAudioDevicePropertyNominalSampleRate, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-  AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
-  addr.mElement = kAudioDeviceProcessorOverload;
-  addr.mScope = kAudioObjectPropertyScopeWildcard;
-  AudioObjectAddPropertyListener(mEngine->mInputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
-  AudioObjectAddPropertyListener(mEngine->mOutputDevice.mID, &addr, DeviceListenerProc, (__bridge void *)self);
 }
 
 - (void)setToggleRecordHotKey:(NSString*)keyEquivalent {
