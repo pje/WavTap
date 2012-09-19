@@ -143,15 +143,6 @@
   return err;
 }
 
-- (OSStatus)restoreSystemOutputDeviceVolume {
-  OSStatus err = noErr;
-  AudioObjectPropertyAddress volAddress = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
-  AudioObjectSetPropertyData(kAudioObjectSystemObject, &volAddress, 0, NULL, sizeof(Float32), &mStashedVolume);
-  AudioObjectPropertyAddress vol2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
-  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &vol2Address, 0, NULL, sizeof(Float32), &mStashedVolume2);
-  return err;
-}
-
 OSStatus recordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef anEvent, void *userData) {
   AppController* inUserData = (__bridge AppController*)userData;
   [inUserData toggleRecord];
