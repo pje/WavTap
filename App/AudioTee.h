@@ -16,7 +16,6 @@ public:
   CARingBuffer *mHistBuf;
   UInt32 mHistoryBufferMaxByteSize;
   UInt32 mBufferSize;
-  SInt32 mExtraLatencyFrames;
   AudioDevice mInputDevice;
   AudioDevice mOutputDevice;
   bool mFirstRun;
@@ -33,11 +32,6 @@ protected:
   AudioDeviceIOProc mOutputIOProc;
   UInt32 mHistoryBufferByteSize;
   UInt32 mHistoryBufferHeadOffsetFrameNumber;
-  Float64 mLastInputSampleCount, mIODeltaSampleCount;
-  SInt32 mActualThruLatency;
-  Float64 mInToOutSampleOffset;
-  double mInputLoad, mOutputLoad;
-  double mThruTime;  
 };
 
 #endif

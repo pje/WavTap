@@ -9,7 +9,7 @@
 #include "AudioDevice.h"
 #include "WavFileUtils.h"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(20), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mExtraLatencyFrames(0), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mFirstRun(true), mRunning(false), mMuting(false), mThruing(true), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(20), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mFirstRun(true), mRunning(false), mMuting(false), mThruing(true), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);
 }
@@ -57,7 +57,6 @@ bool AudioTee::Stop() {
 
 OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  This->mLastInputSampleCount = inInputTime->mSampleTime;
   for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
     memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
     AudioBuffer ab;
@@ -84,8 +83,6 @@ OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *in
       UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
       memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
     }
-  } else {
-    This->mThruTime = 0.;
   }
   return noErr;
 }
