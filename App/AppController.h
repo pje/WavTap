@@ -14,14 +14,12 @@ AppController : NSObject {
 - (void)historyRecord;
 @end
 
+bool mIsRecording;
 UInt32 mTagForToggleRecord;
 UInt32 mTagForHistoryRecord;
 UInt32 mTagForQuit;
 EventHandlerUPP recordHotKeyFunction;
 EventHandlerUPP historyRecordHotKeyFunction;
-bool menuItemVisible;
-bool mIsRecording;
-bool mHistoryRecordIsStopping;
 Float32 mStashedVolume;
 Float32 mStashedVolume2;
 AudioDeviceID mStashedAudioDeviceID;
@@ -31,12 +29,10 @@ struct Device {
   char mName[64];
   AudioDeviceID mID;
 };
-typedef std::vector<Device> AudioDeviceList;
-AudioDeviceList *mDevices;
+std::vector<Device> *mDevices;
 UInt32 currentFrame;
 UInt32 totalFrames;
 NSTimer *animTimer;
-UInt32 mTimeSinceLaunch;
 NSTimer *timeElapsedTimer;
 
 #endif

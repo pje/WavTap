@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <math.h>
 #include <vector>
 #include <Carbon/Carbon.h>
 #include <AudioToolbox/AudioFile.h>
@@ -14,13 +15,12 @@
   mTagForHistoryRecord = 2;
   mTagForQuit = 3;
   mIsRecording = NO;
-  mDevices = new AudioDeviceList();
+  mDevices = new std::vector<Device>();
   mOutputDeviceID = 0;
   mWavTapDeviceID = 0;
   currentFrame = 0;
   totalFrames = 8;
   animTimer = NULL;
-  mTimeSinceLaunch = 0;
   return self;
 }
 
@@ -49,7 +49,7 @@
 - (void)awakeFromNib {
   [[NSApplication sharedApplication] setDelegate:(id)self];
   [self rebuildDeviceList];
-  for (AudioDeviceList::iterator i = mDevices->begin(); i != mDevices->end(); ++i) {
+  for (std::vector<Device>::iterator i = mDevices->begin(); i != mDevices->end(); ++i) {
     if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
   [self initConnections];
@@ -71,12 +71,13 @@
 }
 
 - (void)onSecondPassed:(NSTimer*)timer {
-  if(mTimeSinceLaunch++ < mEngine->mSecondsInHistoryBuffer){
-    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", mTimeSinceLaunch];
+  UInt32 timeSinceLaunch = floor([[NSDate date] timeIntervalSinceDate:[timer userInfo]]);
+  if(1 < timeSinceLaunch && timeSinceLaunch <= mEngine->mSecondsInHistoryBuffer){
+    NSString *historyRecordMenuItemTitle = [NSString stringWithFormat:@"Save Last %d Secs", timeSinceLaunch];
     NSInteger tagKey = mTagForHistoryRecord;
     NSMenuItem *item = [mMenu itemWithTag:(NSInteger)tagKey];
     [item setTitle:historyRecordMenuItemTitle];
-  } else {
+  } else if(timeSinceLaunch > mEngine->mSecondsInHistoryBuffer){
     [timeElapsedTimer invalidate];
   }
 }
@@ -89,11 +90,11 @@
     [item setTarget:self];
     [item setTag:(NSInteger)mTagForToggleRecord];
     [self setToggleRecordHotKey:@" "];
-    NSString *historyRecordMenuItemTitle = @"Save Last 0 Secs";
+    NSString *historyRecordMenuItemTitle = @"Save Last Second";
     item = [mMenu addItemWithTitle:historyRecordMenuItemTitle action:@selector(historyRecord) keyEquivalent:@""];
     [item setTarget:self];
     [item setTag:(NSInteger)mTagForHistoryRecord];
-    timeElapsedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onSecondPassed:) userInfo:nil repeats:YES];
+    timeElapsedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onSecondPassed:) userInfo:[NSDate date] repeats:YES];
   } else {
     item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
     [item setTarget:self];
@@ -176,7 +177,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   RegisterEventHotKey(49, cmdKey+controlKey, keyID0, GetApplicationEventTarget(), 0, &theRef0);
 }
 
--(void)launchRecordProcess {
+- (void)launchRecordProcess {
   NSString *sharedSupportPath = [[NSBundle bundleForClass:AppController.class] sharedSupportPath];
   NSString *scriptName = @"record";
   NSString *scriptExtension = @"sh";
@@ -189,7 +190,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   [task launch];
 }
 
--(void)killRecordProcesses {
+- (void)killRecordProcesses {
   NSString *sharedSupportPath = [[NSBundle bundleForClass:AppController.class] sharedSupportPath];
   NSString *scriptName = @"kill_recorders";
   NSString *scriptExtension = @"sh";
@@ -215,7 +216,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   [mSbItem setImage:image];
 }
 
--(void)recordStart {
+- (void)recordStart {
   NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self launchRecordProcess];
   [item setTitle:@"Stop Recording"];
@@ -223,7 +224,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   mIsRecording = YES;
 }
 
--(void)recordStop {
+- (void)recordStop {
   NSMenuItem *item = [mMenu itemWithTag:mTagForToggleRecord];
   [self killRecordProcesses];
   [self stopAnimatingStatusBarIcon];
@@ -231,11 +232,11 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   mIsRecording = NO;
 }
 
--(void)toggleRecord {
+- (void)toggleRecord {
   (mIsRecording) ? [self recordStop] : [self recordStart];
 }
 
--(void)historyRecord {
+- (void)historyRecord {
   NSString *destDirname = [NSString stringWithFormat:@"%@", [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) objectAtIndex:0]];
   NSDate *date = [NSDate date];
   long time1 = (long) [date timeIntervalSince1970];

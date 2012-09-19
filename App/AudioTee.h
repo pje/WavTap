@@ -17,15 +17,9 @@ public:
   UInt32 mBufferSize;
   AudioDevice mInputDevice;
   AudioDevice mOutputDevice;
-  bool mFirstRun;
-  bool mRunning;
-  bool mMuting;
-  bool mThruing;
 protected:
   static OSStatus InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
   static OSStatus OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData);
-  void ComputeThruOffset();
-  Float64 mSampleRate;
   AudioDeviceIOProcID mInputIOProcID;
   AudioDeviceIOProcID mOutputIOProcID;
   AudioDeviceIOProc mOutputIOProc;

@@ -9,19 +9,17 @@
 #include "AudioDevice.h"
 #include "WavFileUtils.h"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(20), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mFirstRun(true), mRunning(false), mMuting(false), mThruing(true), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mWorkBuf(NULL), mSecondsInHistoryBuffer(20), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);
 }
 
 void AudioTee::Start() {
-  if (mRunning) return;
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
   if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
     printf("Error in AudioTee::Start() - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
     return;
   }
-  mSampleRate = mInputDevice.mFormat.mSampleRate;
   mWorkBuf = new Byte[mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame];
   memset(mWorkBuf, 0, mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame);
   UInt32 framesInHistoryBuffer = NextPowerOfTwo(mInputDevice.mFormat.mSampleRate * mSecondsInHistoryBuffer);
@@ -30,7 +28,6 @@ void AudioTee::Start() {
   mHistBuf->Allocate(2, mInputDevice.mFormat.mBytesPerFrame, framesInHistoryBuffer);
   printf("Initializing history buffer with byte capacity %u — %f seconds at %f kHz", mHistoryBufferMaxByteSize, (mHistoryBufferMaxByteSize / mInputDevice.mFormat.mSampleRate / (4 * 2)), mInputDevice.mFormat.mSampleRate);
   printf("Initializing work buffer with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
-  mRunning = true;
   mInputIOProcID = NULL;
   AudioDeviceCreateIOProcID(mInputDevice.mID, InputIOProc, this, &mInputIOProcID);
   AudioDeviceStart(mInputDevice.mID, mInputIOProcID);
@@ -41,9 +38,6 @@ void AudioTee::Start() {
 }
 
 bool AudioTee::Stop() {
-  if (!mRunning) return false;
-  mRunning = false;
-  usleep(5000);
   AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
   AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
   AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
@@ -78,11 +72,9 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
 
 OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  if (!This->mMuting && This->mThruing) {
-    for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
-      UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
-      memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
-    }
+  for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
+    UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
+    memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
   }
   return noErr;
 }
