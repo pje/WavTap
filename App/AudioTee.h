@@ -7,8 +7,8 @@ class AudioTee {
 public:
   AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID);
   ~AudioTee() {}
-  void Start();
-  void Stop();
+  void start();
+  void stop();
   void saveHistoryBuffer(const char* fileName, UInt32 secondsRequested);
   AudioDevice mInputDevice;
   AudioDevice mOutputDevice;

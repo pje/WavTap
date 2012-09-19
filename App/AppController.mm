@@ -132,7 +132,7 @@
   AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(Float32), &maxVolume);
   AudioObjectPropertyAddress volSwapWav2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
   AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(Float32), &maxVolume);
-  mEngine->Start();
+  mEngine->start();
   AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(AudioDeviceID), &mWavTapDeviceID);
 }
 
@@ -250,7 +250,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 
 - (void)cleanupOnBeforeQuit {
   if(mIsRecording) [self recordStop];
-  if(mEngine) mEngine->Stop();
+  if(mEngine) mEngine->stop();
   [self restoreSystemOutputDevice];
 }
 

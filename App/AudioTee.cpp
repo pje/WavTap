@@ -14,7 +14,7 @@ AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : 
   mOutputDevice.SetBufferSize(mBufferSize);
 }
 
-void AudioTee::Start() {
+void AudioTee::start() {
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
   if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
     printf("Error in AudioTee::Start() - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
@@ -37,7 +37,7 @@ void AudioTee::Start() {
   AudioDeviceStart(mOutputDevice.mID, mOutputIOProcID);
 }
 
-void AudioTee::Stop() {
+void AudioTee::stop() {
   AudioDeviceStop(mInputDevice.mID, mInputIOProcID);
   AudioDeviceDestroyIOProcID(mInputDevice.mID, mInputIOProcID);
   AudioDeviceStop(mOutputDevice.mID, mOutputIOProcID);
