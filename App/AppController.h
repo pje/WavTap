@@ -1,3 +1,5 @@
+#ifndef __AppController_h__
+#define __AppController_h__
 #include <Cocoa/Cocoa.h>
 #include "AudioTee.h"
 
@@ -36,3 +38,5 @@ UInt32 totalFrames;
 NSTimer *animTimer;
 UInt32 mTimeSinceLaunch;
 NSTimer *timeElapsedTimer;
+
+#endif
