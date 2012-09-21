@@ -41,6 +41,11 @@
 		3E7B1B6C15FEA6B90030310F /* CARingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1AA915FEA6B90030310F /* CARingBuffer.h */; };
 		3E82F12515E15B6900F16BCB /* sox in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12415E15B6900F16BCB /* sox */; };
 		3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */; };
+		3E8BA32E160C53FE008E43AB /* WaveformWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E8BA32B160C53FE008E43AB /* WaveformWindowController.h */; };
+		3E8BA32F160C53FE008E43AB /* WaveformWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8BA32C160C53FE008E43AB /* WaveformWindowController.m */; };
+		3E8BA330160C53FE008E43AB /* WaveformWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E8BA32D160C53FE008E43AB /* WaveformWindowController.xib */; };
+		3E8BA333160C5C6D008E43AB /* WaveformView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E8BA331160C5C6D008E43AB /* WaveformView.h */; };
+		3E8BA334160C5C6D008E43AB /* WaveformView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E8BA332160C5C6D008E43AB /* WaveformView.m */; };
 		3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB6916E15E8E83A00F632B8 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -89,6 +94,11 @@
 		3E7B1AA915FEA6B90030310F /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARingBuffer.h; sourceTree = "<group>"; };
 		3E82F12415E15B6900F16BCB /* sox */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sox; sourceTree = "<group>"; };
 		3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
+		3E8BA32B160C53FE008E43AB /* WaveformWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformWindowController.h; sourceTree = "<group>"; };
+		3E8BA32C160C53FE008E43AB /* WaveformWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformWindowController.m; sourceTree = "<group>"; };
+		3E8BA32D160C53FE008E43AB /* WaveformWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WaveformWindowController.xib; sourceTree = "<group>"; };
+		3E8BA331160C5C6D008E43AB /* WaveformView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaveformView.h; sourceTree = "<group>"; };
+		3E8BA332160C5C6D008E43AB /* WaveformView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaveformView.m; sourceTree = "<group>"; };
 		3EB6916E15E8E83A00F632B8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
@@ -126,6 +136,8 @@
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
 				3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */,
 				3E6E960F160123AF006D07F8 /* WavFileUtils.h */,
+				3E8BA331160C5C6D008E43AB /* WaveformView.h */,
+				3E8BA332160C5C6D008E43AB /* WaveformView.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -155,6 +167,9 @@
 		29B97314FDCFA39411CA2CEA /* AudioThru */ = {
 			isa = PBXGroup;
 			children = (
+				3E8BA32B160C53FE008E43AB /* WaveformWindowController.h */,
+				3E8BA32C160C53FE008E43AB /* WaveformWindowController.m */,
+				3E8BA32D160C53FE008E43AB /* WaveformWindowController.xib */,
 				3E7B19ED15FEA6B90030310F /* CoreAudio */,
 				3E63F79A15E91805005221AF /* record.sh */,
 				3E63F79B15E91805005221AF /* kill_recorders.sh */,
@@ -240,6 +255,8 @@
 				3E7B1B2B15FEA6B90030310F /* CABitOperations.h in Headers */,
 				3E7B1B6C15FEA6B90030310F /* CARingBuffer.h in Headers */,
 				3E6E9611160123AF006D07F8 /* WavFileUtils.h in Headers */,
+				3E8BA32E160C53FE008E43AB /* WaveformWindowController.h in Headers */,
+				3E8BA333160C5C6D008E43AB /* WaveformView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +325,7 @@
 				3E248CC915FE5D6100EA16C0 /* menuIcon5.tiff in Resources */,
 				3E248CCA15FE5D6100EA16C0 /* menuIcon6.tiff in Resources */,
 				3E248CCB15FE5D6100EA16C0 /* menuIcon7.tiff in Resources */,
+				3E8BA330160C53FE008E43AB /* WaveformWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +342,8 @@
 				3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */,
 				3E7B1B6B15FEA6B90030310F /* CARingBuffer.cpp in Sources */,
 				3E6E9610160123AF006D07F8 /* WavFileUtils.cpp in Sources */,
+				3E8BA32F160C53FE008E43AB /* WaveformWindowController.m in Sources */,
+				3E8BA334160C5C6D008E43AB /* WaveformView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,7 +24,14 @@
   return self;
 }
 
-- (void)rebuildDeviceList{
+- (void)startCanvas {
+  mWaveformWindowController = [[WaveformWindowController alloc] initWithWindowNibName:@"WaveformWindowController"];
+  [mWaveformWindowController showWindow:self];
+  
+
+}
+
+- (void)rebuildDeviceList {
   if (mDevices) mDevices->clear();
   UInt32 propsize;
   AudioObjectPropertyAddress theAddress = { kAudioHardwarePropertyDevices, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
@@ -55,6 +62,7 @@
   [self bindHotKeys];
   [self initStatusBar];
   [self buildMenu];
+  [self startCanvas];
 }
 
 - (void)initStatusBar {

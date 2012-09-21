@@ -2,6 +2,7 @@
 #define __AppController_h__
 #include <Cocoa/Cocoa.h>
 #include "AudioTee.h"
+#include "WaveformWindowController.h"
 
 @interface
 AppController : NSObject {
@@ -34,5 +35,6 @@ UInt32 currentFrame;
 UInt32 totalFrames;
 NSTimer *animTimer;
 NSTimer *timeElapsedTimer;
+WaveformWindowController *mWaveformWindowController;
 
 #endif
