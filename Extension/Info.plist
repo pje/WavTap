@@ -26,7 +26,7 @@
 	<string>${MODULE_VERSION}</string>
 	<key>IOKitPersonalities</key>
 	<dict>
-		<key>PhantomAudioDriver</key>
+		<key>WavTapDriver</key>
 		<dict>
 			<key>AudioEngines</key>
 			<array>
