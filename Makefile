@@ -1,4 +1,4 @@
-.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app uninstall-command install-kext install-app launch-app launch-system-audio-setup build clean uninstall install
+.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app install-kext install-app launch-app build clean uninstall install
 
 SHELL=/bin/sh
 ROOT=$$(pwd)
@@ -9,7 +9,6 @@ KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
 BUILD_TYPE=Deployment
-SYSTEM_AUDIO_SETUP=/Applications/Utilities/Audio\ MIDI\ Setup.app
 
 build-kext:
 	cd $(KEXT_DIR)
@@ -35,9 +34,6 @@ uninstall-app:
 	osascript -e 'tell application "$(PRODUCT_NAME)"' -e 'quit' -e 'end tell'
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
-uninstall-command:
-	if [[ -a ~/Library/Services/WavTap.workflow ]]; then rm -rf ~/Library/Services/WavTap.workflow; fi
-
 install-kext: build-kext
 	sudo cp -rv $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext /System/Library/Extensions
 	sudo chmod -R 700 /System/Library/Extensions/$(PRODUCT_NAME).kext
@@ -51,13 +47,10 @@ install-app: build-app
 launch-app:
 	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
 
-launch-system-audio-setup:
-	open $(SYSTEM_AUDIO_SETUP)
-
 build: build-kext build-app
 
 clean: clean-app clean-kext
 
-uninstall: uninstall-command uninstall-app uninstall-kext
+uninstall: uninstall-app uninstall-kext
 
 install: build uninstall install-kext install-app launch-app
