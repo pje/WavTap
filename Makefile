@@ -32,7 +32,7 @@ uninstall-kext:
 	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
 
 uninstall-app:
-	osascript -e 'tell application "WavTap"' -e 'quit' -e 'end tell'
+	osascript -e 'tell application "$(PRODUCT_NAME)"' -e 'quit' -e 'end tell'
 	rm -rf /Applications/$(PRODUCT_NAME).app
 
 uninstall-command:
