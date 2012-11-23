@@ -1,4 +1,4 @@
-#include "WavFileUtils.h"
+#include "WavFileUtils.hpp"
 #include <iostream>
 #include <fstream>
 #include <stdio.h>

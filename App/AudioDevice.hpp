@@ -1,5 +1,5 @@
-#ifndef __AudioDevice_h__
-#define __AudioDevice_h__
+#ifndef __AudioDevice_hpp__
+#define __AudioDevice_hpp__
 #include <CoreServices/CoreServices.h>
 #include <CoreAudio/CoreAudio.h>
 

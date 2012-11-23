@@ -5,8 +5,8 @@
 #include <Carbon/Carbon.h>
 #include <AudioToolbox/AudioFile.h>
 #include <AudioUnit/AudioUnit.h>
-#include "AppController.h"
-#include "AudioTee.h"
+#include "AppController.hpp"
+#include "AudioTee.hpp"
 
 @implementation AppController
 

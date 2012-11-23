@@ -1,4 +1,4 @@
-#include "AudioDevice.h"
+#include "AudioDevice.hpp"
 
 AudioDevice::AudioDevice(AudioDeviceID id, bool isInput) {
 	mID = id;

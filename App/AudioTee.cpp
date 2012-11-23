@@ -5,9 +5,9 @@
 #include <AudioToolbox/AudioConverter.h>
 #include <CARingBuffer.h>
 #include <CABitOperations.h>
-#include "AudioTee.h"
-#include "AudioDevice.h"
-#include "WavFileUtils.h"
+#include "AudioTee.hpp"
+#include "AudioDevice.hpp"
+#include "WavFileUtils.hpp"
 
 AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   mInputDevice.SetBufferSize(mBufferSize);

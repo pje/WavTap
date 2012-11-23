@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		54D0AD960A5E329B006380BD /* WavTapDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407620601317E002E6A19 /* WavTapDevice.h */; };
-		54D0AD970A5E329B006380BD /* WavTapEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = C93407630601317E002E6A19 /* WavTapEngine.h */; };
+		3EA7CAEC165F609A00BD5263 /* WavTapDevice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAEA165F609A00BD5263 /* WavTapDevice.hpp */; };
+		3EA7CAED165F609A00BD5263 /* WavTapEngine.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAEB165F609A00BD5263 /* WavTapEngine.hpp */; };
 		54D0AD9B0A5E329B006380BD /* WavTapEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407640601317E002E6A19 /* WavTapEngine.cpp */; };
 		54D0AD9D0A5E329B006380BD /* WavTapDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C93407660601317E002E6A19 /* WavTapDevice.cpp */; };
 /* End PBXBuildFile section */
@@ -16,10 +16,10 @@
 /* Begin PBXFileReference section */
 		00F55081007288EA11FF4F98 /* Kernel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kernel.framework; path = System/Library/Frameworks/Kernel.framework; sourceTree = SDKROOT; };
 		2249EC7E0ED70C7E003C8357 /* WavTap.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = WavTap.xcconfig; sourceTree = "<group>"; };
+		3EA7CAEA165F609A00BD5263 /* WavTapDevice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WavTapDevice.hpp; sourceTree = "<group>"; };
+		3EA7CAEB165F609A00BD5263 /* WavTapEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WavTapEngine.hpp; sourceTree = "<group>"; };
 		54D0ADA60A5E329B006380BD /* WavTap.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WavTap.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		789FB3540D62DE4E00C0F5C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C93407620601317E002E6A19 /* WavTapDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WavTapDevice.h; sourceTree = "<group>"; };
-		C93407630601317E002E6A19 /* WavTapEngine.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = WavTapEngine.h; sourceTree = "<group>"; };
 		C93407640601317E002E6A19 /* WavTapEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = WavTapEngine.cpp; sourceTree = "<group>"; };
 		C93407660601317E002E6A19 /* WavTapDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = WavTapDevice.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -66,9 +66,9 @@
 		247142CAFF3F8F9811CA285C /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				C93407620601317E002E6A19 /* WavTapDevice.h */,
+				3EA7CAEB165F609A00BD5263 /* WavTapEngine.hpp */,
+				3EA7CAEA165F609A00BD5263 /* WavTapDevice.hpp */,
 				C93407660601317E002E6A19 /* WavTapDevice.cpp */,
-				C93407630601317E002E6A19 /* WavTapEngine.h */,
 				C93407640601317E002E6A19 /* WavTapEngine.cpp */,
 			);
 			name = Source;
@@ -81,8 +81,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54D0AD960A5E329B006380BD /* WavTapDevice.h in Headers */,
-				54D0AD970A5E329B006380BD /* WavTapEngine.h in Headers */,
+				3EA7CAEC165F609A00BD5263 /* WavTapDevice.hpp in Headers */,
+				3EA7CAED165F609A00BD5263 /* WavTapEngine.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

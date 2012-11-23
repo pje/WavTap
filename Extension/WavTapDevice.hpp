@@ -1,5 +1,5 @@
-#ifndef _SAMPLEAUDIODEVICE_H
-#define _SAMPLEAUDIODEVICE_H
+#ifndef _SAMPLEAUDIODEVICE_HPP
+#define _SAMPLEAUDIODEVICE_HPP
 
 #include <IOKit/audio/IOAudioDevice.h>
 

@@ -1,5 +1,5 @@
-#include "WavTapDevice.h"
-#include "WavTapEngine.h"
+#include "WavTapDevice.hpp"
+#include "WavTapEngine.hpp"
 #include <IOKit/audio/IOAudioControl.h>
 #include <IOKit/audio/IOAudioLevelControl.h>
 #include <IOKit/audio/IOAudioToggleControl.h>

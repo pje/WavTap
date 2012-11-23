@@ -1,6 +1,6 @@
-#ifndef __AudioTee_h__
-#define __AudioTee_h__
-#include "AudioDevice.h"
+#ifndef __AudioTee_hpp__
+#define __AudioTee_hpp__
+#include "AudioDevice.hpp"
 #include "CARingBuffer.h"
 
 class AudioTee {

@@ -1,5 +1,5 @@
-#ifndef __WavFileUtils__
-#define __WavFileUtils__
+#ifndef __WavFileUtils_hpp__
+#define __WavFileUtils_hpp__
 #include <CoreAudio/CoreAudio.h>
 #include <iostream>
 

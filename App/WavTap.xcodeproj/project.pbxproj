@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		222FE3330EBB6D9900FD13FC /* AppController.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DD850310A6BE01FEEC38 /* AppController.h */; };
-		222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = F591DDB2031157A901FEEC38 /* AudioDevice.h */; };
 		222FE33A0EBB6D9900FD13FC /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		222FE33F0EBB6D9900FD13FC /* appIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = C9CFAC1E06EFA390001BE11F /* appIcon.icns */; };
 		222FE3410EBB6D9900FD13FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -27,13 +25,11 @@
 		3E248CCB15FE5D6100EA16C0 /* menuIcon7.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E248CC315FE5D6100EA16C0 /* menuIcon7.tiff */; };
 		3E48E0E415F40FFD00A49308 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */; };
 		3E4C6C4915FBAE56005F0518 /* AudioTee.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */; };
-		3E4C6C4A15FBAE56005F0518 /* AudioTee.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E4C6C4815FBAE56005F0518 /* AudioTee.h */; };
 		3E63F79C15E91805005221AF /* record.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E63F79D15E91805005221AF /* kill_recorders.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79E15E9181D005221AF /* kill_recorders.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79B15E91805005221AF /* kill_recorders.sh */; };
 		3E63F79F15E91821005221AF /* record.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E63F79A15E91805005221AF /* record.sh */; };
 		3E6E9610160123AF006D07F8 /* WavFileUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */; };
-		3E6E9611160123AF006D07F8 /* WavFileUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6E960F160123AF006D07F8 /* WavFileUtils.h */; };
 		3E7B1B1215FEA6B90030310F /* CAAtomic.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A4F15FEA6B90030310F /* CAAtomic.h */; };
 		3E7B1B2A15FEA6B90030310F /* CAAutoDisposer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A6715FEA6B90030310F /* CAAutoDisposer.h */; };
 		3E7B1B2B15FEA6B90030310F /* CABitOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1A6815FEA6B90030310F /* CABitOperations.h */; };
@@ -41,6 +37,10 @@
 		3E7B1B6C15FEA6B90030310F /* CARingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E7B1AA915FEA6B90030310F /* CARingBuffer.h */; };
 		3E82F12515E15B6900F16BCB /* sox in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E82F12415E15B6900F16BCB /* sox */; };
 		3E8AAF7D15DFAA420096D8D5 /* menuIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */; };
+		3EA7CAF3165F627200BD5263 /* AppController.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAEF165F627200BD5263 /* AppController.hpp */; };
+		3EA7CAF4165F627200BD5263 /* AudioDevice.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAF0165F627200BD5263 /* AudioDevice.hpp */; };
+		3EA7CAF5165F627200BD5263 /* AudioTee.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAF1165F627200BD5263 /* AudioTee.hpp */; };
+		3EA7CAF6165F627200BD5263 /* WavFileUtils.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 3EA7CAF2165F627200BD5263 /* WavFileUtils.hpp */; };
 		3EB6916F15E8E83A00F632B8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB6916E15E8E83A00F632B8 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -77,11 +77,9 @@
 		3E248CC315FE5D6100EA16C0 /* menuIcon7.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon7.tiff; sourceTree = "<group>"; };
 		3E48E0E315F40FFD00A49308 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioTee.cpp; sourceTree = "<group>"; };
-		3E4C6C4815FBAE56005F0518 /* AudioTee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioTee.h; sourceTree = "<group>"; };
 		3E63F79A15E91805005221AF /* record.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = record.sh; sourceTree = "<group>"; };
 		3E63F79B15E91805005221AF /* kill_recorders.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = kill_recorders.sh; sourceTree = "<group>"; };
 		3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WavFileUtils.cpp; sourceTree = "<group>"; };
-		3E6E960F160123AF006D07F8 /* WavFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WavFileUtils.h; sourceTree = "<group>"; };
 		3E7B1A4F15FEA6B90030310F /* CAAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAtomic.h; sourceTree = "<group>"; };
 		3E7B1A6715FEA6B90030310F /* CAAutoDisposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAAutoDisposer.h; sourceTree = "<group>"; };
 		3E7B1A6815FEA6B90030310F /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
@@ -89,13 +87,15 @@
 		3E7B1AA915FEA6B90030310F /* CARingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CARingBuffer.h; sourceTree = "<group>"; };
 		3E82F12415E15B6900F16BCB /* sox */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sox; sourceTree = "<group>"; };
 		3E8AAF7C15DFAA420096D8D5 /* menuIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = menuIcon.tiff; sourceTree = "<group>"; };
+		3EA7CAEF165F627200BD5263 /* AppController.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AppController.hpp; sourceTree = "<group>"; };
+		3EA7CAF0165F627200BD5263 /* AudioDevice.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AudioDevice.hpp; sourceTree = "<group>"; };
+		3EA7CAF1165F627200BD5263 /* AudioTee.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AudioTee.hpp; sourceTree = "<group>"; };
+		3EA7CAF2165F627200BD5263 /* WavFileUtils.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WavFileUtils.hpp; sourceTree = "<group>"; };
 		3EB6916E15E8E83A00F632B8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Carbon.framework; sourceTree = DEVELOPER_DIR; };
 		C9CFAC1E06EFA390001BE11F /* appIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = appIcon.icns; sourceTree = "<group>"; };
 		C9E9CD2F08E78DA30024DA5B /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
-		F591DD850310A6BE01FEEC38 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		F591DD860310A6BE01FEEC38 /* AppController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = AppController.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		F591DD8D0310AAC801FEEC38 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
-		F591DDB2031157A901FEEC38 /* AudioDevice.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = AudioDevice.h; sourceTree = "<group>"; };
 		F591DDB3031157A901FEEC38 /* AudioDevice.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDevice.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -118,14 +118,14 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				F591DD850310A6BE01FEEC38 /* AppController.h */,
+				3EA7CAEF165F627200BD5263 /* AppController.hpp */,
+				3EA7CAF0165F627200BD5263 /* AudioDevice.hpp */,
+				3EA7CAF1165F627200BD5263 /* AudioTee.hpp */,
+				3EA7CAF2165F627200BD5263 /* WavFileUtils.hpp */,
 				F591DD860310A6BE01FEEC38 /* AppController.mm */,
 				3E4C6C4715FBAE56005F0518 /* AudioTee.cpp */,
-				3E4C6C4815FBAE56005F0518 /* AudioTee.h */,
-				F591DDB2031157A901FEEC38 /* AudioDevice.h */,
 				F591DDB3031157A901FEEC38 /* AudioDevice.cpp */,
 				3E6E960E160123AF006D07F8 /* WavFileUtils.cpp */,
-				3E6E960F160123AF006D07F8 /* WavFileUtils.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -232,14 +232,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				222FE3330EBB6D9900FD13FC /* AppController.h in Headers */,
-				222FE3340EBB6D9900FD13FC /* AudioDevice.h in Headers */,
-				3E4C6C4A15FBAE56005F0518 /* AudioTee.h in Headers */,
 				3E7B1B1215FEA6B90030310F /* CAAtomic.h in Headers */,
 				3E7B1B2A15FEA6B90030310F /* CAAutoDisposer.h in Headers */,
 				3E7B1B2B15FEA6B90030310F /* CABitOperations.h in Headers */,
 				3E7B1B6C15FEA6B90030310F /* CARingBuffer.h in Headers */,
-				3E6E9611160123AF006D07F8 /* WavFileUtils.h in Headers */,
+				3EA7CAF3165F627200BD5263 /* AppController.hpp in Headers */,
+				3EA7CAF4165F627200BD5263 /* AudioDevice.hpp in Headers */,
+				3EA7CAF5165F627200BD5263 /* AudioTee.hpp in Headers */,
+				3EA7CAF6165F627200BD5263 /* WavFileUtils.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

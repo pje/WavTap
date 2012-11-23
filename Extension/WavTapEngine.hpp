@@ -1,8 +1,8 @@
-#ifndef _WavTapENGINE_H
-#define _WavTapENGINE_H
+#ifndef _WavTapENGINE_HPP
+#define _WavTapENGINE_HPP
 
 #include <IOKit/audio/IOAudioEngine.h>
-#include "WavTapDevice.h"
+#include "WavTapDevice.hpp"
 
 class WavTapEngine : public IOAudioEngine {
   OSDeclareDefaultStructors(WavTapEngine);

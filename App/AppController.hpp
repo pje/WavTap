@@ -1,7 +1,7 @@
-#ifndef __AppController_h__
-#define __AppController_h__
+#ifndef __AppController_hpp__
+#define __AppController_hpp__
 #include <Cocoa/Cocoa.h>
-#include "AudioTee.h"
+#include "AudioTee.hpp"
 
 @interface
 AppController : NSObject {
