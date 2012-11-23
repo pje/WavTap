@@ -32,23 +32,6 @@ bool WavTapEngine::init(OSDictionary *properties)
     // Do class-specific initialization here
     // If no non-hardware initialization is needed, this function can be removed
 
-	/* The below clojure code creates the lookup table. You can run it in the
-	 online repl at http://try-clojure.org/, although it seems copy and
-	 paste doesn't work. The easiest way to get running with clojure on your
-	 own machine is to install https://github.com/technomancy/leiningen
-	 and type "lien repl"
-
-	 (defn dB->scale [ind dB] [ind (float (Math/pow 10.0 (/ dB 10.0)))])
-	 (defn val->dB [min-dB v] (+ (/ (* (- min-dB) v) 99.0) min-dB))
-	 (doseq [[i v] (map-indexed dB->scale (map #(val->dB -40.0 %) (range 0 100)))] (println "\tlogTable[" i "] = " v ";"))
-
-	 To adjust the minimum volume, change the -40 (in dB) value in the last line and also the
-	 corresponding visual aid in WavTapDevice.cpp Do not change the number of volume points
-	 without also changing the minVolume/minGain constants in WavTapDevice.cpp.
-
-	 Initially, I used -71 as the minimum volume, but in reality my setup seems to reach zero
-	 muchbefore -71. A floor of -40 seems to work *ok* for my setup.
-	 */
 	logTable[ 0 ] =  1.0E-4 ;
 	logTable[ 1 ] =  1.09749875E-4 ;
 	logTable[ 2 ] =  1.2045036E-4 ;
