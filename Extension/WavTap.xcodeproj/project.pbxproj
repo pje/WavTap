@@ -172,6 +172,7 @@
 		548AD6D409CE873500241D17 /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				SYMROOT = "";
 			};
 			name = Development;
@@ -179,10 +180,7 @@
 		548AD6D509CE873500241D17 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				INFOPLIST_FILE = Info.plist;
 				SYMROOT = "";
 			};
