@@ -1,15 +1,3 @@
-Build/
-todo.txt
-*.log  # Will exclude all .log files
-
-# Xcode User Data
-*.mode1v3
-*.pbxuser
-*.perspective*
 xcuserdata
 *.xcworkspace
-
 build
-.DS_Store
-
-Installer/*.log
