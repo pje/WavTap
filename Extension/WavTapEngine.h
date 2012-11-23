@@ -6,20 +6,20 @@
 
 class WavTapEngine : public IOAudioEngine {
   OSDeclareDefaultStructors(WavTapEngine);
-	UInt32 mBufferSize;
-	void *mBuffer;
+  UInt32 mBufferSize;
+  void *mBuffer;
   float *mThruBuffer;
-	IOAudioStream *outputStream;
-	IOAudioStream *inputStream;
-	UInt32 mLastValidSampleFrame;
-  IOTimerEventSource*	timerEventSource;
+  IOAudioStream *outputStream;
+  IOAudioStream *inputStream;
+  UInt32 mLastValidSampleFrame;
+  IOTimerEventSource*  timerEventSource;
   UInt32 blockSize;
   UInt32 numBlocks;
   UInt32 currentBlock;
   UInt64 blockTimeoutNS;
   UInt64 nextTime;
   bool duringHardwareInit;
-	float logTable[100];
+  float logTable[100];
 public:
   virtual bool init(OSDictionary *properties);
   virtual void free();
