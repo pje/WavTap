@@ -1,5 +1,6 @@
-SHELL=/bin/sh
+.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app uninstall-command install-kext install-app launch-app launch-system-audio-setup build clean uninstall install
 
+SHELL=/bin/sh
 ROOT=$$(pwd)
 PRODUCT_NAME=WavTap
 KEXT_DIR=$(ROOT)/Extension
