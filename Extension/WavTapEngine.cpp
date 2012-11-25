@@ -361,18 +361,10 @@ UInt32 WavTapEngine::getCurrentSampleFrame() {
 }
 
 IOReturn WavTapEngine::performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate) {
-  if (!duringHardwareInit) {
-  }
-  if (newFormat) {
-    if (!duringHardwareInit) {
-    }
-  }
-  if (newSampleRate) {
-    if (!duringHardwareInit) {
-      UInt64 newblockTime = blockSize;
-      newblockTime *= 1000000000;
-      blockTimeoutNS = newblockTime / newSampleRate->whole;
-    }
+  if (newSampleRate && !duringHardwareInit) {
+    UInt64 newblockTime = blockSize;
+    newblockTime *= 1000000000;
+    blockTimeoutNS = newblockTime / newSampleRate->whole;
   }
   return kIOReturnSuccess;
 }
