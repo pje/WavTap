@@ -14,17 +14,16 @@ const SInt32 WavTapDevice::kVolumeMax = 99;
 const SInt32 WavTapDevice::kGainMax = 99;
 
 bool WavTapDevice::initHardware(IOService *provider) {
-  bool result = false;
-  if (!super::initHardware(provider))
-    goto Done;
+  if (!super::initHardware(provider)) {
+    return false;
+  }
   setDeviceName("WavTap");
   setDeviceShortName("WavTap");
   setManufacturerName("WavTap");
-  if (!createAudioEngines())
-    goto Done;
-  result = true;
-Done:
-  return result;
+  if (!createAudioEngines()){
+    return false;
+  }
+  return true;
 }
 
 bool WavTapDevice::createAudioEngines() {
