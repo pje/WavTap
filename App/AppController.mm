@@ -95,7 +95,7 @@
     [item setTag:(NSInteger)mTagForHistoryRecord];
     timeElapsedTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onSecondPassed:) userInfo:[NSDate date] repeats:YES];
   } else {
-    item = [mMenu addItemWithTitle:@"Kernel Extension Not Installed" action:NULL keyEquivalent:@""];
+    item = [mMenu addItemWithTitle:@"Kernel Extension Not Loaded" action:NULL keyEquivalent:@""];
     [item setTarget:self];
   }
   [mMenu addItem:[NSMenuItem separatorItem]];
