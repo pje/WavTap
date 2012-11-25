@@ -16,10 +16,9 @@
 OSDefineMetaClassAndStructors(WavTapEngine, IOAudioEngine)
 
 bool WavTapEngine::init(OSDictionary *properties) {
-  bool result = false;
   OSNumber *number = NULL;
   if (!super::init(properties)) {
-    goto Done;
+    return false;
   }
   logTable[0] = 1.0E-4;
   logTable[1] = 1.09749875E-4;
@@ -124,41 +123,39 @@ bool WavTapEngine::init(OSDictionary *properties) {
   number = OSDynamicCast(OSNumber, getProperty(NUM_BLOCKS_KEY));
   if (number) {
     numBlocks = number->unsigned32BitValue();
-  }
-  else {
+  } else {
     numBlocks = NUM_BLOCKS;
   }
   number = OSDynamicCast(OSNumber, getProperty(BLOCK_SIZE_KEY));
   if (number) {
     blockSize = number->unsigned32BitValue();
-  }
-  else {
+  } else {
     blockSize = BLOCK_SIZE;
   }
-  inputStream = outputStream = NULL;
-  duringHardwareInit = FALSE;
+  outputStream = NULL;
+  inputStream = NULL;
+  duringHardwareInit = false;
   mLastValidSampleFrame = 0;
-  result = true;
-Done:
-  return result;
+  return true;
 }
 
 bool WavTapEngine::initHardware(IOService *provider) {
-  bool result = false;
   IOAudioSampleRate initialSampleRate;
   IOWorkLoop *wl;
-  duringHardwareInit = TRUE;
+  duringHardwareInit = true;
   if (!super::initHardware(provider)) {
-    goto Done;
+    duringHardwareInit = false;
+    return false;
   }
   initialSampleRate.whole = 0;
   initialSampleRate.fraction = 0;
   if (!createAudioStreams(&initialSampleRate)) {
-    IOLog("WavTapEngine::initHardware() failed\n");
-    goto Done;
+    duringHardwareInit = false;
+    return false;
   }
   if (initialSampleRate.whole == 0) {
-    goto Done;
+    duringHardwareInit = false;
+    return false;
   }
   blockTimeoutNS = blockSize;
   blockTimeoutNS *= 1000000000;
@@ -167,17 +164,17 @@ bool WavTapEngine::initHardware(IOService *provider) {
   setNumSampleFramesPerBuffer(blockSize * numBlocks);
   wl = getWorkLoop();
   if (!wl) {
-    goto Done;
+    duringHardwareInit = false;
+    return false;
   }
   timerEventSource = IOTimerEventSource::timerEventSource(this, ourTimerFired);
   if (!timerEventSource) {
-    goto Done;
+    duringHardwareInit = false;
+    return false;
   }
   workLoop->addEventSource(timerEventSource);
-  result = true;
-Done:
-  duringHardwareInit = FALSE;
-  return result;
+  duringHardwareInit = false;
+  return true;
 }
 
 bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate) {
