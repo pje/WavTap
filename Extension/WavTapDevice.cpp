@@ -27,32 +27,12 @@ bool WavTapDevice::initHardware(IOService *provider) {
 }
 
 bool WavTapDevice::createAudioEngines() {
-  OSArray *audioEngineArray = OSDynamicCast(OSArray, getProperty(AUDIO_ENGINES_KEY));
-  OSCollectionIterator *audioEngineIterator;
-  OSDictionary *audioEngineDict;
-  if (!audioEngineArray) {
-    IOLog("WavTapDevice[%p]::createAudioEngine() - Error: no AudioEngine array in personality.\n", this);
-    return false;
-  }
-  audioEngineIterator = OSCollectionIterator::withCollection(audioEngineArray);
-  if (!audioEngineIterator) {
-    IOLog("WavTapDevice: no audio engines available.\n");
-    return true;
-  }
-  while ((audioEngineDict = (OSDictionary*)audioEngineIterator->getNextObject())) {
-    WavTapEngine *audioEngine = NULL;
-    if (OSDynamicCast(OSDictionary, audioEngineDict) == NULL)
-      continue;
-    audioEngine = new WavTapEngine;
-    if (!audioEngine)
-      continue;
-    if (!audioEngine->init(audioEngineDict))
-      continue;
-    initControls(audioEngine);
-    activateAudioEngine(audioEngine);
-    audioEngine->release();
-  }
-  audioEngineIterator->release();
+  OSDictionary *audioEngineDict = OSDynamicCast(OSDictionary, getProperty(AUDIO_ENGINE_KEY));
+  WavTapEngine *audioEngine = new WavTapEngine;
+  audioEngine->init(audioEngineDict);
+  initControls(audioEngine);
+  activateAudioEngine(audioEngine);
+  audioEngine->release();
   return true;
 }
 
@@ -73,18 +53,11 @@ bool WavTapDevice::initControls(WavTapEngine* audioEngine) {
     mMuteIn[channel] = false;
     mMuteOut[channel] = false;
   }
-  const char *channelNameMap[NUM_CHANS+1] = {
-    kIOAudioControlChannelNameAll,
-    kIOAudioControlChannelNameLeft,
-    kIOAudioControlChannelNameRight,
-    kIOAudioControlChannelNameCenter,
-    kIOAudioControlChannelNameLeftRear,
-    kIOAudioControlChannelNameRightRear,
-    kIOAudioControlChannelNameSub
-  };
-  for (UInt32 channel=7; channel <= NUM_CHANS; channel++)
+  const char *channelNameMap[NUM_CHANS+1] = { kIOAudioControlChannelNameAll, kIOAudioControlChannelNameLeft, kIOAudioControlChannelNameRight, kIOAudioControlChannelNameCenter, kIOAudioControlChannelNameLeftRear, kIOAudioControlChannelNameRightRear, kIOAudioControlChannelNameSub };
+  for (UInt32 channel = 7; channel <= NUM_CHANS; channel++) {
     channelNameMap[channel] = "Unknown Channel";
-  for (unsigned channel=0; channel <= NUM_CHANS; channel++) {
+  }
+  for (unsigned channel = 0; channel <= NUM_CHANS; channel++) {
     control = IOAudioLevelControl::createVolumeControl(WavTapDevice::kVolumeMax, 0, WavTapDevice::kVolumeMax, (-40 << 16) + (32768), 0, channel, channelNameMap[channel], channel, kIOAudioControlUsageOutput);
     addControl(control, (IOAudioControl::IntValueChangeHandler)volumeChangeHandler);
     control = IOAudioLevelControl::createVolumeControl(WavTapDevice::kGainMax, 0, WavTapDevice::kGainMax, 0, (40 << 16) + (32768), channel, channelNameMap[channel], channel, kIOAudioControlUsageInput);
