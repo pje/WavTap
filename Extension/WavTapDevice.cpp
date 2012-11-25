@@ -73,55 +73,63 @@ bool WavTapDevice::initControls(WavTapEngine* audioEngine) {
 IOReturn WavTapDevice::volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue) {
   IOReturn result = kIOReturnBadArgument;
   WavTapDevice *audioDevice = (WavTapDevice *)target;
-  if (audioDevice)
+  if (audioDevice) {
     result = audioDevice->volumeChanged(volumeControl, oldValue, newValue);
+  }
   return result;
 }
 
 IOReturn WavTapDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue) {
-  if (volumeControl)
+  if (volumeControl) {
     mVolume[volumeControl->getChannelID()] = newValue;
+  }
   return kIOReturnSuccess;
 }
 
 IOReturn WavTapDevice::outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue) {
   IOReturn result = kIOReturnBadArgument;
   WavTapDevice *audioDevice = (WavTapDevice*)target;
-  if (audioDevice)
+  if (audioDevice) {
     result = audioDevice->outputMuteChanged(muteControl, oldValue, newValue);
+  }
   return result;
 }
 
 IOReturn WavTapDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue) {
-  if (muteControl)
+  if (muteControl) {
     mMuteOut[muteControl->getChannelID()] = newValue;
+  }
   return kIOReturnSuccess;
 }
 
 IOReturn WavTapDevice::gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue) {
   IOReturn result = kIOReturnBadArgument;
   WavTapDevice *audioDevice = (WavTapDevice *)target;
-  if (audioDevice)
+  if (audioDevice) {
     result = audioDevice->gainChanged(gainControl, oldValue, newValue);
+  }
   return result;
 }
 
 IOReturn WavTapDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue) {
-  if (gainControl)
+  if (gainControl) {
     mGain[gainControl->getChannelID()] = newValue;
+  }
   return kIOReturnSuccess;
 }
 
 IOReturn WavTapDevice::inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue) {
   IOReturn result = kIOReturnBadArgument;
   WavTapDevice *audioDevice = (WavTapDevice*)target;
-  if (audioDevice)
+  if (audioDevice) {
     result = audioDevice->inputMuteChanged(muteControl, oldValue, newValue);
+  }
   return result;
 }
 
 IOReturn WavTapDevice::inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue) {
-  if (muteControl)
+  if (muteControl) {
     mMuteIn[muteControl->getChannelID()] = newValue;
+  }
   return kIOReturnSuccess;
 }

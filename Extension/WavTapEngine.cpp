@@ -187,13 +187,15 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate) {
   UInt32 startingChannelID = 1;
   OSString *desc;
   desc = OSDynamicCast(OSString, getProperty(DESCRIPTION_KEY));
-  if (desc)
+  if (desc) {
     setDescription(desc->getCStringNoCopy());
+  }
   number = OSDynamicCast(OSNumber, getProperty(NUM_STREAMS_KEY));
-  if (number)
+  if (number) {
     numStreams = number->unsigned32BitValue();
-  else
+  } else {
     numStreams = NUM_STREAMS;
+  }
   formatArray = OSDynamicCast(OSArray, getProperty(FORMATS_KEY));
   if (formatArray == NULL) {
     IOLog("SF formatArray is NULL\n");
@@ -311,20 +313,25 @@ bool WavTapEngine::createAudioStreams(IOAudioSampleRate *initialSampleRate) {
     continue;
 Error:
     IOLog("WavTapEngine[%p]::createAudioStreams() - ERROR\n", this);
-    if (inputStream)
+    if (inputStream) {
       inputStream->release();
-    if (outputStream)
+    }
+    if (outputStream) {
       outputStream->release();
-    if (formatIterator)
+    }
+    if (formatIterator) {
       formatIterator->release();
-    if (sampleRateIterator)
+    }
+    if (sampleRateIterator) {
       sampleRateIterator->release();
+    }
     goto Done;
   }
   result = true;
 Done:
-  if (!result)
+  if (!result) {
     IOLog("WavTapEngine[%p]::createAudioStreams() - failed!\n", this);
+  }
   return result;
 }
 
@@ -403,8 +410,7 @@ IOReturn WavTapEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, UI
   mLastValidSampleFrame = firstSampleFrame+numSampleFrames;
   if (device->mMuteIn[0]) {
     memset((UInt8*)mThruBuffer + byteOffset, 0, numBytes);
-  }
-  else {
+  } else {
     memcpy((UInt8*)mThruBuffer + byteOffset, (UInt8 *)mixBuf + byteOffset, numBytes);
     float masterGain = logTable[ device->mGain[0] ];
     float masterVolume = logTable[ device->mVolume[0] ];
@@ -414,10 +420,11 @@ IOReturn WavTapEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, UI
       float channelVolume = logTable[ device->mVolume[channel+1] ];
       float adjustment = masterVolume * channelVolume * masterGain * channelGain;
       for (UInt32 channelBufferIterator = 0; channelBufferIterator < numSampleFrames; channelBufferIterator++) {
-        if (channelMute)
+        if (channelMute){
           mThruBuffer[offset + channelBufferIterator*channelCount + channel] = 0;
-        else
+        } else {
           mThruBuffer[offset + channelBufferIterator*channelCount + channel] *= adjustment;
+        }
       }
     }
   }
@@ -428,9 +435,10 @@ IOReturn WavTapEngine::convertInputSamples(const void *sampleBuf, void *destBuf,
   UInt32 frameSize = streamFormat->fNumChannels * sizeof(float);
   UInt32 offset = firstSampleFrame * frameSize;
   WavTapDevice *device = (WavTapDevice*)audioDevice;
-  if (device->mMuteOut[0])
+  if (device->mMuteOut[0]) {
     memset((UInt8*)destBuf, 0, numSampleFrames * frameSize);
-  else
+  } else {
     memcpy((UInt8*)destBuf, (UInt8*)mThruBuffer + offset, numSampleFrames * frameSize);
+  }
   return kIOReturnSuccess;
 }
