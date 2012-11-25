@@ -12,7 +12,7 @@ class WavTapEngine : public IOAudioEngine {
   IOAudioStream *outputStream;
   IOAudioStream *inputStream;
   UInt32 mLastValidSampleFrame;
-  IOTimerEventSource*  timerEventSource;
+  IOTimerEventSource *timerEventSource;
   UInt32 blockSize;
   UInt32 numBlocks;
   UInt32 currentBlock;
