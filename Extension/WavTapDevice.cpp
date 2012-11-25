@@ -67,9 +67,11 @@ bool WavTapDevice::createAudioEngines() {
 
 bool WavTapDevice::initControls(WavTapEngine* audioEngine) {
   IOAudioControl *control = NULL;
-  for (UInt32 channel=0; channel <= NUM_CHANS; channel++) {
-    mVolume[channel] = mGain[channel] = kVolumeMax;
-    mMuteOut[channel] = mMuteIn[channel] = false;
+  for (UInt32 channel = 0; channel <= NUM_CHANS; channel++) {
+    mGain[channel] = kVolumeMax;
+    mVolume[channel] = kVolumeMax;
+    mMuteIn[channel] = false;
+    mMuteOut[channel] = false;
   }
   const char *channelNameMap[NUM_CHANS+1] = {
     kIOAudioControlChannelNameAll,
