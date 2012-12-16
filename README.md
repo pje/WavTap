@@ -6,6 +6,8 @@ globally capture whatever your mac is playing—as simply as a screenshot
 
 (this is alpha software. it's sorta stable, with caveats.)
 
+it creates the Wav files in your Desktop
+
 #### Installation
 
 run the [installer](https://github.com/downloads/pje/WavTap/WavTap%200.2.0.pkg).
