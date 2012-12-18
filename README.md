@@ -6,8 +6,6 @@ Capture whatever your mac is playing to a .wav file on your Desktop—as simply 
 
 (this is alpha software. it's sorta stable, with caveats.)
 
-it creates the Wav files in your Desktop
-
 #### Installation
 
 run the [installer](https://github.com/downloads/pje/WavTap/WavTap%200.2.0.pkg).
