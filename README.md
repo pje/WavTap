@@ -1,6 +1,6 @@
 ## WavTap
 
-globally capture whatever your mac is playing—as simply as a screenshot
+Capture whatever your mac is playing to a .wav file on your Desktop—as simply as a screenshot
 
 ![](https://raw.github.com/pje/WavTap/master/screenshot.png)
 
