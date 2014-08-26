@@ -5,6 +5,7 @@
 #include <Carbon/Carbon.h>
 #include <AudioToolbox/AudioFile.h>
 #include <AudioUnit/AudioUnit.h>
+#include <QuartzCore/CoreImage.h>
 #include "AppController.hpp"
 #include "AudioTee.hpp"
 
@@ -19,7 +20,7 @@
   mOutputDeviceID = 0;
   mWavTapDeviceID = 0;
   currentFrame = 0;
-  totalFrames = 8;
+  totalFrames = 16;
   animTimer = NULL;
   return self;
 }
@@ -59,10 +60,10 @@
 
 - (void)initStatusBar {
   mSbItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-  NSImage *image = [NSImage imageNamed:@"menuIcon"];
+  NSImage *image = [NSImage imageNamed:@"menuIcon0"];
   [image setTemplate:YES];
   [mSbItem setImage:image];
-  NSImage *alternateImage = [NSImage imageNamed:@"menuIconInverse"];
+  NSImage *alternateImage = [NSImage imageNamed:@"menuIcon0Inverse"];
   [alternateImage setTemplate:YES];
   [mSbItem setAlternateImage:alternateImage];
   [mSbItem setToolTip: @"WavTap"];
@@ -193,17 +194,22 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
 }
 
 - (void)startAnimatingStatusBarIcon {
-  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/16.0 target:self selector:@selector(updateStatusBarIcon:) userInfo:nil repeats:YES];
+  animTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/12.0 target:self selector:@selector(updateStatusBarIcon:) userInfo:nil repeats:YES];
 }
 
 - (void)stopAnimatingStatusBarIcon {
   [animTimer invalidate];
+  currentFrame = 0;
+  NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"menuIcon%d", (currentFrame % totalFrames)]];
+  [image setTemplate:YES];
+  [mSbItem setImage:image];
 }
 
 - (void)updateStatusBarIcon:(NSTimer*)timer {
-  NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"menuIcon%d", (currentFrame++ % totalFrames)]];
+  NSImage* image = [NSImage imageNamed:[NSString stringWithFormat:@"menuIcon%d", (currentFrame % totalFrames)]];
   [image setTemplate:YES];
   [mSbItem setImage:image];
+  currentFrame++;
 }
 
 - (void)recordStart {

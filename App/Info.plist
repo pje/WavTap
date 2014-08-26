@@ -28,5 +28,7 @@
 	<string>NSApplication</string>
 	<key>NSUIElement</key>
 	<integer>1</integer>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 </dict>
 </plist>
