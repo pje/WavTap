@@ -2,7 +2,7 @@
 
 Capture whatever your mac is playing to a .wav file on your Desktop—as simply as a screenshot
 
-![](https://raw.github.com/pje/WavTap/master/screenshot.png)
+![](screenshot.png)
 
 (this is alpha software. it's sorta stable, with caveats.)
 
