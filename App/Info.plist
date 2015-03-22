@@ -22,13 +22,13 @@
 	<string>0.1.0</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
+	<key>NSHighResolutionCapable</key>
+	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>NSUIElement</key>
 	<integer>1</integer>
-	<key>NSHighResolutionCapable</key>
-	<true/>
 </dict>
 </plist>
