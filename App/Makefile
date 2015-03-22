@@ -8,7 +8,11 @@ BUILD_TYPE=Deployment
 
 build:
 	cd $(APP_DIR)
-	xcodebuild -project $(APP_DIR)/WavTap.xcodeproj -target WavTap -configuration ${BUILD_TYPE} clean build
+	xcodebuild \
+		CONFIGURATION_BUILD_DIR=$(APP_BUILD_DIR) \
+		-project $(APP_DIR)/WavTap.xcodeproj \
+		-target WavTap \
+		-configuration ${BUILD_TYPE} clean build
 
 clean:
 	rm -rf $(APP_DIR)/build/UninstalledProducts
