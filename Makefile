@@ -1,5 +1,3 @@
-.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app install-kext install-app launch-app build clean uninstall install
-
 ROOT=$$(pwd)
 KEXT_DIR=$(ROOT)/Extension
 APP_DIR=$(ROOT)/App
@@ -38,3 +36,5 @@ uninstall-app:
 
 uninstall-kext:
 	cd $(KEXT_DIR) && make uninstall
+
+.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app install-kext install-app launch-app build clean uninstall install

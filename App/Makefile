@@ -1,5 +1,3 @@
-.PHONY: build clean uninstall install launch
-
 PRODUCT_NAME=WavTap
 APP_DIR=$$(pwd)
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
@@ -26,3 +24,5 @@ launch:
 uninstall:
 	osascript -e 'tell application "$(PRODUCT_NAME)"' -e 'quit' -e 'end tell'
 	rm -rf /Applications/$(PRODUCT_NAME).app
+
+.PHONY: build clean uninstall install launch
