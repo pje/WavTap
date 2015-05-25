@@ -2,7 +2,7 @@ PRODUCT_NAME=WavTap
 KEXT_DIR=$$(pwd)
 KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
 BUILD_TYPE=Deployment
-INSTALL_DESTINATION=/System/Library/Extensionse
+INSTALL_DESTINATION=/System/Library/Extensions
 
 build: $(KEXT_BUILD_DIR)/$(PRODUCT_NAME).kext
 
@@ -20,7 +20,7 @@ $(INSTALL_DESTINATION)/$(PRODUCT_NAME).kext: build
 	sudo kextutil $(INSTALL_DESTINATION)/$(PRODUCT_NAME).kext
 
 uninstall:
-	if [[ "$(shell kextstat | grep $(PRODUCT_NAME) | grep -v grep)" ]]; then sudo kextunload /System/Library/Extensions/$(PRODUCT_NAME).kext; fi
+	if [[ "$(shell kextstat | grep $(PRODUCT_NAME) | grep -v grep)" ]]; then sudo kextunload $(INSTALL_DESTINATION)/$(PRODUCT_NAME).kext; fi
 	sudo rm -rf $(INSTALL_DESTINATION)/$(PRODUCT_NAME).kext
 	sudo rm -rf /Library/Receipts/$(PRODUCT_NAME)*
 	sudo rm -rf /var/db/receipts/*$(PRODUCT_NAME).*
