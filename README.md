@@ -8,6 +8,19 @@ Capture whatever your mac is playing to a .wav file on your Desktop—as simply 
 
 #### Installation
 
+##### Sierra
+It's alive! Takes a few additional steps but unsigned kexts can be run if you complete the following steps.
+
+1. Restart computer in recovery mode ```⌘R```
+
+2. In Terminal type
+
+   ```csrutil disable```
+
+3. Restart computer
+
+4. Run Installer
+
 ##### El Capitan 
 
 **NB: WavTap is completely broken on El Capitan** due to Apple's [System Integrity Protection] (https://en.wikipedia.org/wiki/System_Integrity_Protection). The next release of WavTap will fix this.
