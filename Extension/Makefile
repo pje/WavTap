@@ -1,6 +1,6 @@
 PRODUCT_NAME=WavTap
 KEXT_DIR=$$(pwd)
-KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts
+KEXT_BUILD_DIR=$(KEXT_DIR)/Build/UninstalledProducts/macosx
 BUILD_TYPE=Deployment
 INSTALL_DESTINATION=/System/Library/Extensions
 
