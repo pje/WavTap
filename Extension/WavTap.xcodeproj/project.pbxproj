@@ -249,7 +249,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "";
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NUM_CHANS=$NUM_CHANS",
 					DEBUG,
@@ -259,6 +259,7 @@
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULE_NAME = com.wavtap.driver.WavTap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wavtap.driver.WavTap;
 				PRODUCT_NAME = WavTap;
@@ -291,6 +292,7 @@
 				INSTALL_GROUP = "$(GROUP)";
 				INSTALL_OWNER = "$(USER)";
 				INSTALL_PATH = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MODULE_NAME = com.wavtap.driver.WavTap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wavtap.driver.WavTap;
 				PRODUCT_NAME = WavTap;
