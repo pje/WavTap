@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleIdentifier</key>
-	<string>com.wavtap.driver.WavTap</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -30,6 +30,8 @@
 		<dict>
 			<key>AudioEngine</key>
 			<dict>
+				<key>BlockSize</key>
+				<integer>8192</integer>
 				<key>Description</key>
 				<string>WavTap</string>
 				<key>Formats</key>
@@ -68,8 +70,6 @@
 					<integer>176400</integer>
 					<integer>192000</integer>
 				</array>
-				<key>BlockSize</key>
-				<integer>8192</integer>
 			</dict>
 			<key>CFBundleIdentifier</key>
 			<string>com.wavtap.driver.WavTap</string>

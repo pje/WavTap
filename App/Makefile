@@ -1,6 +1,6 @@
 PRODUCT_NAME=WavTap
 APP_DIR=$$(pwd)
-APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
+APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts/macosx
 APP_INSTALL_DIR=/Applications
 BUILD_TYPE=Deployment
 
