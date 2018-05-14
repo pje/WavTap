@@ -1,5 +1,0 @@
-SDKROOT = macosx10.9
-GCC_VERSION = com.apple.compilers.llvmgcc42
-MACOSX_DEPLOYMENT_TARGET = 10.9
-MODULE_VERSION = 0.4.0
-NUM_CHANS = 64

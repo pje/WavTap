@@ -1,27 +1,27 @@
 ROOT=$$(pwd)
-KEXT_DIR=$(ROOT)/Extension
+DRIVER_DIR=$(ROOT)/Driver
 APP_DIR=$(ROOT)/App
 
-build: build-kext build-app
+build: build-driver build-app
 
-build-kext:
-	cd $(KEXT_DIR) && make build
+build-driver:
+	cd $(DRIVER_DIR) && make build
 
 build-app:
 	cd $(APP_DIR) && make build
 
-clean: clean-app clean-kext
+clean: clean-app clean-driver
 
-clean-kext:
-	cd $(KEXT_DIR) && make clean
+clean-driver:
+	cd $(DRIVER_DIR) && make clean
 
 clean-app:
 	cd $(APP_DIR) && make clean
 
-install: build uninstall install-kext install-app launch-app
+install: build uninstall install-driver install-app launch-app
 
-install-kext:
-	cd $(KEXT_DIR) && make install
+install-driver:
+	cd $(DRIVER_DIR) && make install
 
 install-app:
 	cd $(APP_DIR) && make install
@@ -29,12 +29,12 @@ install-app:
 launch-app:
 	cd $(APP_DIR) && make launch
 
-uninstall: uninstall-app uninstall-kext
+uninstall: uninstall-app uninstall-driver
 
 uninstall-app:
 	cd $(APP_DIR) && make uninstall
 
-uninstall-kext:
-	cd $(KEXT_DIR) && make uninstall
+uninstall-driver:
+	cd $(DRIVER_DIR) && make uninstall
 
-.PHONY: build-kext build-app clean-kext clean-app uninstall-kext uninstall-app install-kext install-app launch-app build clean uninstall install
+.PHONY: build-driver build-app clean-driver clean-app uninstall-driver uninstall-app install-driver install-app launch-app build clean uninstall install

@@ -2,9 +2,9 @@
 
 The build is intended to be as independent of XCode as humanly possible.
 
-`make install` builds and installs both the App and Extension (i.e. everything).
+`make install` builds and installs both the App and Driver (i.e. everything).
 
-All the needed build operations are defined in the [App](App/Makefile) and [Extension](Extension/Makefile) Makefiles.
+All the needed build operations are defined in the [App](App/Makefile) and [Driver](Driver/Makefile) Makefiles.
 
 (If you're at all comfortable with the command line, use this method instead of the pkg installer.)
 
@@ -21,4 +21,4 @@ Build the `pkg` bundler with PackageMaker.app, using Installer/WavTap.pmdoc
 Strictly SemVer, obvi.
 
 App package identifier: `com.wavtap.app.WavTap`
-Extension package identifier: `com.wavtap.driver.WavTap`
+Driver package identifier: `com.wavtap.driver.WavTap`
