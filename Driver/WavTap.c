@@ -495,8 +495,6 @@ static OSStatus WavTap_GetPropertyData(AudioServerPlugInDriverRef inDriver, Audi
   FailWithAction(outDataSize == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetPropertyData: no place to put the return value size");
   FailWithAction(outData == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetPropertyData: no place to put the return value");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required.
   switch(inObjectID) {
   case kObjectID_PlugIn:
     theAnswer = WavTap_GetPlugInPropertyData(inDriver, inObjectID, inClientProcessID, inAddress, inQualifierDataSize, inQualifierData, inDataSize, outDataSize, outData);
@@ -541,9 +539,6 @@ static OSStatus WavTap_SetPropertyData(AudioServerPlugInDriverRef inDriver, Audi
   FailWithAction(inDriver != gAudioServerPlugInDriverRef, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_SetPropertyData: bad driver reference");
   FailWithAction(inAddress == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_SetPropertyData: no address");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetPropertyData() method.
   switch(inObjectID) {
   case kObjectID_PlugIn:
     theAnswer = WavTap_SetPlugInPropertyData(inDriver, inObjectID, inClientProcessID, inAddress, inQualifierDataSize, inQualifierData, inDataSize, inData, &theNumberPropertiesChanged, theChangedAddresses);
@@ -626,9 +621,6 @@ static OSStatus WavTap_IsPlugInPropertySettable(AudioServerPlugInDriverRef inDri
   FailWithAction(outIsSettable == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_IsPlugInPropertySettable: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_PlugIn, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_IsPlugInPropertySettable: not the plug-in object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetPlugInPropertyData() method.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
   case kAudioObjectPropertyClass:
@@ -664,9 +656,6 @@ static OSStatus WavTap_GetPlugInPropertyDataSize(AudioServerPlugInDriverRef inDr
   FailWithAction(outDataSize == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetPlugInPropertyDataSize: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_PlugIn, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_GetPlugInPropertyDataSize: not the plug-in object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetPlugInPropertyData() method.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
     *outDataSize = sizeof(AudioClassID);
@@ -737,8 +726,6 @@ static OSStatus WavTap_GetPlugInPropertyData(AudioServerPlugInDriverRef inDriver
   FailWithAction(outData == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetPlugInPropertyData: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_PlugIn, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_GetPlugInPropertyData: not the plug-in object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
     //  The base class for kAudioPlugInClassID is kAudioObjectClassID
@@ -874,9 +861,6 @@ static OSStatus WavTap_SetPlugInPropertyData(AudioServerPlugInDriverRef inDriver
   FailWithAction(inObjectID != kObjectID_PlugIn, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_SetPlugInPropertyData: not the plug-in object");
   //  initialize the returned number of changed properties
   *outNumberPropertiesChanged = 0;
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetPlugInPropertyData() method.
   switch(inAddress->mSelector) {
   default:
     theAnswer = kAudioHardwareUnknownPropertyError;
@@ -974,9 +958,6 @@ static OSStatus WavTap_GetBoxPropertyDataSize(AudioServerPlugInDriverRef inDrive
   FailWithAction(outDataSize == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetBoxPropertyDataSize: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_Box, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_GetBoxPropertyDataSize: not the plug-in object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetBoxPropertyData() method.
   switch(inAddress->mSelector) {
     case kAudioObjectPropertyBaseClass:
       *outDataSize = sizeof(AudioClassID);
@@ -1057,8 +1038,6 @@ static OSStatus WavTap_GetBoxPropertyData(AudioServerPlugInDriverRef inDriver, A
   FailWithAction(outData == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_GetBoxPropertyData: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_Box, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_GetBoxPropertyData: not the plug-in object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
     //  The base class for kAudioBoxClassID is kAudioObjectClassID
@@ -1209,9 +1188,6 @@ static OSStatus WavTap_SetBoxPropertyData(AudioServerPlugInDriverRef inDriver, A
   //  initialize the returned number of changed properties
   *outNumberPropertiesChanged = 0;
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetPlugInPropertyData() method.
   switch(inAddress->mSelector) {
     case kAudioObjectPropertyName: {
       //  Boxes should allow their name to be editable
@@ -1290,9 +1266,6 @@ static Boolean  WavTap_HasDeviceProperty(AudioServerPlugInDriverRef inDriver, Au
   FailIf(inAddress == NULL, Done, "WavTap_HasDeviceProperty: no address");
   FailIf(inObjectID != kObjectID_Device, Done, "WavTap_HasDeviceProperty: not the device object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetDevicePropertyData() method.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
   case kAudioObjectPropertyClass:
@@ -1340,9 +1313,6 @@ static OSStatus WavTap_IsDevicePropertySettable(AudioServerPlugInDriverRef inDri
   FailWithAction(outIsSettable == NULL, theAnswer = kAudioHardwareIllegalOperationError, Done, "WavTap_IsDevicePropertySettable: no place to put the return value");
   FailWithAction(inObjectID != kObjectID_Device, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_IsDevicePropertySettable: not the device object");
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetDevicePropertyData() method.
   switch(inAddress->mSelector) {
   case kAudioObjectPropertyBaseClass:
   case kAudioObjectPropertyClass:
@@ -1852,9 +1822,6 @@ static OSStatus WavTap_SetDevicePropertyData(AudioServerPlugInDriverRef inDriver
   //  initialize the returned number of changed properties
   *outNumberPropertiesChanged = 0;
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetDevicePropertyData() method.
   switch(inAddress->mSelector) {
   case kAudioDevicePropertyNominalSampleRate:
     //  Changing the sample rate needs to be handled via the
@@ -2756,9 +2723,6 @@ static OSStatus WavTap_SetControlPropertyData(AudioServerPlugInDriverRef inDrive
   //  initialize the returned number of changed properties
   *outNumberPropertiesChanged = 0;
 
-  //  Note that for each object, this driver implements all the required properties plus a few
-  //  extras that are useful but not required. There is more detailed commentary about each
-  //  property in the WavTap_GetControlPropertyData() method.
   switch(inObjectID) {
     case kObjectID_Volume_Input_Master:
     case kObjectID_Volume_Output_Master:
