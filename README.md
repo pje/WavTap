@@ -23,7 +23,7 @@ It's alive! Takes a few additional steps but unsigned kexts can be run if you co
 
 ##### El Capitan 
 
-**NB: WavTap is completely broken on El Capitan** due to Apple's [System Integrity Protection] (https://en.wikipedia.org/wiki/System_Integrity_Protection). The next release of WavTap will fix this.
+**NB: WavTap is completely broken on El Capitan** due to Apple's [System Integrity Protection](https://en.wikipedia.org/wiki/System_Integrity_Protection). The next release of WavTap will fix this.
 
 ##### Yosemite
 
