@@ -1,4 +1,5 @@
 #include <CoreAudio/AudioServerPlugIn.h>
+#include <CoreAudio/CoreAudio.h>
 #include <dispatch/dispatch.h>
 #include <mach/mach_time.h>
 #include <pthread.h>
@@ -264,6 +265,9 @@ static ULONG WavTap_Release(void* inDriver) {
 //  execution of this method.
 static OSStatus WavTap_Initialize(AudioServerPlugInDriverRef inDriver, AudioServerPlugInHostRef inHost) {
   OSStatus theAnswer = 0;
+
+//  AudioDeviceID *devids = new AudioDeviceID[nDevices];
+//  AudioObjectGetPropertyData(kAudioObjectSystemObject, &theAddress, 0, NULL, &propsize, devids);
 
   FailWithAction(inDriver != gAudioServerPlugInDriverRef, theAnswer = kAudioHardwareBadObjectError, Done, "WavTap_Initialize: bad driver reference");
 
@@ -2712,6 +2716,10 @@ Done:
 static OSStatus WavTap_SetControlPropertyData(AudioServerPlugInDriverRef inDriver, AudioObjectID inObjectID, pid_t inClientProcessID, const AudioObjectPropertyAddress* inAddress, UInt32 inQualifierDataSize, const void* inQualifierData, UInt32 inDataSize, const void* inData, UInt32* outNumberPropertiesChanged, AudioObjectPropertyAddress outChangedAddresses[2]) {
   #pragma unused(inClientProcessID, inQualifierDataSize, inQualifierData)
 
+//  AudioObjectGetPropertyData(inObjectID, inAddress);
+
+  Debug("inObjectID: %s", inObjectID);
+
   OSStatus theAnswer = 0;
   Float32 theNewVolume;
 
@@ -3025,6 +3033,20 @@ static OSStatus WavTap_DoIOOperation(AudioServerPlugInDriverRef inDriver, AudioO
   if(inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if(inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
   if(inStreamObjectID != kObjectID_Stream_Input && inStreamObjectID != kObjectID_Stream_Output) { Fail("bad stream ID", kAudioHardwareBadObjectError); }
+
+  switch (inOperationID) {
+    case kAudioServerPlugInIOOperationReadInput:
+      for (UInt32 i = 0; i < 8; i++) {
+        memset(ioMainBuffer + i, rand() % UINT_MAX, inIOBufferFrameSize);
+      }
+      break;
+    case kAudioServerPlugInIOOperationWriteMix: // write input to our internal buffer: There can only be one writer thread
+//      SInt64 writeBegin = (SInt64)inIOCycleInfo->mOutputTime.mSampleTime;
+//      uint8_t *bufferBegin = gDevice.RingBuffer.buffer + (writeBegin % numFramesInRingBuffer) * gDevice.CurrentFormat.mBytesPerFrame;
+//      memcpy(bufferBegin, ioMainBuffer, inIOBufferFrameSize * gDevice.CurrentFormat.mBytesPerFrame);
+//      atomic_store_explicit(&gDevice.LastWriteEndInFrames, writeBegin + inIOBufferFrameSize, memory_order_release);
+      break;
+  }
 
   for (UInt32 i = 0; i < 8; i++) {
     memset(ioMainBuffer + i, rand() % UINT_MAX, inIOBufferFrameSize);
