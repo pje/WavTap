@@ -187,7 +187,7 @@ OSStatus historyRecordHotKeyHandler(EventHandlerCallRef nextHandler, EventRef an
   NSString *scriptExtension = @"sh";
   NSString *scriptAbsolutePath = [NSString stringWithFormat:@"%@/%@.%@", sharedSupportPath, scriptName, scriptExtension];
   NSTask *task=[[NSTask alloc] init];
-  NSArray *argv=[NSArray arrayWithObjects:nil];
+  NSArray *argv=[NSArray new];
   [task setArguments: argv];
   [task setLaunchPath:scriptAbsolutePath];
   [task launch];
