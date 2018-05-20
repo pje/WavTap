@@ -14,7 +14,7 @@
 #   define FourCC2Str(fourcc) (const char[]) { *(((char*)&fourcc)+3), *(((char*)&fourcc)+2), *(((char*)&fourcc)+1), *(((char*)&fourcc)+0), 0 }
 #endif
 
-#define DEBUG 1
+#define DEBUG 0
 
 // old and busted macros below
 
@@ -2992,28 +2992,25 @@ static OSStatus WavTap_WillDoIOOperation(AudioServerPlugInDriverRef inDriver, Au
   if (inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if (inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
 
-Debug(FourCC2Str(inOperationID));
+  Debug(FourCC2Str(inOperationID));
 
-//  bool willDo = false;
-//  bool willDoInPlace = true;
-//  switch(inOperationID) {
-//  case kAudioServerPlugInIOOperationReadInput:
-//    willDo = true;
-//    willDoInPlace = true;
-//    break;
-//
-//  case kAudioServerPlugInIOOperationWriteMix:
-//    willDo = true;
-//    willDoInPlace = true;
-//    break;
-//
-//  };
-//
-//  if(outWillDo != NULL) (*outWillDo = willDo);
-//  if(outWillDoInPlace != NULL) (*outWillDoInPlace = willDoInPlace);
+  bool willDo = false;
+  bool willDoInPlace = true;
+  switch(inOperationID) {
+  case kAudioServerPlugInIOOperationReadInput:
+    willDo = true;
+    willDoInPlace = true;
+    break;
 
-  *outWillDo = true;
-  *outWillDoInPlace = true;
+  case kAudioServerPlugInIOOperationWriteMix:
+    willDo = true;
+    willDoInPlace = true;
+    break;
+
+  };
+
+  if(outWillDo != NULL) (*outWillDo = willDo);
+  if(outWillDoInPlace != NULL) (*outWillDoInPlace = willDoInPlace);
 
   return noErr;
 }
@@ -3037,10 +3034,6 @@ static OSStatus WavTap_DoIOOperation(AudioServerPlugInDriverRef inDriver, AudioO
   if(inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if(inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
   if(inStreamObjectID != kObjectID_Stream_Input && inStreamObjectID != kObjectID_Stream_Output) { Fail("bad stream ID", kAudioHardwareBadObjectError); }
-
-  for (UInt32 i = 0; i < 8; i++) {
-    memset(ioMainBuffer + i, (rand() % UINT_MAX), inIOBufferFrameSize);
-  }
 
   return noErr;
 }

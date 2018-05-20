@@ -1,4 +1,3 @@
-PRODUCT_NAME=WavTap
 APP_DIR=$$(pwd)
 APP_BUILD_DIR=$(APP_DIR)/build/UninstalledProducts
 APP_INSTALL_DIR=/Applications
@@ -16,13 +15,13 @@ clean:
 	rm -rf $(APP_DIR)/build/UninstalledProducts
 
 install: build
-	cp -r $(APP_BUILD_DIR)/$(PRODUCT_NAME).app $(APP_INSTALL_DIR)
+	sudo cp -r $(APP_BUILD_DIR)/WavTap.app $(APP_INSTALL_DIR)
 
 launch:
-	open $(APP_INSTALL_DIR)/$(PRODUCT_NAME).app
+	open $(APP_INSTALL_DIR)/WavTap.app
 
 uninstall:
-	osascript -e 'tell application "$(PRODUCT_NAME)"' -e 'quit' -e 'end tell'
-	rm -rf /Applications/$(PRODUCT_NAME).app
+	osascript -e 'tell application "WavTap"' -e 'quit' -e 'end tell'
+	sudo rm -rf /Applications/WavTap.app
 
 .PHONY: build clean uninstall install launch
