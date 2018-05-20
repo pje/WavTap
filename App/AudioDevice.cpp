@@ -29,17 +29,18 @@ OSStatus AudioDevice::SetSampleRate(Float64 sr) {
   UInt32 size = sizeof(mFormat);
   AudioObjectPropertyAddress addr = { kAudioDevicePropertyStreamFormat, (mIsInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput), 0 };
   err = AudioObjectSetPropertyData(mID, &addr, 0, NULL, size, &mFormat);
-  if(mFormat.mSampleRate != sr) printf("Error in AudioDevice::SetSampleRate - sample rate mismatch!");
+  if(mFormat.mSampleRate != sr) Debug("Error in AudioDevice::SetSampleRate - sample rate mismatch!");
   return err;
 }
 
+//  kAudioDevicePropertyBufferFrameSize: A UInt32 whose value indicates the number of frames in the IO buffers.
 OSStatus AudioDevice::SetBufferSize(UInt32 buffersize) {
   OSStatus err = noErr;
   UInt32 size = sizeof(UInt32);
   AudioObjectPropertyAddress addr = { kAudioDevicePropertyBufferFrameSize, (mIsInput ? kAudioDevicePropertyScopeInput : kAudioDevicePropertyScopeOutput), 0 };
   err = AudioObjectSetPropertyData(mID, &addr, 0, NULL, size, &buffersize);
   AudioObjectGetPropertyData(mID, &addr, 0, NULL, &size, &mBufferSizeFrames);
-  if(mBufferSizeFrames != buffersize) printf("buffer size mismatch!");
+  if(mBufferSizeFrames != buffersize) Debug("buffer size mismatch!");
   return err;
 }
 

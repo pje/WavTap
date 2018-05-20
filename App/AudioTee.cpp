@@ -9,25 +9,30 @@
 #include "AudioDevice.hpp"
 #include "WavFileUtils.hpp"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(1024), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(128), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+  syslog(LOG_NOTICE, "%s: Initializing AudioTee buffers with mBufferSize:%u", __func__, mBufferSize);
+  AudioObjectShow(inputDeviceID);
+  AudioObjectShow(outputDeviceID);
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);
 }
 
+// In audio data a frame is one sample across all channels. In non-interleaved
+// audio, the per frame fields identify one channel. In interleaved audio, the per
+// frame fields identify the set of n channels. In uncompressed audio, a Packet is
+// one frame, (mFramesPerPacket == 1)
 void AudioTee::start() {
   if (mInputDevice.mID == kAudioDeviceUnknown || mOutputDevice.mID == kAudioDeviceUnknown) return;
   if (mInputDevice.mFormat.mSampleRate != mOutputDevice.mFormat.mSampleRate) {
-    printf("Error in AudioTee::Start() - sample rate mismatch: %f / %f\n", mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
+    syslog(LOG_ERR, "%s: sample rate mismatch: %f / %f", __func__, mInputDevice.mFormat.mSampleRate, mOutputDevice.mFormat.mSampleRate);
     return;
   }
   mWorkBuf = new Byte[mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame];
-  memset(mWorkBuf, 0, mInputDevice.mBufferSizeFrames * mInputDevice.mFormat.mBytesPerFrame);
   UInt32 framesInHistoryBuffer = NextPowerOfTwo(mInputDevice.mFormat.mSampleRate * mSecondsInHistoryBuffer);
   mHistoryBufferMaxByteSize = mInputDevice.mFormat.mBytesPerFrame * framesInHistoryBuffer;
   mHistBuf = new CARingBuffer();
   mHistBuf->Allocate(2, mInputDevice.mFormat.mBytesPerFrame, framesInHistoryBuffer);
-  printf("Initializing history buffer with byte capacity %u — %f seconds at %f kHz", mHistoryBufferMaxByteSize, (mHistoryBufferMaxByteSize / mInputDevice.mFormat.mSampleRate / (4 * 2)), mInputDevice.mFormat.mSampleRate);
-  printf("Initializing work buffer with mBufferSizeFrames:%u and mBytesPerFrame %u\n", mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
+  syslog(LOG_NOTICE, "%s: Initializing work buffer with mBufferSizeFrames:%u and mBytesPerFrame %u\n", __func__, mInputDevice.mBufferSizeFrames, mInputDevice.mFormat.mBytesPerFrame);
   mInputIOProcID = NULL;
   AudioDeviceCreateIOProcID(mInputDevice.mID, InputIOProc, this, &mInputIOProcID);
   AudioDeviceStart(mInputDevice.mID, mInputIOProcID);
@@ -50,7 +55,8 @@ void AudioTee::stop() {
 
 OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
+  for(UInt32 i = 0; i < outOutputData->mNumberBuffers; i++) {
+//    syslog(LOG_NOTICE, "%s: inInputTime : %u, inNow: %u, inOutputTime: %u\n", __func__, (UInt32)inInputTime->mSampleTime, (UInt32)inNow->mSampleTime, (UInt32)inOutputTime->mSampleTime);
     memcpy(This->mWorkBuf, inInputData->mBuffers[i].mData, inInputData->mBuffers[i].mDataByteSize);
     AudioBuffer ab;
     AudioBufferList abl;
@@ -72,10 +78,14 @@ OSStatus AudioTee::InputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inN
 
 OSStatus AudioTee::OutputIOProc(AudioDeviceID inDevice, const AudioTimeStamp *inNow, const AudioBufferList *inInputData, const AudioTimeStamp *inInputTime, AudioBufferList *outOutputData, const AudioTimeStamp *inOutputTime, void *inClientData) {
   AudioTee *This = (AudioTee *)inClientData;
-  for(UInt32 i=0; i<outOutputData->mNumberBuffers; i++){
-    UInt32 bytesToCopy = outOutputData->mBuffers[i].mDataByteSize;
-    memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, bytesToCopy);
+//  syslog(LOG_NOTICE, "%s: inInputTime: %u, inNow: %u, inOutputTime: %u\n", __func__, (UInt32)inInputTime->mSampleTime, (UInt32)inNow->mSampleTime, (UInt32)inOutputTime->mSampleTime);
+
+  for(UInt32 i = 0; i < outOutputData->mNumberBuffers; i++) {
+    memcpy(outOutputData->mBuffers[i].mData, This->mWorkBuf, outOutputData->mBuffers[i].mDataByteSize);
   }
+
+//  This->mHistBuf->Fetch(outOutputData, outOutputData->mBuffers[0].mDataByteSize, This->mHistoryBufferHeadOffsetFrameNumber);
+
   return noErr;
 }
 

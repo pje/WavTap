@@ -58,6 +58,8 @@
   #define Fail(message, status) return(status);
 #endif
 
+unsigned int wave_accumulator = 0;
+
 enum {
   kObjectID_PlugIn                    = kAudioObjectPlugInObject,
   kObjectID_Box                       = 2,
@@ -2990,6 +2992,8 @@ static OSStatus WavTap_WillDoIOOperation(AudioServerPlugInDriverRef inDriver, Au
   if (inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if (inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
 
+Debug(FourCC2Str(inOperationID));
+
 //  bool willDo = false;
 //  bool willDoInPlace = true;
 //  switch(inOperationID) {
@@ -3028,28 +3032,14 @@ static OSStatus WavTap_BeginIOOperation(AudioServerPlugInDriverRef inDriver, Aud
 static OSStatus WavTap_DoIOOperation(AudioServerPlugInDriverRef inDriver, AudioObjectID inDeviceObjectID, AudioObjectID inStreamObjectID, UInt32 inClientID, UInt32 inOperationID, UInt32 inIOBufferFrameSize, const AudioServerPlugInIOCycleInfo* inIOCycleInfo, void* ioMainBuffer, void* ioSecondaryBuffer) {
   #pragma unused(inClientID, inIOCycleInfo, ioSecondaryBuffer)
 
-   Debug(FourCC2Str(inOperationID));
+  Debug(FourCC2Str(inOperationID));
 
   if(inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if(inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
   if(inStreamObjectID != kObjectID_Stream_Input && inStreamObjectID != kObjectID_Stream_Output) { Fail("bad stream ID", kAudioHardwareBadObjectError); }
 
-  switch (inOperationID) {
-    case kAudioServerPlugInIOOperationReadInput:
-      for (UInt32 i = 0; i < 8; i++) {
-        memset(ioMainBuffer + i, rand() % UINT_MAX, inIOBufferFrameSize);
-      }
-      break;
-    case kAudioServerPlugInIOOperationWriteMix: // write input to our internal buffer: There can only be one writer thread
-//      SInt64 writeBegin = (SInt64)inIOCycleInfo->mOutputTime.mSampleTime;
-//      uint8_t *bufferBegin = gDevice.RingBuffer.buffer + (writeBegin % numFramesInRingBuffer) * gDevice.CurrentFormat.mBytesPerFrame;
-//      memcpy(bufferBegin, ioMainBuffer, inIOBufferFrameSize * gDevice.CurrentFormat.mBytesPerFrame);
-//      atomic_store_explicit(&gDevice.LastWriteEndInFrames, writeBegin + inIOBufferFrameSize, memory_order_release);
-      break;
-  }
-
   for (UInt32 i = 0; i < 8; i++) {
-    memset(ioMainBuffer + i, rand() % UINT_MAX, inIOBufferFrameSize);
+    memset(ioMainBuffer + i, (rand() % UINT_MAX), inIOBufferFrameSize);
   }
 
   return noErr;

@@ -25,6 +25,7 @@ protected:
   AudioDeviceIOProc mOutputIOProc;
   UInt32 mHistoryBufferByteSize;
   UInt32 mHistoryBufferHeadOffsetFrameNumber;
+  Float64 mLastInputSampleTime;
 };
 
 #endif
