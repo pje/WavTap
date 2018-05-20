@@ -112,4 +112,4 @@ void WavFileUtils::writeBytesToFile(const char *fileName, UInt32 *bytes, UInt32 
   file.write((char *)dstBuffList.mBuffers[0].mData, dstBuffList.mBuffers[0].mDataByteSize);
   file.close();
   delete[] dstBuff;
-};
+}

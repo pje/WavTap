@@ -372,8 +372,12 @@
 		222FE2F90EBB5DD500FD13FC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = 0;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				OTHER_CFLAGS = "-std=c11";
+				OTHER_CPLUSPLUSFLAGS = "-std=c++11";
 				PRODUCT_NAME = WavTap;
+				SDKROOT = macosx;
 			};
 			name = Development;
 		};
@@ -381,7 +385,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				OTHER_CFLAGS = "-std=c11";
+				OTHER_CPLUSPLUSFLAGS = "-std=c++11";
 				PRODUCT_NAME = WavTap;
+				SDKROOT = macosx;
 			};
 			name = Deployment;
 		};
@@ -400,16 +407,12 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/WavTap;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = WavTap;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
+				WARNING_CFLAGS = "-Wpedantic";
 			};
 			name = Development;
 		};
@@ -425,16 +428,12 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Applications/WavTap;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = WavTap;
-				SDKROOT = macosx10.9;
+				SDKROOT = macosx;
 				SECTORDER_FLAGS = "";
 				SKIP_INSTALL = YES;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
+				WARNING_CFLAGS = "-Wpedantic";
 			};
 			name = Deployment;
 		};

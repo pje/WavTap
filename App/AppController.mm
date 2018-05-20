@@ -52,6 +52,9 @@
   for (std::vector<Device>::iterator i = mDevices->begin(); i != mDevices->end(); ++i) {
     if (0 == strcmp("WavTap", (*i).mName)) mWavTapDeviceID = (*i).mID;
   }
+  if (mWavTapDeviceID < 1) {
+    syslog(LOG_ERR, "Couldn't find WavTap AudioDevice! WavTap Driver isn't installed!");
+  }
   [self initConnections];
   [self bindHotKeys];
   [self initStatusBar];
@@ -114,26 +117,24 @@
 }
 
 - (void)initConnections {
+  OSStatus err = noErr;
   Float32 maxVolume = 1.0;
   UInt32 size = sizeof(mStashedAudioDeviceID);
   AudioObjectPropertyAddress devCurrDefAddress = { kAudioHardwarePropertyDefaultOutputDevice, kAudioObjectPropertyScopeGlobal, kAudioObjectPropertyElementMaster };
-  AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
+  err = AudioObjectGetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, &size, &mStashedAudioDeviceID);
+  if (err != noErr) { syslog(LOG_ERR, "Error getting address of current AudioDevice: %s", FourCC2Str(err)); }
   mOutputDeviceID = mStashedAudioDeviceID;
-  AudioObjectPropertyAddress volCurrDef1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
+  AudioObjectPropertyAddress volCurrDef1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 0 };
   size = sizeof(mStashedVolume);
-  AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
-  AudioObjectPropertyAddress volCurrDef2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
-  size = sizeof(mStashedVolume2);
-  AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef2Address, 0, NULL, &size, &mStashedVolume2);
+  err = AudioObjectGetPropertyData(mStashedAudioDeviceID, &volCurrDef1Address, 0, NULL, &size, &mStashedVolume);
+  if (err != noErr) { syslog(LOG_ERR, "Error getting volume0 of current AudioDevice: %s", FourCC2Str(err)); }
   mEngine = new AudioTee(mWavTapDeviceID, mOutputDeviceID);
   AudioObjectPropertyAddress volSwapWav0Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 0 };
-  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(maxVolume), &maxVolume);
-  AudioObjectPropertyAddress volSwapWav1Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 1 };
-  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav1Address, 0, NULL, sizeof(maxVolume), &maxVolume);
-  AudioObjectPropertyAddress volSwapWav2Address = { kAudioDevicePropertyVolumeScalar, kAudioObjectPropertyScopeOutput, 2 };
-  AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav2Address, 0, NULL, sizeof(maxVolume), &maxVolume);
+  err = AudioObjectSetPropertyData(mWavTapDeviceID, &volSwapWav0Address, 0, NULL, sizeof(maxVolume), &maxVolume);
+  if (err != noErr) { syslog(LOG_ERR, "Error setting output volume0 of wavtap AudioDevice: %s", FourCC2Str(err)); }
   mEngine->start();
-  AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(mWavTapDeviceID), &mWavTapDeviceID);
+  err = AudioObjectSetPropertyData(kAudioObjectSystemObject, &devCurrDefAddress, 0, NULL, sizeof(mWavTapDeviceID), &mWavTapDeviceID);
+  if (err != noErr) { syslog(LOG_ERR, "Error setting wavtap as the SystemObject: %s", FourCC2Str(err)); }
 }
 
 - (OSStatus)restoreSystemOutputDevice {

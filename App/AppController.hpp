@@ -21,7 +21,6 @@ UInt32 mTagForQuit;
 EventHandlerUPP recordHotKeyFunction;
 EventHandlerUPP historyRecordHotKeyFunction;
 Float32 mStashedVolume;
-Float32 mStashedVolume2;
 AudioDeviceID mStashedAudioDeviceID;
 AudioDeviceID mWavTapDeviceID;
 AudioDeviceID mOutputDeviceID;
