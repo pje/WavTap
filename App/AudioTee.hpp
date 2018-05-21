@@ -13,6 +13,7 @@ public:
   AudioDevice mInputDevice;
   AudioDevice mOutputDevice;
   UInt32 mSecondsInHistoryBuffer;
+  UInt32 DEFAULT_BUFFER_SIZE = 128;
 protected:
   Byte *mWorkBuf;
   CARingBuffer *mHistBuf;

@@ -18,7 +18,7 @@ clean-driver:
 clean-app:
 	cd $(APP_DIR) && make clean
 
-install: build uninstall install-driver install-app launch-app
+install: build uninstall install-driver install-app
 
 install-driver:
 	cd $(DRIVER_DIR) && make install

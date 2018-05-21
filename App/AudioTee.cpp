@@ -9,7 +9,7 @@
 #include "AudioDevice.hpp"
 #include "WavFileUtils.hpp"
 
-AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(128), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
+AudioTee::AudioTee(AudioDeviceID inputDeviceID, AudioDeviceID outputDeviceID) : mInputDevice(inputDeviceID, true), mOutputDevice(outputDeviceID, false), mSecondsInHistoryBuffer(20), mWorkBuf(NULL), mHistBuf(), mHistoryBufferMaxByteSize(0), mBufferSize(DEFAULT_BUFFER_SIZE), mHistoryBufferByteSize(0), mHistoryBufferHeadOffsetFrameNumber(0) {
   syslog(LOG_NOTICE, "%s: Initializing AudioTee buffers with mBufferSize:%u", __func__, mBufferSize);
   mInputDevice.SetBufferSize(mBufferSize);
   mOutputDevice.SetBufferSize(mBufferSize);

@@ -372,7 +372,7 @@
 		222FE2F90EBB5DD500FD13FC /* Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = fast;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = "-std=c11";
 				OTHER_CPLUSPLUSFLAGS = "-std=c++11";
@@ -384,6 +384,7 @@
 		222FE2FA0EBB5DD500FD13FC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = fast;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = "-std=c11";
 				OTHER_CPLUSPLUSFLAGS = "-std=c++11";

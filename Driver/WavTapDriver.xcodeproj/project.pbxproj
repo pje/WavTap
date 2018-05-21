@@ -174,8 +174,10 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-std=c11";
 				SDKROOT = macosx;
 				SYMROOT = "$(PROJECT_DIR)/Build";
+				WARNING_CFLAGS = "";
 			};
 			name = Release;
 		};
@@ -229,8 +231,10 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-std=c11";
 				SDKROOT = macosx;
 				SYMROOT = "$(PROJECT_DIR)/Build";
+				WARNING_CFLAGS = "";
 			};
 			name = Debug;
 		};
@@ -284,8 +288,10 @@
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-std=c11";
 				SDKROOT = macosx;
 				SYMROOT = "$(PROJECT_DIR)/Build";
+				WARNING_CFLAGS = "";
 			};
 			name = "Debug-Opt";
 		};
@@ -299,6 +305,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/WavTap-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
+				OTHER_CFLAGS = "-std=c11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wavtap.driver.WavTap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = driver;
@@ -315,6 +322,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/WavTap-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
+				OTHER_CFLAGS = "-std=c11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wavtap.driver.WavTap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = driver;
@@ -331,6 +339,7 @@
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/WavTap-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Audio/Plug-Ins/HAL";
+				OTHER_CFLAGS = "-std=c11";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wavtap.driver.WavTap;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = driver;
@@ -350,7 +359,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2D7477B51578168D00412279 /* Build configuration list for PBXNativeTarget "WavTapDriver" */ = {
+		2D7477B51578168D00412279 /* Build configuration list for PBXNativeTarget "WavTap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2D7477B61578168D00412279 /* Release */,

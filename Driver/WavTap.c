@@ -14,8 +14,6 @@
 #   define FourCC2Str(fourcc) (const char[]) { *(((char*)&fourcc)+3), *(((char*)&fourcc)+2), *(((char*)&fourcc)+1), *(((char*)&fourcc)+0), 0 }
 #endif
 
-#define DEBUG 0
-
 // old and busted macros below
 
 #if DEBUG
@@ -51,12 +49,12 @@
 // new and hot macros below
 
 #ifdef DEBUG
-  #define Debug(inFormat, ...) syslog(LOG_NOTICE, "%s: %s", __func__, inFormat, ## __VA_ARGS__)
-  #define Fail(message, status) Debug(message); return status;
+  #define Fail(message, status) DebugMsg(message); return status;
 #else
-  #define Debug(inFormat, ...)
   #define Fail(message, status) return(status);
 #endif
+
+#define Debug(fmt, ...) do { if (DEBUG) fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, __LINE__, __func__, __VA_ARGS__); } while (0)
 
 unsigned int wave_accumulator = 0;
 
@@ -183,6 +181,7 @@ static AudioServerPlugInDriverInterface* gAudioServerPlugInDriverInterfacePtr = 
 static AudioServerPlugInDriverRef        gAudioServerPlugInDriverRef          = &gAudioServerPlugInDriverInterfacePtr;
 
 void* WavTap_Create(CFAllocatorRef inAllocator, CFUUIDRef inRequestedTypeUUID) {
+  #pragma unused(inAllocator)
   void* theAnswer = NULL;
   if(CFEqual(inRequestedTypeUUID, kAudioServerPlugInTypeUUID)) {
     theAnswer = gAudioServerPlugInDriverRef;
@@ -246,7 +245,7 @@ Done:
 //  This call returns the resulting reference count after the decrement.
 static ULONG WavTap_Release(void* inDriver) {
   ULONG theAnswer = 0;
-  if(inDriver != gAudioServerPlugInDriverRef) { Fail("WavTap_Release: bad driver reference", 0) };
+  if(inDriver != gAudioServerPlugInDriverRef) { Fail("WavTap_Release: bad driver reference", 0); };
   pthread_mutex_lock(&gPlugIn_StateMutex);
   if(gPlugIn_RefCount > 0) {
     --gPlugIn_RefCount;
@@ -410,8 +409,8 @@ static OSStatus WavTap_AbortDeviceConfigurationChange(AudioServerPlugInDriverRef
 }
 
 static Boolean WavTap_HasProperty(AudioServerPlugInDriverRef inDriver, AudioObjectID inObjectID, pid_t inClientProcessID, const AudioObjectPropertyAddress* inAddress) {
-  if(inDriver != gAudioServerPlugInDriverRef) { Debug("bad driver reference"); return false; }
-  if(inAddress == NULL) { Debug("no address"); return false; }
+  if(inDriver != gAudioServerPlugInDriverRef) { Debug("%s", "bad driver reference"); return false; }
+  if(inAddress == NULL) { Debug("%s", "no address"); return false; }
 
   switch(inObjectID) {
     case kObjectID_PlugIn:
@@ -2717,10 +2716,7 @@ Done:
 
 static OSStatus WavTap_SetControlPropertyData(AudioServerPlugInDriverRef inDriver, AudioObjectID inObjectID, pid_t inClientProcessID, const AudioObjectPropertyAddress* inAddress, UInt32 inQualifierDataSize, const void* inQualifierData, UInt32 inDataSize, const void* inData, UInt32* outNumberPropertiesChanged, AudioObjectPropertyAddress outChangedAddresses[2]) {
   #pragma unused(inClientProcessID, inQualifierDataSize, inQualifierData)
-
-//  AudioObjectGetPropertyData(inObjectID, inAddress);
-
-  Debug("inObjectID: %s", inObjectID);
+  Debug("inObjectID: %u", inObjectID);
 
   OSStatus theAnswer = 0;
   Float32 theNewVolume;
@@ -2989,10 +2985,11 @@ static OSStatus WavTap_GetZeroTimeStamp(AudioServerPlugInDriverRef inDriver, Aud
 }
 
 static OSStatus WavTap_WillDoIOOperation(AudioServerPlugInDriverRef inDriver, AudioObjectID inDeviceObjectID, UInt32 inClientID, UInt32 inOperationID, Boolean* outWillDo, Boolean* outWillDoInPlace) {
+  #pragma unused(inClientID)
   if (inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if (inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
 
-  Debug(FourCC2Str(inOperationID));
+  Debug("%s", FourCC2Str(inOperationID));
 
   bool willDo = false;
   bool willDoInPlace = true;
@@ -3018,7 +3015,7 @@ static OSStatus WavTap_WillDoIOOperation(AudioServerPlugInDriverRef inDriver, Au
 static OSStatus WavTap_BeginIOOperation(AudioServerPlugInDriverRef inDriver, AudioObjectID inDeviceObjectID, UInt32 inClientID, UInt32 inOperationID, UInt32 inIOBufferFrameSize, const AudioServerPlugInIOCycleInfo* inIOCycleInfo) {
   #pragma unused(inClientID, inIOBufferFrameSize, inIOCycleInfo)
 
-  Debug(FourCC2Str(inOperationID));
+  Debug("%s", FourCC2Str(inOperationID));
 
   if(inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if(inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
@@ -3027,9 +3024,9 @@ static OSStatus WavTap_BeginIOOperation(AudioServerPlugInDriverRef inDriver, Aud
 }
 
 static OSStatus WavTap_DoIOOperation(AudioServerPlugInDriverRef inDriver, AudioObjectID inDeviceObjectID, AudioObjectID inStreamObjectID, UInt32 inClientID, UInt32 inOperationID, UInt32 inIOBufferFrameSize, const AudioServerPlugInIOCycleInfo* inIOCycleInfo, void* ioMainBuffer, void* ioSecondaryBuffer) {
-  #pragma unused(inClientID, inIOCycleInfo, ioSecondaryBuffer)
+  #pragma unused(inClientID, inIOCycleInfo, ioSecondaryBuffer, ioMainBuffer, inIOBufferFrameSize)
 
-  Debug(FourCC2Str(inOperationID));
+  Debug("%s", FourCC2Str(inOperationID));
 
   if(inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if(inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }
@@ -3041,7 +3038,7 @@ static OSStatus WavTap_DoIOOperation(AudioServerPlugInDriverRef inDriver, AudioO
 static OSStatus WavTap_EndIOOperation(AudioServerPlugInDriverRef inDriver, AudioObjectID inDeviceObjectID, UInt32 inClientID, UInt32 inOperationID, UInt32 inIOBufferFrameSize, const AudioServerPlugInIOCycleInfo* inIOCycleInfo) {
   #pragma unused(inClientID, inIOBufferFrameSize, inIOCycleInfo)
 
-  Debug(FourCC2Str(inOperationID));
+  Debug("%s", FourCC2Str(inOperationID));
 
   if (inDriver != gAudioServerPlugInDriverRef) { Fail("bad driver reference", kAudioHardwareBadObjectError); }
   if (inDeviceObjectID != kObjectID_Device) { Fail("bad device ID", kAudioHardwareBadObjectError); }

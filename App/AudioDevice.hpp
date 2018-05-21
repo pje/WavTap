@@ -4,8 +4,6 @@
 #include <CoreAudio/CoreAudio.h>
 #include <sys/syslog.h>
 
-#define DEBUG 1
-
 #ifdef DEBUG
   #define Debug(inFormat, ...) syslog(LOG_NOTICE, "%s: %s", __func__, inFormat, ## __VA_ARGS__)
   #define Fail(message, status) Debug(message); return status;
